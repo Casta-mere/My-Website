@@ -1,0 +1,10 @@
+{
+  "label": "server",
+  "position": 0,
+  "link": {
+    "type": "generated-index",
+    "description": "Have some fun",
+    "title": "服务器搭建"
+  }
+}
+  
