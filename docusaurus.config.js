@@ -45,6 +45,8 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/Casta-mere/My-Website/tree/master/',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
         },
         blog: {
           showReadingTime: true,
@@ -66,7 +68,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'My Site',
+        title: 'Castamere',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
@@ -97,8 +99,12 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'React',
+                to: '/docs/category/react',
+              },
+              {
+                label: '服务器搭建',
+                to: '/docs/category/server',
               },
             ],
           },
@@ -106,16 +112,12 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Github',
+                href: 'https://github.com/Casta-mere',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                label: 'Meta',
+                href: 'https://www.facebook.com/profile.php?id=100064520177692',
               },
             ],
           },
@@ -126,18 +128,19 @@ const config = {
                 label: 'Blog',
                 to: '/blog',
               },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/Casta-mere',
-              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Castamere, Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Castamere`,
       },
       prism: {
         theme: prismThemes.vsDark,
         darkTheme: prismThemes.vsDark,
+        additionalLanguages: ['bash'],
+      },
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
       },
     }),
 };
