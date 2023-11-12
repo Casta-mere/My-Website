@@ -85,7 +85,7 @@ tags: [git, github]
 
 生成完毕之后，复制该令牌
 
-:::danger重要
+:::danger 重要
 
 Token 生成后，只有这一次复制的机会，出于安全原因，一旦离开该页面将无法再次看到它
 
@@ -111,9 +111,9 @@ https://github.com/Casta-mere/My-Website.git
 终端进入到库的根目录下，输入以下命令
 
 ```bash
-git remote set-url origin https://token@github.com/user/my-repository.git
+git remote set-url origin https://token@github.com/user/my-repo.git
 # 把上面的 token 那里换成刚刚生成的令牌，如 token 是123456,则命令为
-# git remote set-url origin https://123456@github.com/user/my-repository.git
+# git remote set-url origin https://123456@github.com/user/my-repo.git
 ```
 
 设置完成后可以通过`git remote -v`来确认你的设置。建议设置好之后， push 一次试试
