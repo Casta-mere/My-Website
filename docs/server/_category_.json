@@ -1,6 +1,8 @@
 {
   "label": "server",
-  "position": 0,
+  "position": 2,
+  "collapsible": true,
+  "collapsed": true,
   "link": {
     "type": "generated-index",
     "description": "Have some fun",

@@ -28,14 +28,14 @@ last_update:
 + 由于隐性URL转发时，通过frame嵌套目标网站的内容，导致移动端不能自适应网页大小
 
 ## nginx
-:::infoimportant
+:::info important
 笔者服务器是Ubuntu20.04版本，这里演示在此OS上如何使用Nginx反代理
 :::
 ### 安装
 
 直接执行以下命令
 
-```bash
+```bash showLineNumbers
 sudo apt update
 sudo apt install nginx
 ```
@@ -61,7 +61,7 @@ Nginx的配置文件其实是`/etc/nginx.conf`，在这个文件中会`include /
 
 在打开的.conf文件中添加以下内容，将`server_name`, `proxy_pass`换成你对应的域名和端口号(端口号要以 http://<span></span>localhost:1234的形式)
 
-```python
+```bash showLineNumbers
 server {
   listen 80;
   server_name App1.domain.com;  # 这里换成你解析的域名
@@ -85,7 +85,7 @@ server {
 
 添加好后，使用以下命令重启nginx服务以应用修改
 
-```bash
+```bash  showLineNumbers
 sudo systemctl reload nginx
 ```
 
