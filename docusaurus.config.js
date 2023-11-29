@@ -10,6 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Castamere',
   tagline: 'Come watch TV',
+  // tagline: "There's nothing noble in being superior to your fellow man. True nobility is be superior to your former self",
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -136,7 +137,7 @@ const config = {
       prism: {
         theme: prismThemes.vsDark,
         darkTheme: prismThemes.vsDark,
-        additionalLanguages: ['bash'],
+        additionalLanguages: ['bash','latex'],
       },
       colorMode: {
         defaultMode: 'dark',
