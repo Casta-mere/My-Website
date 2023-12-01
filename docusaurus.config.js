@@ -129,6 +129,14 @@ const config = {
                 label: 'Blog',
                 to: '/blog',
               },
+              {
+                label: 'Read-Book',
+                href: 'http://readbook.castamerego.com',
+              },
+              {
+                label: '今天也想rua红崽',
+                href: 'https://todayred.castamerego.com',
+              },
             ],
           },
         ],
