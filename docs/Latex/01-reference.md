@@ -4,7 +4,7 @@ last_update:
   author: Casta-mere
 ---
 
-# 引用
+# 参考文献
 
 在文中以上标的形式显示引用，并有超链接至文末。
 

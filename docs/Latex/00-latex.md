@@ -4,5 +4,6 @@ last_update:
   author: Casta-mere
 ---
 
-# LaTeX 基础知识
+# LaTeX
 
+LaTeX 基础知识
