@@ -135,7 +135,7 @@ const config = {
               },
               {
                 label: '今天也想rua红崽',
-                href: 'https://todayred.castamerego.com',
+                href: 'http://todayred.castamerego.com',
               },
             ],
           },
@@ -145,7 +145,7 @@ const config = {
       prism: {
         theme: prismThemes.vsDark,
         darkTheme: prismThemes.vsDark,
-        additionalLanguages: ['bash','latex'],
+        additionalLanguages: ['bash','latex','json','markdown','python'],
       },
       colorMode: {
         defaultMode: 'dark',
