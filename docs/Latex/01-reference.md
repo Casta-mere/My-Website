@@ -6,11 +6,11 @@ last_update:
 
 # 参考文献
 
-BibTeX 参考文献管理
+使用 BibTeX 进行参考文献管理
 
-本篇介绍如何在 LaTeX 中添加参考文献
+## 写在前面
 
-本篇教程包含以下内容:
+本篇介绍如何在 $$\large \LaTeX $$ 中添加参考文献。教程包含以下内容:
 
 - 完整 BibTeX 参考文献管理教程
 - 如何编译含 BibTeX 的 LaTeX 文档
@@ -20,16 +20,14 @@ BibTeX 参考文献管理
 - 其他 BibTeX 常见问题及解决方式
 
 :::tip
-本篇均建立在安装好 TeXworks editor，使用 VS Code 编写编译，并在 VS Code 中安装 LaTeX Workshop 插件的基础上
+本篇均建立在安装好 TeXworks，使用 VS Code 编写编译，并在 VS Code 中安装 LaTeX Workshop 插件的基础上
 :::
 
 ## BibTeX 参考文献管理
 
-[BibTeX]
+$ \Large \mathrm {B\mathbf {\scriptstyle \text{IB}}} \TeX $ 是一款用于格式化参考文献列表的参考文献管理软件，名字来源于引用一词 $$(bibliography)$$ 和 $$\TeX$$ 排版工具。使用 BibTeX 进行参考文献管理包含以下几个步骤，建议读者[点击这里](./demo/01-reference.zip)下载 Demo ，跟着下面的指南进行对照学习
 
-使用 BibTeX 进行参考文献管理包含以下几个步骤，建议读者[点击这里](./demo/01-reference.zip)下载 Demo ，跟着下面的指南进行对照学习
-
-1. 创建一个 BibTeX 数据库文件(.bib)
+1. 创建一个 BibTeX 数据库文件(`.bib`文件)
 2. 在 `.bib`文件中添加参考文献条目
 3. 设置文内引用与参考文献格式
 4. 在文章内部使用命令进行引用
@@ -72,13 +70,23 @@ BibTeX 参考文献管理
 
 ```txt
 @article{Castamere2024AddReference,
-  author  = {W. Castamere and W. Todayred and others},
+  author  = {Castamere and Todayred and others},
   title   = {How to add Reference to your LaTeX},
   journal = {\LaTeX \enspace cookbook},
   url     = {http://dino.castamerego.com/docs/Latex/reference},
   year    = {2024}
 }
+
+@article{Castamere2024如何添加,
+  author  = {W. Castamere and W. Todayred and others},
+  title   = {{BibTeX} 参考文献管理},
+  journal = {\LaTeX \enspace 指南},
+  url     = {http://dino.castamerego.com/docs/Latex/reference},
+  year    = {2024}
+}
 ```
+
+`.bib`文件的格式有一些常见问题，具体可以看[BibTeX 常见问题](#bibtex-常见问题)这一章
 
 接下来是如何找到 BibTeX 格式的引用。在知网中并没有 BibTeX 风格的引用，故笔者推荐使用谷歌学术。读者们可以先在其他网站或平台找一些论文(比如一些 AI paper review 网站: [semless])，然后再去[谷歌学术]中直接搜索这些文章，点击"引用"，弹出框中找到"BibTeX"，点击就会弹出 BibTeX 格式的引用，直接复制，添加到 `.bib` 文件中即可
 
@@ -94,7 +102,7 @@ BibTeX 参考文献管理
 
 #### 修改参考文献被列出的样式
 
-在使用`BibTeX`时，要引入`hyperref`和 `natbib` 库。使用`\bibliographystyle{}`指令来修改参考文献被列出的样式，常见的样式在下面列出来了，如果没有特别的需求(比如只是做一个小作业)推荐使用`unsrtnat`，该预设可以按照引用出现的顺序排列。
+在使用`BibTeX`时，要引入`hyperref`和 `natbib` 库。使用`\bibliographystyle{}`指令来修改参考文献被列出的样式，常见的样式在下面列出来了，如果没有特别的需求(比如只是做一个小作业)推荐使用`unsrtnat`，该预设可以按照引用出现的顺序排列
 
 ```latex
 \RequirePackage{natbib}          % BibTeX 库
@@ -102,11 +110,11 @@ BibTeX 参考文献管理
 \bibliographystyle{unsrtnat}     % 参考文献被列出的样式
 ```
 
-- plainnat: 作者-年份格式的排序按作者的姓氏字母顺序。
-- abbrvnat: 类似于 plainnat，但是名字和月份会被缩写。
-- unsrtnat: 作者-年份格式，但引用按出现的顺序排列。
-- apalike: APA 格式，如美国心理学会 (American Psychological Association) 出版物的样式。
-- alpha: 基于作者姓氏和出版年份的标签系统，不是完整的作者-年份文献引用格式。
+- plainnat: 作者-年份格式的排序按作者的姓氏字母顺序
+- abbrvnat: 类似于 plainnat，但是名字和月份会被缩写
+- unsrtnat: 作者-年份格式，但引用按出现的顺序排列
+- apalike: APA 格式，如美国心理学会 (American Psychological Association) 出版物的样式
+- alpha: 基于作者姓氏和出版年份的标签系统，不是完整的作者-年份文献引用格式
 
 #### 修改文内引用的样式
 
@@ -114,7 +122,7 @@ BibTeX 参考文献管理
 下文均以 Demo 中的 `unsrtant` 样式为准
 :::
 
-使用`\bibpunct`函数可以修改文内引用的样式，其第一，二个参数为括号样式，一般使用中括号或小括号。第三个参数为引用多个文献时的分隔符。
+使用`\bibpunct`函数可以修改文内引用的样式，其第一，二个参数为括号样式，一般使用中括号或小括号。第三个参数为引用多个文献时的分隔符。同时也可以使用`\newcommand`来自定义引用指令
 
 ```latex
 \bibpunct{[}{]}{;}{s}{,}{,} % 第一，二个参数为括号样式，可以换成小括号
@@ -123,8 +131,13 @@ BibTeX 参考文献管理
 
 #### 修改最后的“参考文献”字样
 
+想要修改最后的“参考文献”字样，可以使用`\renewcommand`函数，他的作用是重写某个已有的函数，第一个参数为这个已有函数的名字，第二个参数为具体函数实现。想要修改时，把该指令添加到文件引言部分即可(注意要添加到`\RequirePackage{natbib}  `之后)
+
 ```latex
+\RequirePackage{natbib}
+
 % 如显示“参考文献”，居中，四号则如下
+% \sihao 为笔者自定义函数，非内置，此处仅作演示
 \renewcommand{\refname}{\begin{center} \sihao 参考文献 \end{center}}
 
 % 或者想要“Reference”，向左对齐
@@ -133,7 +146,7 @@ BibTeX 参考文献管理
 
 ### 步骤四：在文章内部使用命令进行引用
 
-在文章内部可以使用`\cite`函数来直接引用。为了以(Castamere et al., 2024)[1]的形式引用，笔者写了`\fullcite`函数供使用，具体演示如下图。读者可在[Demo](./demo/01-reference.zip)中研究一下。
+在文章内部可以使用`\cite`函数来直接引用。为了以(Castamere et al., 2024)[1]的形式引用，笔者写了`\fullcite`函数供使用，具体演示如下图。读者可在[Demo](./demo/01-reference.zip)中研究一下
 
 ```latex
 \newcommand{\fullcite}[1]{(\citeauthor{#1}, \citeyear{#1})\cite{#1}} % 自定义引用指令
@@ -143,7 +156,7 @@ BibTeX 参考文献管理
 
 ### 步骤五：在文末使用命令列出参考文献
 
-在文末可以使用`\bibliorgraphy`函数来列出参考文献，其参数为`.bib`文件的**相对路径**，注意并不包含文件名后缀。
+在文末可以使用`\bibliorgraphy`函数来列出参考文献，其参数为`.bib`文件的**相对路径**，注意并不包含文件名后缀
 
 - ✔ references/references
 - ✖ references/references.bib
@@ -161,9 +174,14 @@ BibTeX 参考文献管理
 
 ## 完整 Demo
 
-[Download Demo](./demo/01-reference.zip)
+[点击此处 Download Demo](./demo/01-reference.zip)
+
+本处笔者提供一个简单的 demo，在安装好`Texworks`，使用`VS Code`，并安装`latex-workshop`插件的基础上可以直接编译
+
+![demo](./image/01-reference/demo.png)
 
 ```txt
+项目结构：
 demo-01-reference:
 │  templates.pdf
 │  templates.tex
@@ -231,6 +249,8 @@ XeLaTeX 原生支持 Unicode，并默认其输入文件为 UTF-8 编码。可以
 第三次 `xelatex` 编译：最后一次编译是为了确保所有交叉引用(包括那些在引用文献或图表编号后出现的)都能正确解析。由于交叉引用可能依赖文献引用(可能影响引用的编号)，因此还需要一次编译来确保一切都已解析完毕，文档中的所有引用都是正确的
 
 ### VS Code 插件 latex-workshop 配置
+
+即前文提及 `.vscode` 文件夹下 `setttings.json` 中的内容
 
 <details>
   <summary>latex-workshop配置</summary>
@@ -352,7 +372,7 @@ XeLaTeX 原生支持 Unicode，并默认其输入文件为 UTF-8 编码。可以
 
 ### 转义字符
 
-有时候引用报错可能是文章名出现 LaTeX 需要转义的字符，比如 `_%&` 这些，最常见就是因为下划线导致编译失败，需要在 BibTeX 中也进行转义。
+有时候引用报错可能是文章名出现 LaTeX 需要转义的字符，比如 `_%&` 这些，最常见就是因为下划线导致编译失败，需要在 BibTeX 中也进行转义
 
 | 需转义字符 | Latex 指令 | 需转义字符 | Latex 指令 |
 | :--------: | :--------: | :--------: | :--------: |
@@ -361,7 +381,37 @@ XeLaTeX 原生支持 Unicode，并默认其输入文件为 UTF-8 编码。可以
 |     &      |    \\&     |     ^      |    \\^     |
 |     $      |    \\$     |     \      | \backslash |
 
-[BibTeX]: https://en.wikipedia.org/wiki/BibTeX
+### 大小写问题
+
+BibTeX 中的部分字段如`title`,`booktitle`等，会自动将句中的字母全转为小写，将内容用`{}`包起来即可
+
+![大小写问题](./image/01-reference/caseproblem.png)
+
+```bibtex showLineNumbers
+@article{Castamere2024AddReference,
+  author  = {Castamere and Todayred and others},
+  // highlight-start
+  % 这里Reference中的R和LaTeX全部会转为小写 
+  title   = {How to add Reference to your LaTeX},
+  // highlight-end
+  journal = {\LaTeX \enspace cookbook},
+  url     = {http://dino.castamerego.com/docs/Latex/reference},
+  year    = {2024}
+}
+
+@article{Castamere2024如何添加,
+  author  = {W. Castamere and W. Todayred and others},
+  // highlight-start
+  % 想要保持大写可以加上花括号
+  title   = {{BibTeX} 参考文献管理},
+  // highlight-end
+  journal = {\LaTeX \enspace 指南},
+  url     = {http://dino.castamerego.com/docs/Latex/reference},
+  year    = {2024}
+}
+```
+
+[$ \Large \mathrm {B\mathbf {\scriptstyle \text{IB}}} \TeX $]: https://en.wikipedia.org/wiki/BibTeX
 [谷歌学术]: https://scholar.google.com/
-[GB/T 7714-2015 信息与文献 参考文献著录规则]: https://wjk.usst.edu.cn/2020/0523/c10336a220878/page.htm
+[GB/T 7714-2015 信息与文献 参考文献著录规则]: https://lib.tsinghua.edu.cn/wj/GBT7714-2015.pdf
 [semless]: https://seaml.es/science.html
