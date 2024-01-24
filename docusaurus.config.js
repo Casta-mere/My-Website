@@ -100,6 +100,10 @@ const config = {
             title: 'Docs',
             items: [
               {
+                label: 'LaTeX',
+                to: '/docs/category/latex',
+              },
+              {
                 label: 'React',
                 to: '/docs/category/react',
               },
