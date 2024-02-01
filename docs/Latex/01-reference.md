@@ -10,7 +10,7 @@ last_update:
 
 ## 写在前面
 
-本篇介绍如何在 $$\large \LaTeX $$ 中添加参考文献。教程包含以下内容:
+本篇介绍如何在 $ \large \LaTeX $ 中添加参考文献。教程包含以下内容:
 
 - 完整 BibTeX 参考文献管理教程
 - 如何编译含 BibTeX 的 LaTeX 文档
@@ -25,7 +25,7 @@ last_update:
 
 ## BibTeX 参考文献管理
 
-$ \Large \mathrm {B\mathbf {\scriptstyle \text{IB}}} \TeX $ 是一款用于格式化参考文献列表的参考文献管理软件，名字来源于引用一词 $$(bibliography)$$ 和 $$\TeX$$ 排版工具。使用 BibTeX 进行参考文献管理包含以下几个步骤，建议读者[点击这里](./demo/01-reference.zip)下载 Demo ，跟着下面的指南进行对照学习
+$ \Large \mathrm {B\mathbf {\scriptstyle \text{IB}}} \TeX $ 是一款用于格式化参考文献列表的参考文献管理软件，名字来源于引用一词 $(bibliography)$ 和 $\TeX$ 排版工具。使用 BibTeX 进行参考文献管理包含以下几个步骤，建议读者[点击这里](./demo/01-reference.zip)下载 Demo ，跟着下面的指南进行对照学习
 
 1. 创建一个 BibTeX 数据库文件(`.bib`文件)
 2. 在 `.bib`文件中添加参考文献条目
