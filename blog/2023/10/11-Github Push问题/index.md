@@ -7,7 +7,7 @@ tags: [git, github]
 
 **自2021.8.13开始，Github不再支持使用密码的方式来进行各种远程操作，必须要使用令牌 (token) 进行验证。本文就此问题给出一些指南**
 
-:::danger
+:::danger ERROR
 
 使用 SSH 在 Linux 服务器上 git push 的时候遇到报错
 
