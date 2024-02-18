@@ -1,6 +1,9 @@
 ---
 sidebar_label: 'My Resume!'
-sidebar_position: 4
+sidebar_position: 6
+last_update:
+  date: 01 Jan 2024 GMT
+  author: Casta-mere
 ---
 # 个人简历
 
