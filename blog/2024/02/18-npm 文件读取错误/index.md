@@ -55,14 +55,22 @@ Node version: v18.18.2
 
 首先打开我的电脑找到文件所在盘
 
+![step1](./image/step1.png)
+
 右击对应盘，点击"属性"
+
+![step2](./image/step2.png)
 
 点击"工具"
 
+![step3](./image/step3.png)
+
 点击"扫描"
+
+![step4](./image/step4.png)
 
 等待扫描完成后即可进行修复
 
 ## 后记
 
-遇到
+遇到这个报错时，其实更重要的是定位这是什么问题。笔者也是突然看到VS Code中的某个文件在git中标红了，发现它怎么也删不掉，而报错里正好有`illegal operation on a directory`猜测是文件损坏导致错误识别为目录，一点一点才解决掉这个问题。建议读者遇到Bug时也多想多试多总结。
