@@ -25,7 +25,7 @@ tags: [git, github]
 
 由于之前一直是在本地端用Github Desktop去push，就算是部署的项目，也一般都是本地写代码，然后再上传，所以一直也没有出现过这个问题。但这次使用VS Code连SSH server，而且直接在服务器上build和serve，直接在服务器上写东西也比较方便，就选择了这种纯云开发的形式，但是在push的时候遇到了问题。
 
-![BUG](./img/error.png "Github远程不再支持密码验证")
+![BUG](./image/error.png "Github远程不再支持密码验证")
 
 ## 分析
 
@@ -59,29 +59,29 @@ tags: [git, github]
 :::
 
 进到 Github 官网，点击右上角头像，在弹出框中点击设置 (settings)
-![clickAvatar](./img/clickAvatar.png "点击头像")
-![clickSettings](./img/clickSettings.png "点击设置")
+![clickAvatar](./image/clickAvatar.png "点击头像")
+![clickSettings](./image/clickSettings.png "点击设置")
 
 拉到最底下，找到开发人员选项 (Developer settings)
-![developerSettings](./img/develperSettings.png "开发者选项")
+![developerSettings](./image/develperSettings.png "开发者选项")
 
 在 Personal access tokens 里面找到 Tokens(classic) 选项
-![tokenClassic](./img/tokenClassic.png "令牌")
+![tokenClassic](./image/tokenClassic.png "令牌")
 
 ### 生成 token
 
-![generateToken](./img/generateToken.png "生成令牌")
+![generateToken](./image/generateToken.png "生成令牌")
 
 进入这个界面后有一些选项，包括:
 + **Note** 给这条 token 添加备注，比如用于什么软件，或者用于哪个库等等
 + **Expiration** 该条 token 有效期。出于安全原因，尽量不要设置为永久
 + **Scope** 该条 token 的权限，常见包括库的push, ssh连接, Github Copilot使用等权限。具体可以看这篇官方文档[token-scope]
 
-![scope](./img/scope.png "令牌设置")
+![scope](./image/scope.png "令牌设置")
 
 设置完成后，翻到页面最下方，点击 Generate token 生成令牌
 
-![generateToken2](./img/generateToken2.png "点击生成令牌")
+![generateToken2](./image/generateToken2.png "点击生成令牌")
 
 生成完毕之后，复制该令牌
 
@@ -91,7 +91,7 @@ Token 生成后，只有这一次复制的机会，出于安全原因，一旦�
 
 :::
 
-![copyToken](./img/copyToken.png "复制令牌")
+![copyToken](./image/copyToken.png "复制令牌")
 
 ### 使用 token
 
@@ -106,7 +106,7 @@ https://github.com/user/my-repository.git
 https://github.com/Casta-mere/My-Website.git
 ```
 
-![repoUrl](./img/repoUrl.png ".git URL")
+![repoUrl](./image/repoUrl.png ".git URL")
 
 终端进入到库的根目录下，输入以下命令
 

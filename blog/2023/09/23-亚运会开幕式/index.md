@@ -11,4 +11,4 @@ Asian Games Opening Ceremony
 <!--truncate-->
 
 早上飘着小雨，
-![双峰插云](./img/双峰插云.jpg)
+![双峰插云](./image/双峰插云.jpg)
