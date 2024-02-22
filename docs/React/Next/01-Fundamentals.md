@@ -162,7 +162,7 @@ export default function Home() {
 
 **所以在 Next.js 中，通常把客户端组件(_Client Component_)和服务端组件(_Server Component_)一起使用，尽量只在必须的地方使用客户端渲染**。在 Next.js 中默认创建的均为服务端组件。如果像下面一样直接在 Server Component 中使用 `onClick` 监听用户操作，将会报 Runtime Error
 
-```jsx title="Productcard.tsx" showLineNumbers
+```tsx title="Productcard.tsx" showLineNumbers
 import React from "react";
 
 const ProductCard = () => {
@@ -179,7 +179,7 @@ const ProductCard = () => {
 
 想要解决这个问题，有两种方法。其一是直接把这个组件设置为客户端组件，如下代码所示
 
-```jsx title="Productcard.tsx" showLineNumbers
+```tsx title="Productcard.tsx" showLineNumbers
 // 在文件顶部添加"use client"使其变为客户端组件
 // highlight-next-line
 "use client";
@@ -196,7 +196,7 @@ const ProductCard = () => {
 
 另一种方法则是将这个 button 封装成另一个组件，将其设置为客户端组件。这种方法可以有效地节约资源，尤其是在组件的数量上来之后，我们应该尽量**只将必须的部分设置为客户端组件**
 
-```jsx title="Productcard.tsx" showLineNumbers
+```tsx title="Productcard.tsx" showLineNumbers
 import React from "react";
 import AddToCart from "./AddToCart"; // 封装出去
 
@@ -211,7 +211,7 @@ const ProductCard = () => {
 export default ProductCard;
 ```
 
-```jsx title="AddToCart.tsx" showLineNumbers
+```tsx title="AddToCart.tsx" showLineNumbers
 // 在文件顶部添加"use client"使其变为客户端组件
 "use client";
 import React from "react";
