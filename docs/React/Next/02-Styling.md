@@ -6,7 +6,7 @@ last_update:
 
 # 风格化
 
-本篇包括以下内容
+本篇包括以下内容:
 
 - Global styles
 - CSS modules
@@ -14,6 +14,8 @@ last_update:
 - Daisy UI
 
 ## Global styles
+
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/9130076a87468c6f4b91ab53a69f363bb18b635e)
 
 在 `\app\global.css` 中内容的为全局格式，尽量不要在其中写专用于某个页面或某个组件的 css，把这些内容放到对应的 CSS modules 中
 
@@ -44,6 +46,8 @@ body {
 ```
 
 ## CSS modules
+
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/5827282ab172fff9e59e370433f0788c13d77cf9)
 
 CSS moduls 是针对某个组件/页面的 css 文件
 
@@ -93,6 +97,8 @@ module.exports = {
 
 ## Tailwind CSS
 
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/4ffdb120a601da58c5405f8f5a95c6a809c01cbb)
+
 [Tailwind] 是一个高度可定制的 CSS 框架，它提供了一组原子类，使用这些类可以快速构建现代的用户界面。与传统的 CSS 框架不同，Tailwind CSS 不是基于预定义的组件或样式，而是在工作流程中提供了一组低级的原子类，这些类可以直接应用于 HTML 元素。
 
 Tailwind CSS 的主要特点如下：
@@ -122,6 +128,8 @@ export default ProductCard;
 ```
 
 ## DaisyUI
+
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/72b99e357bc04aed598157e02a0778f21ca272b7)
 
 [DaisyUI]是一个 Tailwind 的集成插件，有很多高效美观的组件，类似于 bootstrap，但更易上手使用，安装也十分简单。可以直接使用下面的命令安装
 

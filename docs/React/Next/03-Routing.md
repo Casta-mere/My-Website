@@ -16,6 +16,8 @@ last_update:
 
 ## Routing Overview
 
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/abebb520e080c12b72bb192cfd5e3da5edbae319)
+
 前面提到过，在 Next.js 中，依据约定俗成每个文件夹中仅有 page.tsx 会被渲染为公共页面。除此之外 Next.js 中还有其他特殊命名规则文件：
 
 - page.tsx
@@ -28,6 +30,8 @@ last_update:
 随着某个 page 里包含的内容越来越多，可以将其中的部分内容封装为 component，并放在同目录下(而不需要放到 component 文件夹里)，以提高结构的可读性和效率
 
 ## 动态路由
+
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/cfade849c0fb69c2778f42520f3e7e7b4917549d)
 
 Typescript 可以直接使用\{\}解构
 
@@ -116,6 +120,8 @@ export default PhotoPage;
 
 ### Catch-all 路由
 
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/19aac6a6a6868646a3f76474f03e8d3ad4b9c04c)
+
 在 Next.js 中，使用 `[...slug]` 来捕捉多层并生成动态路由的功能被称为 Catch-All 路由。它允许你在路径中捕捉任意数量的片段，并将它们作为参数传递给页面组件
 
 上文说到可以将文件夹名字用 `[]` 包起来来生成动态路由，如果在名字前添加 `...` ，比如 `[...slug]` 即可生成一个 Catch-All 路由。他的作用是，无论你加多少层路由都可以识别出来。比如一般来说，想要实现 `products/grocery/dairy/milk` 这个路由，需要一层一层创建，而使用 Catch-all 路由，只需要创建 products/[...slug]/page.tsx 即可。
@@ -155,6 +161,8 @@ products
 Catch-All 在多层级的 tag 或者类别中导航十分好用，只需要在页面中提取出 slug 再去数据库获取，渲染即可
 
 ## 获取参数
+
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/522b0e9422fe574e975d441f60b837251726b71d)
 
 我们经常会在 url 中添加一些参数，比如 `users?sortOrder=name` 这样，用于排序之类的操作。在 Next.js 中也比较简单，这里给一个例子
 
@@ -254,6 +262,8 @@ export default UserTable;
 
 ## 布局
 
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/a87f2376dcb1cd6e1ec02d4e90aef40f634f8e62)
+
 上文说到，Next.js 中的 layout.tsx 也是特殊文件，用于布局页面，在某个文件夹下的 layout.tsx 会将其布局应用到其所有的子文件夹中。比如想要在每个页面都添加 NavBar 和 Footer，则只需要根文件夹下的 layout.tsx 中添加即可。用此方法可以减少大量的冗余代码，提升易读性，也更便于后期修改
 
 为某个文件夹创建新的 layout 可以用如下的形式
@@ -351,6 +361,8 @@ body {
 
 ## 导航
 
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/bf793305da54c4811e9c7692462915b425e064ad)
+
 ### Link 标签
 
 Link 标签有以下三个特点
@@ -389,6 +401,8 @@ export default NewUserPage;
 
 ## 展示一个 Loading 的 UI
 
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/fc22dbf5114d5c74fd125847d01348683fb840f3)
+
 展示一个 loading 的 UI 很简单，如果只有部分需要加载的组件需要这个功能，只需要拿 `Suspense` tag 把它包起来即可，其中 fallback 则是加载中显示的内容
 
 ```jsx
@@ -422,6 +436,8 @@ export default Loading;
 ![Suspending](image/03-Routing/suspending.png)
 
 ## 处理 Error
+
+[本节代码链接](https://github.com/Casta-mere/Dash-Board/tree/36ecf439d430decc919e92d1fbb3c5c281b77c67)
 
 ### 404 not Found
 
