@@ -4,7 +4,7 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-import {themes as prismThemes} from 'prism-react-renderer';
+import { themes as prismThemes } from 'prism-react-renderer';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
@@ -34,7 +34,7 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en','cn'],
+    locales: ['en', 'cn'],
   },
 
   presets: [
@@ -94,8 +94,8 @@ const config = {
             label: 'Docs',
           },
           {
-            to: '/blog', 
-            label: 'Blog', 
+            to: '/blog',
+            label: 'Blog',
             position: 'left'
           },
           {
@@ -161,7 +161,29 @@ const config = {
       prism: {
         theme: prismThemes.vsDark,
         darkTheme: prismThemes.vsDark,
-        additionalLanguages: ['bash','latex','json','markdown','python'],
+        additionalLanguages: ['bash', 'latex', 'json', 'markdown', 'python'],
+        magicComments: [
+          // Remember to extend the default highlight class name as well!
+          {
+            className: 'theme-code-block-highlighted-line',
+            line: 'highlight-next-line',
+            block: { start: 'highlight-start', end: 'highlight-end' },
+          },
+          {
+            className: 'code-block-error-line',
+            line: 'This will error',
+          },
+          {
+            className: 'code-block-remove-line',
+            line: 'git-remove-next-line',
+            block: { start: 'git-delete-start', end: 'git-delete-end' },
+          },
+          {
+            className: 'code-block-add-line',
+            line: 'git-add-next-line',
+            block: { start: 'git-add-start', end: 'git-add-end' },
+          },
+        ],
       },
       colorMode: {
         defaultMode: 'dark',
