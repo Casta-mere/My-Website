@@ -34,6 +34,8 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="<Your Cloud Name>"
 
 ## 上传文件
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/b8ee1d82afe54a244459259f46a4f1e332b5161a)
+
 Cloudinary 内置了几个上传组件供我们使用，在[Cloudinary Widgets]有详细的介绍
 
 ![Cloudinary Upload Widgets](image/06-Uploading/uploadWidgetBasic-Usage.png)
@@ -72,6 +74,8 @@ export default UploadPage;
 在[Cloudinary Library]可以查看上传上去的文件
 
 ## 展示上传的文件
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/043b5ee6be4ada0fa5d4c82de14cc3c9c1e771d0)
 
 可以调用 `CldImage` 组件来显示上传上去的文件。直接使用图片的 `publicID` 即可
 
@@ -119,6 +123,8 @@ export default UploadPage;
 ```
 
 ## 自定义上传组件
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/2ad7a8a65179cde7d3a21cc9c77c3ecb55925812)
 
 在[Cloudinary Demo]可以自定义上传组件，包括颜色，文件来源，是否支持多文件等等
 

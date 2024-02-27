@@ -39,6 +39,8 @@ export { handler as GET, handler as POST };
 
 ## 设置 Provider
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/2bccb30b5a8f4bf1383dc62b62fa33a52b24abee)
+
 在[Next Auth Provider]可以看到 Next-Auth 支持多个 Authenticator Provider，包括 [Google]，[Github]，[Facebook] 等
 
 ### 创建项目
@@ -225,6 +227,8 @@ export { handler as GET, handler as POST };
 
 ### Check Session
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/3b2207f56ceda5957d2e9da564a4a1efd5bc6934)
+
 在浏览器中打开开发者工具，进入应用，选择 cookie，即可看到这里有一条 `next-auth.session-token` ，其本质为一个 json web token，为了查看这个 cookie，我们可以在 /api/auth 下新建 token/route.ts，并添加以下内容
 
 ```ts title="/api/auth/token/route.ts" showLineNumbers
@@ -244,6 +248,8 @@ export async function GET(request: NextRequest) {
 其包含如用户名，邮箱，头像，过期时间等信息
 
 ### Accessing Session from client
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/8442d25bde6e238d8723e945f156f9bfdbe5e966)
 
 在用户端获取 session 信息需要用到 SessionProvider。我们首先创建一个新 component `/auth/AuthProvider.tsx`。将所有 children 用 SessionProvider 包起来
 
@@ -343,6 +349,8 @@ export default AuthProvider;
 
 ### Accessing Session from server
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/b724ecdbf8a6edd30b6bc2ff72e8bf9145e73a66)
+
 在服务器端获取 session 也很简单，首先要先回到 `api/auth/[...nextauth]/route.ts` 中修改一下，将刚刚的 `providers` 作为一个 `const` export 出来，以便在其他页面使用(注意笔者使用的还是 Github 作为 Provider)
 
 ```ts api/auth/[...nextauth]/route.ts showLineNumbers
@@ -399,6 +407,8 @@ export { handler as GET, handler as POST };
 
 ## Sign Out
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/99f5d9adca7353991bdfa81039c460ca3462530c)
+
 使用一个 Link 跳转到 `api/auth/signout` 即可
 
 ```tsx title="NavBar.tsx" showLineNumbers
@@ -445,6 +455,8 @@ export { handler as GET, handler as POST };
 
 ## Protecting Route
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/5e351cce6ffa2351cc3d5eb497a38e493c26f9e2)
+
 有时候，我们需要防止用户在没有登录的情况下跳转至某些页面，比如想要直接使用 url 进入到 profile 页面，此时我们需要重定向到登录界面。在 Next.js 中内置了 MiddleWare 帮我们完成这个任务，我们不需要手动在每个界面自己写跳转。我们只需要在根目录(注意是和 app 同级目录，之前都是在 app 文件夹中)下添加 `middleware.ts` 添加设置即可，如下代码则表示所有以 /dashboard 开头的路由，都需要有 session。其最后一个字符代表子路由的层级
 
 ```ts title="middleware.ts"
@@ -459,6 +471,8 @@ export const config = {
 ```
 
 ## Database Adapters
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/dd9591660caf07ed83afac21b8aec2a023f522bc)
 
 在[Next-Auth Prisma]页面可以找到，使用 `npm i @next-auth/prisma-adapter` 以安装 adapter
 
