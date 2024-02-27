@@ -150,6 +150,6 @@ export default UploadPage;
 ```
 
 [Cloudinary]: https://console.cloudinary.com/
-[Cloudinary Widgets]: httpsnext.cloudinary.devclduploadwidgetbasic-usage
+[Cloudinary Widgets]: https://next.cloudinary.devclduploadwidgetbasic-usage
 [Cloudinary Library]: https://console.cloudinary.com/console/media_library/
 [Cloudinary Demo]: https://demo.cloudinary.com/uw/#/
