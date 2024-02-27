@@ -225,7 +225,7 @@ export { handler as GET, handler as POST };
 
 ### Check Session
 
-在浏览器中打开开发者工具，进入工具，选择 cookie，即可看到这里有一条 `next-auth.session-token` ，其本质为一个 json web token，为了查看这个 cookie，我们可以在 /api/auth 下新建 token/route.ts，并添加以下内容
+在浏览器中打开开发者工具，进入应用，选择 cookie，即可看到这里有一条 `next-auth.session-token` ，其本质为一个 json web token，为了查看这个 cookie，我们可以在 /api/auth 下新建 token/route.ts，并添加以下内容
 
 ```ts title="/api/auth/token/route.ts" showLineNumbers
 import { getToken } from "next-auth/jwt";
@@ -305,15 +305,15 @@ export default AuthProvider;
 
 ```tsx title="NavBar.tsx" showLineNumbers
   "use client";
-// improt useSession
-// git-add-next-line
+  // improt useSession
+  // git-add-next-line
 + import { useSession } from "next-auth/react";
   import Link from "next/link";
   import React from "react";
 
   const NavBar = () => {
-// 使用 useSession() 来获取 Session 中的数据
-// git-add-next-line
+  // 使用 useSession() 来获取 Session 中的数据
+  // git-add-next-line
 +   const { status, data: session } = useSession();
 
     return (
@@ -322,14 +322,14 @@ export default AuthProvider;
           Next.js
         </Link>
         <Link href="/users">Users</Link>
-{/*根据status的不同状态来渲染 "登录" 或者 "用户" 或 "加载中"*/}
-{/*git-add-start*/}
+  {/*根据status的不同状态来渲染 "登录" 或者 "用户" 或 "加载中"*/}
+  {/*git-add-start*/}
 +       {status === "loading" && <div>Loading...</div>}
 +       {status === "authenticated" && <div>{session.user!.name}</div>}
 +       {status === "unauthenticated" && (
 +         <Link href="/api/auth/signin">Login</Link>
 +       )}
-{/*git-add-end*/}
+  {/*git-add-end*/}
       </div>
     );
   };
@@ -341,6 +341,239 @@ export default AuthProvider;
 
 ![Client Accessing Session](./image/07-Authentication/clientAccessSession.png)
 
+### Accessing Session from server
+
+在服务器端获取 session 也很简单，首先要先回到 `api/auth/[...nextauth]/route.ts` 中修改一下，将刚刚的 `providers` 作为一个 `const` export 出来，以便在其他页面使用(注意笔者使用的还是 Github 作为 Provider)
+
+```ts api/auth/[...nextauth]/route.ts showLineNumbers
+import NextAuth from "next-auth";
+import Github from "next-auth/providers/github";
+// import GoogleProvider from "next-auth/providers/google";
+
+export const authOptions = {
+  providers: [
+    Github({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    }),
+  ],
+};
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
+```
+
+然后在主页面的 page.tsx 中可以调用 getServerSession() 来获取 session
+
+```tsx showLineNumbers title="page.tsx"
+  import Link from "next/link";
+  import ProductCard from "./components/ProductCard/ProductCard";
+  // 导入 getServerSession 方法和刚刚的 authOptions 设置
+// git-add-next-line
++ import { getServerSession } from "next-auth";
+// git-add-next-line
++ import { authOptions } from "./api/auth/[...nextauth]/route";
+
+  export default async function Home() {
+  // 调用 getServerSession 来获取 session
+// git-add-next-line
++   const session = await getServerSession(authOptions);
+    return (
+      <>
+        <main>
+  {/*直接调用session中的内容(user!中的!代表该变量不会为空)"*/}
+  {/*git-add-next-line*/}
++         <h1>Hello {session && session.user!.name}!</h1>
+          <Link href="/users">Users</Link>
+          <ProductCard />
+        </main>
+      </>
+    );
+  }
+```
+
+最终显示效果如下
+
+![Server Accessing Session](./image/07-Authentication/serverAccessSession.png)
+
+## Sign Out
+
+使用一个 Link 跳转到 `api/auth/signout` 即可
+
+```tsx title="NavBar.tsx" showLineNumbers
+  "use client";
+
+  import { useSession } from "next-auth/react";
+  import Link from "next/link";
+  import React from "react";
+
+  const NavBar = () => {
+    const { status, data: session } = useSession();
+
+    return (
+      <div className="flex bg-slate-200 p-5 space-x-3">
+        <Link href="/" className="mr-5">
+          Next.js
+        </Link>
+        <Link href="/users">Users</Link>
+        {status === "loading" && <div>Loading...</div>}
+        {/*跳转至 api/auth/signout 即可*/}
+        {/*git-add-start*/}
++       {status === "authenticated" && (
++         <div>
++           {session.user!.name}
++           <Link href="api/auth/signout" className="ml-3">
++             Sign Out
++           </Link>
++         </div>
++       )}
+        {/*git-add-end*/}
+        {status === "unauthenticated" && (
+          <Link href="/api/auth/signin">Login</Link>
+        )}
+      </div>
+    );
+  };
+
+  export default NavBar;
+```
+
+最终效果如下
+
+![Sign Out](./image/07-Authentication/signOut.png)
+
+## Protecting Route
+
+有时候，我们需要防止用户在没有登录的情况下跳转至某些页面，比如想要直接使用 url 进入到 profile 页面，此时我们需要重定向到登录界面。在 Next.js 中内置了 MiddleWare 帮我们完成这个任务，我们不需要手动在每个界面自己写跳转。我们只需要在根目录(注意是和 app 同级目录，之前都是在 app 文件夹中)下添加 `middleware.ts` 添加设置即可，如下代码则表示所有以 /dashboard 开头的路由，都需要有 session。其最后一个字符代表子路由的层级
+
+```ts title="middleware.ts"
+export { default } from "next-auth/middleware";
+
+export const config = {
+  // *: zero or more
+  // +: one or more
+  // ?: zero or one
+  matcher: ["/dashboard/:path*"],
+};
+```
+
+## Database Adapters
+
+在[Next-Auth Prisma]页面可以找到，使用 `npm i @next-auth/prisma-adapter` 以安装 adapter
+
+:::note
+Next-Auth 正在改名为 Auth.js，截止 2024.2.27，仍然可以使用上方 npm 指令安装，如果读者使用时出错，访问[Next-Auth Prisma]页面应该可以找到新的安装命令
+:::
+
+安装好之后，配置 schema.prisma，同样在[Next-Auth Prisma Schema]页面可以找到教程，也可以把我下面的代码直接复制到 schema.prisma 中，再使用 `npx prisma migrate dev` 指令进行合并即可
+
+<details>
+  <summary>schema.prisma配置</summary>
+
+```prisma title="schema.prisma" showLineNumbers
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+```
+
+</details>
+
+完成后在 `api\auth[...nextauth]\route.ts` 设置 PrismaAdapter
+
+```tsx title="api\auth[...nextauth]\route.ts"
+  import NextAuth, { NextAuthOptions } from "next-auth";
+  import Github from "next-auth/providers/github";
+  import GoogleProvider from "next-auth/providers/google";
+  {/*git-add-next-line*/}
++ import { PrismaAdapter } from "@next-auth/prisma-adapter";
+  {/*git-add-next-line*/}
++ import prisma from "@/prisma/client";
+
+  export const authOptions: NextAuthOptions = {
+  // 设置 PrismaAdapter
+  {/*git-add-next-line*/}
++   adapter: PrismaAdapter(prisma),
+    providers: [
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      }),
+      Github({
+        clientId: process.env.GITHUB_CLIENT_ID!,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      }),
+    ],
+    session: {
+      strategy: "jwt",
+    },
+  };
+
+  const handler = NextAuth(authOptions);
+
+  export { handler as GET, handler as POST };
+```
+
+再次尝试登陆后，即可在数据库中看到
+
+![Database Demo](./image/07-Authentication/database.png)
+
 [Next-Auth]: https://next-auth.js.org/
 [Next Auth Provider]: https://next-auth.js.org/providers/
 [Google]: https://next-auth.js.org/providers/google
@@ -349,3 +582,5 @@ export default AuthProvider;
 [Facebook]: https://next-auth.js.org/providers/facebook
 [Next Auth Google]: https://next-auth.js.org/providers/google
 [Github OAuth App]: https://github.com/settings/developers
+[Next-Auth Prisma]: https://authjs.dev/reference/adapter/prisma
+[Next-Auth Prisma Schema]: https://authjs.dev/reference/adapter/prisma#create-the-prisma-schema-from-scratch
