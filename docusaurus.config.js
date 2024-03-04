@@ -116,8 +116,8 @@ const config = {
                 to: '/docs/category/latex',
               },
               {
-                label: 'React',
-                to: '/docs/category/react',
+                label: 'Next.js',
+                to: '/docs/category/nextjs',
               },
               {
                 label: '服务器搭建',
@@ -172,6 +172,7 @@ const config = {
           {
             className: 'code-block-error-line',
             line: 'This will error',
+            block: { start: 'error-start', end: 'error-end' },
           },
           {
             className: 'code-block-remove-line',
