@@ -26,6 +26,8 @@ last_update:
 
 ## Careate Email Temple
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/d8bfb883cd99dc5d16afdd3bb6f4d648e137900b)
+
 在根目录下(app 同级目录)创建 emails 文件夹，在其中创建 WelcomeTemplate.tsx。如下就是一个邮件的模板，会将输入用户的名字添加到其中
 
 ```tsx title="emails/WelcomeTemplate.tsx" showLineNumbers
@@ -59,11 +61,15 @@ export default WelcomeTemplate;
 
 ## Preview Email
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/eaf4219bac0dcb054dcfa48c6a38cd3e531eeb9f)
+
 首先在 .gitignore 中添加 `.react-email`，以防产生的大量文件污染 git。使用 `npm preview-email` 命令， 打开浏览器，访问对应端口(笔者设置的是 localhost:5051)即可看到
 
 ![Preview Email](./image/08-Email/previewEmail.png)
 
 ## Style Email
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/f4cca13a4a232ecd107853ca2c5df1e7995e1811)
 
 我们可以直接使用 CSS 来添加样式，也可以直接使用 Tailwind，这里把两种都给出
 
@@ -157,6 +163,8 @@ import TabItem from "@theme/TabItem";
 </Tabs>
 
 ## Sending Emails
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/202b1fe85db93b819af34241f450ffedcb07f4c0)
 
 使用 `npm i resend@1.0.0` 安装 resend 用于发送邮件。进入[Resend]官网，注册账号，获取一个 API Key，并添加到 `.env` 中，设置 `RESEND_API_KEY=...` 即可。在 `api/` 中添加 `send-email/route.tsx`，调用 resend.emails.send() 即可
 

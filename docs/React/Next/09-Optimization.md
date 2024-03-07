@@ -16,6 +16,8 @@ last_update:
 
 ## 优化 image
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/2bf9d559f1f003f17bf33cd473eb4a97d5723f22)
+
 在 Next.js 中需要加载静态图片时，可以使用 `next/image` 中的 Image 组件。其导入的图片也是以对象的形式 import 进来。同样也可以使用 url 的形式获取网络资源。在 [Nextjs Image] 页面可以看到它的更多用法
 
 ```tsx
@@ -62,6 +64,8 @@ module.exports = nextConfig;
 在使用第三方 js 脚本的时候，我们可以将其封装为一个 component，然后在对应的 layout.tsx 中直接使用即可。注意应使用 Next 的 `<Script>` 标签。若有识别不出 js 语法的问题，可以用 \{\`\`\} 将 js 代码包裹起来
 
 ## 字体
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/db6486445cba2df54ae32c3261216289f27d3943)
 
 ### 网络字体
 
@@ -205,6 +209,8 @@ export default function RootLayout({
 
 ## 搜索引擎优化
 
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/4978717de685aa8ed039edde4e4f29499ed8aba7)
+
 我们可以在每个 pag.tsx 中添加以下内容，包括每页的题目和描述等内容
 
 ```tsx
@@ -231,6 +237,8 @@ export async function generateMetada(): Promise<Metadata> {
 ```
 
 ## Lazy Loading
+
+[本章代码链接](https://github.com/Casta-mere/Dash-Board/tree/cd71ae297037012268e00db3222c0ff7e37be112)
 
 在某些页面可能存在过多的组件，而且这些组件并不是一进到页面就会显示的，比如点击某个 button 才会显示，此时如果组件的数据量过于庞大(比如一个富文本编辑器)，就会导致加载十分缓慢，此时就可以用到 Lazy Loading。在下面的演示中，我们的 HeavyComponent 不用一开始就 import 进来，而是使用 dynamic 函数进行导入，会自动在需要的时候导入，我们还可以设置 loading 函数，让其在加载时有占位符
 
