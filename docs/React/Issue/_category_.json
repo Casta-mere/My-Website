@@ -1,0 +1,9 @@
+{
+  "label": "Issue-Tracker",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "基于 Next.js 的 Issue Tracker 实战",
+    "title": "基于 Next.js 的 Issue Tracker 实战"
+  }
+}
