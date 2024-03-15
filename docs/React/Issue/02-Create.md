@@ -12,6 +12,8 @@ last_update:
 
 ## 添加 model
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/a137d6f68faceadf2e23dd7a4618b1448614496b)
+
 ```prisma title="schema.prisma" showLineNumbers
 model Issue {
   id Int @id @default(autoincrement())
@@ -37,6 +39,8 @@ npx prisma migrate dev
 ```
 
 ## 编写 API
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/3815fcb7cb57c73f29c3ab48f19ddc1b18a0495b)
 
 :::note
 这里使用 zod 来验证表单，具体内容可参考[使用 zod 验证表单](/docs/React/Next/BuildAPI#使用-zod-验证表单)
@@ -67,6 +71,8 @@ export async function POST(request: NextRequest) {
 ```
 
 ## Radix-UI
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/65c735dbeab95b4f876fd7aaf39c210c0967bd0e)
 
 [radix-ui] 也是一个类 DaisyUI 的组件库，使用如下指令安装
 
@@ -115,6 +121,8 @@ npm install @radix-ui/themes
 
 ## 创建新 Issue 页面
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/a365dce77f7e912920c28b05cc6d53dfa7734f85)
+
 ```tsx title="/app/issues/new/page.tsx" showLineNumbers
 "use client";
 import { Button, TextArea, TextField } from "@radix-ui/themes";
@@ -137,6 +145,8 @@ export default NewIssuePage;
 ![New Issue Page](image/02-Create/newIssuePage.png)
 
 ## Radix-UI 定义 UI 样式
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/85e8bfd6780e77fcec742e24d600e8426700d155)
 
 在 `layout.tsx` 中添加 `<Themepanel >`
 
@@ -247,6 +257,8 @@ import "./theme-config.css";
 
 ## MarkDown Editor
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/7ee6b2a08b9964815371fc9c2459df7ce7ee9567)
+
 [react-simlemde-editor] 是一款集成式 MarkDown 编辑器，使用如下命令安装
 
 ```
@@ -258,6 +270,8 @@ npm install --save react-simplemde-editor easymde
 ![Simple MarkDown Editor](./image/02-Create/simpleMDE.png)
 
 ## 提交表单
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/f7617d72e54cb3fd3a1e2f5ea4886b53e3a78e99)
 
 我们使用 [react-hook-form] 和 [axios] 进行表单提交
 
@@ -383,6 +397,8 @@ export default NewIssuePage;
 
 ## Handle Error
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/b970f7a2323c5e41fa52f0c40978270cc385885a)
+
 ### 表单验证
 
 之前说到，我们使用 zod 进行表单验证，可以在使用 zod 时，自定义报错内容
@@ -456,6 +472,8 @@ export default NewIssuePage;
 ```
 
 ## 用户端验证
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/472428108175e17b03ae1ebaca2254e4abbbba74)
 
 ### Zod schema
 
@@ -622,6 +640,8 @@ export default ErrorMessage;
 
 ## Button 优化技巧
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/63558343d728eef54bfcc6a0022977b4215bd2dc)
+
 首先我们可以添加一个 Spinner 给 Button。其次，我们可以给 Button 添加一个 disabled 属性，使得其只能被点击一次，避免多次提交表单
 
 <details>
@@ -684,6 +704,8 @@ export default Spinner;
 ```
 
 ## 最终版本
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/63558343d728eef54bfcc6a0022977b4215bd2dc)
 
 <details>
   <summary>最终版本完整代码(非 git diff 版)</summary>

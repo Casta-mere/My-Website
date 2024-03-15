@@ -43,6 +43,8 @@ export default function Home() {
 
 ## 创建 NavBar
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/73be2ebc2a99e94748c4c49b4a4eaa399ffa8980)
+
 最简单的 NavBar 应该包含如下内容，包括一个 Logo 和几个 Link 用于导航。给他们都添加 `flex` 属性，即可横向布局，并添加一些边框，gap，垂直居中等样式
 
 ```tsx title="NavBar.tsx"
