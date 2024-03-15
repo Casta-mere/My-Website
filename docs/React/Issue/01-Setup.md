@@ -73,7 +73,7 @@ npm i react-icon
 
 在 [react-icon] 官网中找到想要的图标之后，可以直接 copy 代码使用
 
-![react-icon](image/01-Create/react-icon.png)
+![react-icon](image/01-Setup/react-icon.png)
 
 ```tsx title="NavBar.tsx" showLineNumbers
   import Link from "next/link";
