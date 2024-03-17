@@ -10,7 +10,7 @@ last_update:
 
 [本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/ab326d6727f301e3e2f45a6a93356c88975b0754)
 
-安装 Radix UI 的 icon pack
+安装 Radix UI 的 [Radix Ui Icons]
 
 ```bash
 npm i @radix-ui/react-icons
@@ -371,3 +371,4 @@ export async function PATCH(
 </Tabs>
 
 [NextJS Route Segment Config]: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+[Radix Ui Icons]: https://www.radix-ui.com/icons

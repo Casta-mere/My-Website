@@ -403,7 +403,7 @@ export default NewIssuePage;
 
 之前说到，我们使用 zod 进行表单验证，可以在使用 zod 时，自定义报错内容
 
-```tsx title="/app/api/issue/new/route.tsx" showLineNumbers
+```tsx title="/app/api/issues/new/route.tsx" showLineNumbers
   ...
   const createIssueSchema = z.object({
     // 在定义时，可以加第二个参数，表示如果未满足该项时的报错
