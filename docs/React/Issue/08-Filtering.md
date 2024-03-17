@@ -10,6 +10,8 @@ last_update:
 
 ### 添加筛选按钮
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/dc84dba0cd1977fe17423800dbd08abea9235009)
+
 ```tsx title="/app/issues/IssueStatusFilter.tsx" showLineNumbers
 "use client";
 import { Status } from "@prisma/client";
@@ -113,6 +115,8 @@ export default IssueStatusFilter;
 ![Filtering](./image/08-Filtering/filter.png)
 
 ## 排序
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/9aa7e7c212a0176b4ceed75ae00346e02a1c1cea)
 
 本节更多的是 TypeScript 技巧
 
@@ -259,6 +263,8 @@ export default IssueStatusFilter;
 
 ## 分页
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/d8efcc092192c6b55071aaf614f3a7bf3c209c0f)
+
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
@@ -403,6 +409,8 @@ import TabItem from "@theme/TabItem";
 </Tabs>
 
 ## 重构与优化
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/370038eee24f8fc62427dd23e55dcdd132a3406e)
 
 <Tabs className="unique-tabs">
 

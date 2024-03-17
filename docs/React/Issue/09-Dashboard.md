@@ -8,6 +8,8 @@ last_update:
 
 ## Latest Issue
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/fdb10ee495380039d671a4c359d61e21e97387a5)
+
 ```tsx title="/app/LatestIssue.tsx" showLineNumbers
 import prisma from "@/prisma/client";
 import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes";
@@ -65,6 +67,8 @@ export default LatestIssue;
 
 ## Issue Summary
 
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/648026710c6e16379f90c2457dc68c4ffc5109e4)
+
 ```tsx title="/app/IssueSummary.tsx" showLineNumbers
 import { Status } from "@prisma/client";
 import { Card, Flex, Text } from "@radix-ui/themes";
@@ -110,6 +114,8 @@ export default IssueSummary;
 [Issue Summary](09-Dashboard.md)
 
 ## Issue Charts
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/6c42d3df860387f6aea682e7c2110c1a25a8b742)
 
 [Re-charts]
 
@@ -160,6 +166,8 @@ export default IssueChart;
 ![Issue Chart](image/09-Dashboard/IssueChart.png)
 
 ## Dashboard Layout
+
+[本节代码链接](https://github.com/Casta-mere/Issue-Tracker/tree/d22da3aaf40fa22e6afbe7f417dc6e86ca5ee8b4)
 
 ```tsx title="/app/page.tsx" showLineNumbers
 import prisma from "@/prisma/client";
