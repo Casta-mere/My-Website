@@ -24,7 +24,7 @@ DATABASE_URL="mysql://root:@localhost:3306/nextapp"
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="dzwywfjst"
 # 添加下面两行
 NEXTAUTH_URL=http:localhost:5050 # 你的项目位置
-NEXTAUTH_SECRETT=5xNi+cY1LdL1YnBWD9cUi4A34tTZJfUjKTlMCMjFcL0= # 随机数，可以使用 openssl random -base64 32 生成
+NEXTAUTH_SECRET=5xNi+cY1LdL1YnBWD9cUi4A34tTZJfUjKTlMCMjFcL0= # 随机数，可以使用 openssl random -base64 32 生成
 ```
 
 设置完成后，在 api 文件夹下添加 auth/[...nextauth]/route.ts，并添加以下内容，为接下来做准备
@@ -96,7 +96,7 @@ DATABASE_URL="mysql://root:@localhost:3306/nextapp"
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="dzwywfjst"
 # 添加下面两行
 NEXTAUTH_URL=http:localhost:5050 # 你的项目位置
-NEXTAUTH_SECRETT=5xNi+cY1LdL1YnBWD9cUi4A34tTZJfUjKTlMCMjFcL0= # 随机数，可以使用 openssl random -base64 32 生成
+NEXTAUTH_SECRET=5xNi+cY1LdL1YnBWD9cUi4A34tTZJfUjKTlMCMjFcL0= # 随机数，可以使用 openssl random -base64 32 生成
 # 刚刚的客户端id 和 密钥
 # highlight-next-line
 GOOGLE_CLIENT_ID=479267153395-gpqe25rbf62p0aj4h7icnfd01qt0p3qo.apps.googleusercontent.com
@@ -195,7 +195,7 @@ DATABASE_URL="mysql://root:@localhost:3306/nextapp"
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="dzwywfjst"
 # 添加下面两行
 NEXTAUTH_URL=http:localhost:5050 # 你的项目位置
-NEXTAUTH_SECRETT=5xNi+cY1LdL1YnBWD9cUi4A34tTZJfUjKTlMCMjFcL0= # 随机数，可以使用 openssl random -base64 32 生成
+NEXTAUTH_SECRET=5xNi+cY1LdL1YnBWD9cUi4A34tTZJfUjKTlMCMjFcL0= # 随机数，可以使用 openssl random -base64 32 生成
 # 刚刚的客户端id 和 密钥
 # highlight-next-line
 GITHUB_CLIENT_ID=6f1433456dsfa526c
