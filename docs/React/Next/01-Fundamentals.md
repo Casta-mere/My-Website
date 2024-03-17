@@ -50,10 +50,16 @@ Next.js 的优势:
 | ES7 + React | React:dsznajder.es7-react-js-snippets |
 | TypeScript Nightly | ms-vscode.vscode-typescript-next |
 | Tailwind CSS | bradlc.vscode-tailwindcss |
+| Prettier | esbenp.prettier-vscode |
+| Prisma | Prisma.prisma |
 
 ### 创建项目
 
-使用`npx create-next-app@13.4`命令创建 Next.js 项目。根据提示选择(除了项目名字，其他一路 Enter 就行)
+使用以下命令创建 Next.js 项目。根据提示选择(除了项目名字，其他一路 Enter 就行)
+
+```bash
+npx create-next-app@13.4
+```
 
 ```text
 D:\Dash-Board [main ≡]> npx create-next-app@13.4
