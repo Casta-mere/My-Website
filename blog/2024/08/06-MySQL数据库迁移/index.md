@@ -1,0 +1,145 @@
+---
+slug: DatabaseMigration
+title: MySQL 数据库迁移 (mysqldump)
+authors: [Castamere]
+tag: [MySQL]
+---
+
+在本地端的某个 **MySQL** 数据库上新增了多个表，在客户设备上需要进行同步
+
+<!--truncate-->
+
+## 缘起
+
+需求如下：
+
+1. A 与 B 数据库存在交集，需要将 A 数据库中新增的表同步到 B 表格中
+2. A 数据库中新增的表数量较多，需要批量操作
+3. A 数据库中的数据不能流出到 B 表中，也不能丢失
+4. B 中已有的表需要保留(包括数据)
+
+如何将含有超多表的某个 A 数据库迁移到另一台设备的 B 数据库中？
+
+## 分析
+
+简单分析后，大致分为以下几步：
+
+1. 获取 A 和 B 数据库的所有表名
+2. 比较两个表名，获取新增的表名
+3. 导出 A 中新增的表
+4. 导入到 B 中
+
+## 解决
+
+### 获取表名
+
+使用 `Python` + `pymysql` 获取，首先安装 `pymysql`
+
+```bash
+pip install pymysql
+```
+
+<details>
+  <summary>Database_conn.py</summary>
+
+```python
+import pymysql
+
+host = "localhost"
+user = "root"
+password = "*******"
+
+# 默认数据库名
+sys_databases = ["information_schema", "performance_schema", "mysql", "sys"]
+
+class my_sql:
+
+    def __init__(self):
+        self.get_db_names()
+
+    def get_db_names(self):
+        # 获取所有的非默认数据库
+        self.conn = pymysql.connect(host=host, user=user, password=password)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("show databases")
+        self.databases = [i[0] for i in list(self.cursor.fetchall())]
+        self.databases = list(set(self.databases) - set(sys_databases))
+        self.conn.close()
+        self.cursor.close()
+
+    def get_table_names(self, db_name):
+        self.conn = pymysql.connect(host=host, user=user, password=password, db=db_name)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("show tables")
+        tables = [i[0] for i in list(self.cursor.fetchall())]
+        self.conn.close()
+        self.cursor.close()
+        return tables
+
+m = my_sql()
+for i in m.databases:
+    print(i)
+    print(m.get_table_names(i))
+    print("--------------------------")
+```
+
+</details>
+
+输出效果如下：
+
+```bash
+test
+['test']
+----------
+readbook
+['book', 'question', 'statistics', 'user']
+----------
+mind_scout
+['Account', 'CommitCount', 'Page', 'Session', 'User', 'VerificationToken', '_prisma_migrations']
+----------
+```
+
+### 导出
+
+[mysqldump] 本意是用来进行数据库的备份，同样也可以用它来进行数据库的迁移
+
+:::info
+The mysqldump client utility performs logical backups, producing a set of SQL statements that can be executed to reproduce the original database object definitions and table data. It dumps one or more MySQL databases for backup or transfer to another SQL server. The mysqldump command can also generate output in CSV, other delimited text, or XML format.
+:::
+
+`mysqldump` 的格式如下，这里列出几个用到的参数，官方文档中还有更多的用法
+
+```bash
+mysqldump [options] db_name [tbl_name ...]
+
+options:
+-u # 用户
+-p # 使用密码
+--no-data # 不导出数据 (解决需求3)
+--skip-add-drop-table # 不添加 drop table 语句 (解决需求4)
+```
+
+eg:
+
+```bash
+mysqldump --skip-add-drop-table --no-data -u root -p testdb something something2 > db.sql
+# 将 testdb 数据库中的 something something2 表结构(不包含数据)导出到 db.sql 中
+```
+
+### 导入
+
+在命令行中，可以直接使用 `mysql` 命令，搭配 `<`, `>` 实现数据导入功能，其格式如下：
+
+```bash
+mysql [options] db_name < script.sql > output.tab
+
+eg:
+mysql -u root -p B < A.sql
+# 将 A.sql 在 B 数据库中执行(用户要有 B 的写权限)
+```
+
+## 后记
+
+其实还有没考虑全的问题，比如如果有某个表本来就存在，但是新增/删除/修改了某些列，也会导致问题。
+
+[mysqldump]: (https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html)
