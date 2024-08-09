@@ -27,7 +27,7 @@ tags: [Zsh, Linux, Terminal]
 
 [font set]
 
-[MesloLGS NF Font](./files/fonts.zip)
+[MesloLGS NF Font](./files/MesloLGS%20NF%20Font.zip)
 
 ### GIT
 
