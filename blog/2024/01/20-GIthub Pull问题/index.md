@@ -2,13 +2,13 @@
 slug: GithubPullProblem
 title: Github Pull 超时
 authors: [Castamere]
-tags: [git, github]
+tags: [git, github, Version Control]
 ---
 
 使用 Ubuntu 服务器时，想要把自己代码从 Github Pull 下来，但是一直超时
 
 :::danger ERROR
-使用 SSH 在 Linux 服务器上 `git pull ` 的时候遇到报错
+使用 SSH 在 Linux 服务器上 `git pull` 的时候遇到报错
 
 **fatal: unable to access 'https://github.com/Casta-mere/My-Website.git/': Failed to connect to github.com port 443: Connection timed out**
 :::
