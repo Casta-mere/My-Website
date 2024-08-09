@@ -2,7 +2,7 @@
 slug: Neutron
 title: Neutron
 authors: [Castamere]
-tag: [Neutron, Open Stack, Computer Networks]
+tags: [Neutron, Open Stack, Computer Networks]
 ---
 
 Neutron 常用命令大全

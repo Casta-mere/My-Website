@@ -2,7 +2,7 @@
 slug: SVNBasic
 title: SVN 基础
 authors: [Castamere]
-tag: [SVN, Version Control]
+tags: [SVN, Version Control]
 ---
 
 **Apache Subversion** 通常被缩写成 SVN，是一个开放源代码的**集中式版本控制系统**(Centralized Version Control System (CVCS))，本篇主要介绍 SVN 的基础功能与指令

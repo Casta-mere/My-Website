@@ -2,7 +2,7 @@
 slug: DatabaseMigration
 title: MySQL 数据库迁移 (mysqldump)
 authors: [Castamere]
-tag: [MySQL]
+tags: [MySQL]
 ---
 
 在本地端的某个 **MySQL** 数据库上新增了多个表，在客户设备上需要进行同步
@@ -42,7 +42,7 @@ pip install pymysql
 <details>
   <summary>Database_conn.py</summary>
 
-```python
+```python showLineNumbers
 import pymysql
 
 host = "localhost"
@@ -117,11 +117,8 @@ options:
 -p # 使用密码
 --no-data # 不导出数据 (解决需求3)
 --skip-add-drop-table # 不添加 drop table 语句 (解决需求4)
-```
 
 eg:
-
-```bash
 mysqldump --skip-add-drop-table --no-data -u root -p testdb something something2 > db.sql
 # 将 testdb 数据库中的 something something2 表结构(不包含数据)导出到 db.sql 中
 ```
