@@ -139,4 +139,4 @@ mysql -u root -p B < A.sql
 
 其实还有没考虑全的问题，比如如果有某个表本来就存在，但是新增/删除/修改了某些列，也会导致问题。
 
-[mysqldump]: (https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html)
+[mysqldump]: https://dev.mysql.com/doc/refman/8.4/en/mysqldump.html
