@@ -22,3 +22,9 @@ nmcli connection reload
 # 重启网络服务
 nmcli device reapply ethx
 ```
+
+## 如何查看所有的服务
+
+```bash
+systemctl list-unit-files --type=service
+```
