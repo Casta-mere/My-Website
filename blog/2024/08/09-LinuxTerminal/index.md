@@ -161,6 +161,10 @@ alias -g catzsh='cat ~/.zshrc | grep -v "^#" | grep -v "^$"'
 
 ### GIT
 
+oh-my-zsh 内置了 git 插件，该插件用于显示当前 git 仓库的状态，并提供了一系列的 git 命令的快捷方式，可以使用 `alias | grep git` 查看
+
+![git](./image/git.png)
+
 ### zsh -autosuggestions
 
 [zsh-autosuggestion] 用于在终端中显示历史命令的自动补全建议。它可以帮助你快速找到并执行之前使用过的命令，从而提高工作效率。除此之外，也可以设置根据 tab 会补全哪些命令来提示你，效果如下：
@@ -199,25 +203,94 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 
 修改 `~/.zshrc`
 
+![plugin config](./image/pluginconfig.png)
+
 ```bash title="~/.zshrc"
 ...
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting z extract)
 ...
 ```
 
-修改完成后使用 `source ~/.zshrc` 使配置生效
+修改完成后使用 `source ~/.zshrc` 使配置生效(或者前面配置过的话，使用 `setzsh` 即可)
 
 ## 其他玩具
 
+下面都是一些 liunx 的小玩具，图一乐系列
+
 ### cowsay
 
-### figlet
+`cowsay` 很单纯，类似 `cat`，就是让一头牛来说一段话，除了牛之外，还有其他的动物，使用 `cowsay -l` 列举出所有的动物，再使用 `cowsay -f <animal>` 来输出，安装方式如下：
+
+```bash
+sudo apt install cowsay
+```
+
+![cowsay](./image/cowsay.png)
+
+![cowsay-f](./image/cowsay-f.png)
+
+还有 `cowthink` 以及其他参数，读者可以自己玩玩
 
 ### lolcat
 
-### tl
+`lolcat` 用于将文本颜色化并添加彩虹渐变效果
+
+![lolcat](./image/lolcat.png)
+
+可以将几个命令组合起来，并在 zsh 中创建 alias，比如下面就是先获取 `ifconfig` 让后通过 `grep` 过滤出 ip 地址，再使用 `cowsay` 和 `lolcat` 来输出，最后将整个命令添加别名，效果如下：
+
+```bash title="~/.zshrc"
+...
+alias -g ifc="cls && ifconfig | grep -E '.inet.|.flags.' | cowsay -f dragon -W 100 -n | lolcat"
+alias -g ifcc="cls && ifconfig | grep -E 'inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' -o  | grep -v '127.0.0.1' | cowthink -d -W 20 | lolcat"
+...
+```
+
+之后使用 `ifc` 和 `ifcc` 命令即可，效果如下：
+
+**ifc:**
+
+![ifc](./image/ifc.png)
+
+**ifcc:**
+
+![ifcc](./image/ifcc.png)
+
+同样，主打图一乐
+
+### figlet
+
+`figlet` 用于生成 ASCII 艺术字，也比较简单，一般可以用于在用户登录时输出一个很酷的 banner，安装方式如下：
+
+```bash
+sudo apt install figlet
+```
+
+![figlet](./image/figlet.png)
+
+:::tip
+想要在用户登陆时输出一个 banner，可以在 `~/.zshrc` 的最后一行添加 `figlet -Wct xxxxxx`
+:::
+
+### sl
+
+一辆火车从屏幕开过 🚂，使用 `sl` 命令即可
+
+```bash
+sudo apt-get install sl
+```
+
+![sl](./image/sl.png)
 
 ### cmatrix
+
+`cmatrix` 是一个动态终端矩阵效果，类似黑客帝国里的那种，可以作为一个屏保玩玩，安装方式如下
+
+```bash
+sudo apt install cmatrix
+```
+
+![cmatrix](./image/cmatrix.png)
 
 [zsh]: http://zsh.sourceforge.net/
 [oh-my-zsh]: http://ohmyz.sh/
