@@ -230,6 +230,12 @@ const config = {
         insights: false,
   
       },
+      giscus: {
+        repo: 'Casta-mere/My-Website',
+        repoId: 'R_kgDOKWf4jA',
+        category: 'Announcements',
+        categoryId: 'DIC_kwDOKWf4jM4Chy8X',
+      },
     }),
 };
 
