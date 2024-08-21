@@ -5,8 +5,10 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from 'prism-react-renderer';
-import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
+
+const ICP = '<a href="https://beian.miit.gov.cn/"  style="color:white" target="_blank">浙ICP备2022034316号-1</a>';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -33,8 +35,10 @@ const config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'cn'],
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans'],
+    // locales: ['zh-Hans', 'en'],
+    // TODO add English
   },
 
   presets: [
@@ -142,8 +146,8 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'Mind-Scout',
+                href: 'http://mindscout.castamerego.com',
               },
               {
                 label: 'Read-Book',
@@ -156,7 +160,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Castamere`,
+        copyright: `Copyright © 2022-${new Date().getFullYear()} Castamere <Br/>`,
       },
       prism: {
         theme: prismThemes.vsDark,
