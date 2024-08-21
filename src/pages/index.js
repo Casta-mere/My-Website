@@ -1,19 +1,26 @@
-import React from 'react';
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import React from 'react';
 
-import styles from './index.module.css';
+const taglines = [
+  "Monday left me broken",
+  "Tuesday, I was through with hoping",
+  "Wednesday, my empty arms are open",
+  "Thursday, waiting for love, waiting for love",
+  "Thank the stars, it's Friday",
+  "I'm burning like a fire gone wild on Saturday",
+  "Guess I won't be coming to church on Sunday"
+]
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
+  
+  const weekday = new Date().getDay();
   return (
     <header>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">{taglines[weekday - 1]}</p>
       </div>
     </header>
   );
@@ -23,12 +30,8 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      // title={`Volar Morgulis`}
       description="Volar Morgulis">
       <HomepageHeader />
-      {/* <main>
-        <HomepageFeatures />
-      </main> */}
     </Layout>
   );
 }
