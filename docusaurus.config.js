@@ -61,6 +61,7 @@ const config = {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
+          blogSidebarCount: 10,
           editUrl:
             'https://github.com/Casta-mere/My-Website/tree/master/',
         },
