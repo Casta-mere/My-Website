@@ -194,6 +194,11 @@ const config = {
         defaultMode: 'dark',
         disableSwitch: false,
       },
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true
+        }
+      }
     }),
 };
 
