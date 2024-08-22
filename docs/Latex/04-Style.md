@@ -1,4 +1,8 @@
 ---
+tags: [Latex]
+title: 样式与格式
+keywords:
+  - Latex
 last_update:
   date: 20 JAN 2024 GMT
   author: Casta-mere

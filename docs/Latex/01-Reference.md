@@ -1,4 +1,11 @@
 ---
+tags: [Latex, Bibtex]
+title: 参考文献
+keywords:
+  - Latex
+  - Bibtex
+  - Latex 引用
+  - Latex 参考文献
 last_update:
   date: 22 JAN 2024 GMT
   author: Casta-mere
@@ -208,10 +215,10 @@ demo-01-reference:
 \begin{document}
 
 % 使用\cite{}进行文内引用
-这是使用$\backslash cite\{ref\}$命令的演示\cite{Castamere2024AddReference} 
+这是使用$\backslash cite\{ref\}$命令的演示\cite{Castamere2024AddReference}
 
 % 使用自定义命令\fullcite{}进行文内引用
-这是使用$\backslash fullcite\{ref\}$命令的演示\fullcite{Castamere2024AddReference} 
+这是使用$\backslash fullcite\{ref\}$命令的演示\fullcite{Castamere2024AddReference}
 
 % 引用多个文献演示(分开引用[1][2])
 这是使用$\backslash cite\{ref1\}\backslash cite\{ref2\}$的演示\cite{Castamere2024AddReference}\cite{Castamere2024如何添加}
@@ -391,7 +398,7 @@ BibTeX 中的部分字段如`title`,`booktitle`等，会自动将句中的字母
 @article{Castamere2024AddReference,
   author  = {Castamere and Todayred and others},
   // highlight-start
-  % 这里Reference中的R和LaTeX全部会转为小写 
+  % 这里Reference中的R和LaTeX全部会转为小写
   title   = {How to add Reference to your LaTeX},
   // highlight-end
   journal = {\LaTeX \enspace cookbook},
