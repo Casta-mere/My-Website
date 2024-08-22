@@ -7,3 +7,4 @@ tags: [Love Story, Life]
 
 时光飞逝
 
+<!--truncate-->
