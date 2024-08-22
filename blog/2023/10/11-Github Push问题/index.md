@@ -2,7 +2,7 @@
 slug: GithubPushProblem
 title: Github Push Password Authentication Removed
 authors: [Castamere]
-tags: [git, github, Version Control]
+tags: [Git, Github, Version Control]
 ---
 
 **自 2021.8.13 开始，Github 不再支持使用密码的方式来进行各种远程操作，必须要使用令牌 (token) 进行验证。本文就此问题给出一些指南**

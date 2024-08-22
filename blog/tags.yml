@@ -1,0 +1,105 @@
+---
+Asian Games:
+  description: Asian Games
+  label: Asian Games
+  permalink: /Asian-Games
+
+Awk:
+  description: Awk
+  label: Awk
+  permalink: /Awk
+
+CentOS:
+  description: CentOS
+  label: CentOS
+  permalink: /CentOS
+
+Computer Networks:
+  description: Computer Networks
+  label: Computer Networks
+  permalink: /Computer-Networks
+
+Git:
+  description: Git
+  label: Git
+  permalink: /Git
+
+Github:
+  description: Github
+  label: Github
+  permalink: /Github
+
+Life:
+  description: Life
+  label: Life
+  permalink: /Life
+
+Linux:
+  description: Linux
+  label: Linux
+  permalink: /Linux
+
+Love Story:
+  description: Love Story
+  label: Love Story
+  permalink: /Love-Story
+
+MySQL:
+  description: MySQL
+  label: MySQL
+  permalink: /MySQL
+
+Neutron:
+  description: Neutron
+  label: Neutron
+  permalink: /Neutron
+
+OS:
+  description: OS
+  label: OS
+  permalink: /OS
+
+Open Stack:
+  description: Open Stack
+  label: Open Stack
+  permalink: /Open-Stack
+
+SVN:
+  description: SVN
+  label: SVN
+  permalink: /SVN
+
+Terminal:
+  description: Terminal
+  label: Terminal
+  permalink: /Terminal
+
+Tip:
+  description: Tip
+  label: Tip
+  permalink: /Tip
+
+Ubuntu:
+  description: Ubuntu
+  label: Ubuntu
+  permalink: /Ubuntu
+
+VPN:
+  description: VPN
+  label: VPN
+  permalink: /VPN
+
+VS code:
+  description: VS code
+  label: VS code
+  permalink: /VS-code
+
+Version Control:
+  description: Version Control
+  label: Version Control
+  permalink: /Version-Control
+
+Zsh:
+  description: Zsh
+  label: Zsh
+  permalink: /Zsh

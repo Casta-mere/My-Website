@@ -2,7 +2,7 @@
 slug: GithubPullProblem
 title: Github Pull 超时
 authors: [Castamere]
-tags: [git, github, Version Control]
+tags: [Git, Github, Version Control]
 ---
 
 使用 Ubuntu 服务器时，想要把自己代码从 Github Pull 下来，但是一直超时
