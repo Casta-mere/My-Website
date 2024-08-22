@@ -56,6 +56,7 @@ const config = {
           showLastUpdateTime: true,
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
+          onInlineTags: "throw",
         },
         blog: {
           showReadingTime: true,
