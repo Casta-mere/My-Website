@@ -1,4 +1,9 @@
 ---
+tags: [SSL, Server]
+title: SSL 证书配置
+keywords:
+  - SSL
+  - 阿里云免费 SSL
 sidebar_position: 4
 last_update:
   date: 20 AUG 2024 GMT
@@ -93,5 +98,9 @@ server {
 ![SSL Check](./image/SSL证书配置/SSLcheck_1.png)
 
 ![SSL Check 2](./image/SSL证书配置/SSLcheck_2.png)
+
+## 后记
+
+阿里云的免费 SSL 每次只能维持三个月，应该是要每三个月重新申请，只需要每次去服务器换一下文件即可。对于个人项目来说，完全够用
 
 [Nginx 反代理]: ./NginxReverseProxy

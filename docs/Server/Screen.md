@@ -1,8 +1,14 @@
 ---
+tags: [Screen, Linux, Terminal, Server]
+title: Screen
+keywords:
+  - Screen
+  - Linux
+  - Terminal
 sidebar_position: 3
 last_update:
-    date: 1 DEC 2023 GMT
-    author: Casta-mere
+  date: 1 DEC 2023 GMT
+  author: Casta-mere
 ---
 
 # Screen
@@ -37,7 +43,7 @@ apt install screen
 
 ![screen-S](./image/screen使用/screenS.png "新建 screen")
 
-创建好后，当前的终端会自动 attach 到这个screen上。使用 `screen -ls` 可以查看当前所有的 screen
+创建好后，当前的终端会自动 attach 到这个 screen 上。使用 `screen -ls` 可以查看当前所有的 screen
 
 ![screenls](./image/screen使用/screenls.png "查看 screen")
 
@@ -47,7 +53,7 @@ apt install screen
 
 ![screenlsDetach](./image/screen使用/screenlsDetach.png "screen detach")
 
-可以看到每个 screen 都有一个独立的 id，在需要回到某个 screen 的时候需要用到，使用 `screen -r 窗口号`，比如我这里的 `demo` screen 的 id 是216645，就可以通过 `screen -r 216645` 重新连接到这个 screen
+可以看到每个 screen 都有一个独立的 id，在需要回到某个 screen 的时候需要用到，使用 `screen -r 窗口号`，比如我这里的 `demo` screen 的 id 是 216645，就可以通过 `screen -r 216645` 重新连接到这个 screen
 
 如果需要删除某个 screen ，可以 attach 这个 screen 后，使用 `exit` 指令来退出并删除
 
@@ -61,4 +67,4 @@ exit # 删除当前窗口
 Ctrl+a+d # 退出当前窗口
 ```
 
-[GNU Screen]:https://www.gnu.org/software/screen/
+[GNU Screen]: https://www.gnu.org/software/screen/

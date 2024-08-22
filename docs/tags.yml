@@ -4,6 +4,11 @@ Bibtex:
   label: Bibtex
   permalink: /Bibtex
 
+Code Highlight:
+  description: Code Highlight
+  label: Code Highlight
+  permalink: /Code-Highlight
+
 Daisy UI:
   description: Daisy UI
   label: Daisy UI
@@ -24,6 +29,11 @@ Latex:
   label: Latex
   permalink: /Latex
 
+Linux:
+  description: Linux
+  label: Linux
+  permalink: /Linux
+
 MarkDown:
   description: MarkDown
   label: MarkDown
@@ -38,6 +48,11 @@ Next.js:
   description: Next.js
   label: Next.js
   permalink: /NextJs
+
+Nginx:
+  description: Nginx
+  label: Nginx
+  permalink: /Nginx
 
 Prisma:
   description: Prisma
@@ -69,10 +84,30 @@ Rechart:
   label: Rechart
   permalink: /Rechart
 
+SSL:
+  description: SSL
+  label: SSL
+  permalink: /SSL
+
+Screen:
+  description: Screen
+  label: Screen
+  permalink: /Screen
+
+Server:
+  description: Server
+  label: Server
+  permalink: /Server
+
 Tailwind CSS:
   description: Tailwind CSS
   label: Tailwind CSS
   permalink: /TailwindCSS
+
+Terminal:
+  description: Terminal
+  label: Terminal
+  permalink: /Terminal
 
 TypeScript:
   description: TypeScript

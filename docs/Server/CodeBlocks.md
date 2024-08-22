@@ -1,8 +1,12 @@
 ---
+tags: [Code Highlight]
+title: 美化 Code Blocks
+keywords:
+  - docusaurus Code blocks
 sidebar_position: 2
 last_update:
-    date: 20 JAN 2024 GMT
-    author: Casta-mere
+  date: 20 JAN 2024 GMT
+  author: Casta-mere
 ---
 
 # 美化 Code Blocks
@@ -36,19 +40,19 @@ console.log(`The factorial of ${NUMBER} is ${result}.`);
 
 ```json showLineNumbers
 {
-    "name": "John Doe",
-    "age": 30,
-    "isEmployee": true,
-    "address": {
-        "street": "123 Main St",
-        "city": "Anytown",
-        "zip": "12345"
-    },
-    "phoneNumbers": [
-        {"type": "home", "number": "212 555-1234"},
-        {"type": "office", "number": "646 555-4567"}
-    ],
-    "spouse": null
+  "name": "John Doe",
+  "age": 30,
+  "isEmployee": true,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "zip": "12345"
+  },
+  "phoneNumbers": [
+    { "type": "home", "number": "212 555-1234" },
+    { "type": "office", "number": "646 555-4567" }
+  ],
+  "spouse": null
 }
 ```
 
@@ -59,7 +63,7 @@ class Calculator:
     """Simple calculator class."""
     def __init__(self):
         pass
-    
+
     def add(self, a, b):
         return a + b
 
@@ -171,157 +175,157 @@ int main() {
 var CastamereTheme = {
   plain: {
     color: "#FFFFFF",
-    backgroundColor: "#292b31"
+    backgroundColor: "#292b31",
   },
   styles: [
     {
       types: ["prolog"],
       style: {
-        color: "rgb(0, 0, 128)"
-      }
+        color: "rgb(0, 0, 128)",
+      },
     },
     {
       types: ["comment"],
       style: {
-        color: "rgb(106, 153, 85)"
-      }
+        color: "rgb(106, 153, 85)",
+      },
     },
     {
       types: ["builtin", "changed", "keyword", "interpolation-punctuation"],
       style: {
-        color: "rgb(86, 156, 214)"
-      }
+        color: "rgb(86, 156, 214)",
+      },
     },
     {
       types: ["number", "inserted"],
       style: {
-        color: "rgb(181, 206, 168)"
-      }
+        color: "rgb(181, 206, 168)",
+      },
     },
     {
       types: ["constant"],
       style: {
-        color: "rgb(100, 102, 149)"
-      }
+        color: "rgb(100, 102, 149)",
+      },
     },
     {
       types: ["attr-name", "variable"],
       style: {
-        color: "rgb(156, 220, 254)"
-      }
+        color: "rgb(156, 220, 254)",
+      },
     },
     {
       types: ["property-access"],
       style: {
-        color: "rgb(255, 255, 255)"
-      }
+        color: "rgb(255, 255, 255)",
+      },
     },
     {
       types: ["deleted", "string", "attr-value", "template-punctuation"],
       style: {
-        color: "rgb(206, 145, 120)"
-      }
+        color: "rgb(206, 145, 120)",
+      },
     },
     {
       types: ["selector"],
       style: {
-        color: "rgb(215, 186, 125)"
-      }
+        color: "rgb(215, 186, 125)",
+      },
     },
     {
       // Fix tag color
       types: ["tag"],
       style: {
-        color: "rgb(86, 156, 214)"
-      }
+        color: "rgb(86, 156, 214)",
+      },
     },
     {
       // Fix tag color for HTML
       types: ["tag"],
       languages: ["markup"],
       style: {
-        color: "rgb(86, 156, 214)"
-      }
+        color: "rgb(86, 156, 214)",
+      },
     },
     {
       types: ["punctuation", "operator"],
       style: {
-        color: "rgb(212, 212, 212)"
-      }
+        color: "rgb(212, 212, 212)",
+      },
     },
     {
       // Fix punctuation color for HTML
       types: ["punctuation"],
       languages: ["markup"],
       style: {
-        color: "#808080"
-      }
+        color: "#808080",
+      },
     },
     {
       types: ["function"],
       style: {
-        color: "rgb(255, 255, 255)"
-      }
+        color: "rgb(255, 255, 255)",
+      },
     },
     {
       types: ["class-name"],
       style: {
-        color: "rgb(86, 156, 214)"
-      }
+        color: "rgb(86, 156, 214)",
+      },
     },
     {
       types: ["char"],
       style: {
-        color: "rgb(209, 105, 105)"
-      }
+        color: "rgb(209, 105, 105)",
+      },
     },
     // bash
     {
       types: ["function"],
       languages: ["bash"],
       style: {
-        color: "rgb(206, 145, 120)"
-      }
+        color: "rgb(206, 145, 120)",
+      },
     },
     {
       types: ["important"],
       languages: ["bash"],
       style: {
-        color: "rgb(128, 128, 128)"
-      }
+        color: "rgb(128, 128, 128)",
+      },
     },
     // Json
     {
       types: ["property"],
       languages: ["json"],
-      style:{
-        color: "rgb(156, 220, 254)"
-      }
+      style: {
+        color: "rgb(156, 220, 254)",
+      },
     },
     {
       types: ["boolean"],
       languages: ["json"],
-      style:{
-        color: "rgb(86, 156, 214)"
-      }
+      style: {
+        color: "rgb(86, 156, 214)",
+      },
     },
     // Latex
     {
       types: ["selector"],
-      language:["latex"],
+      language: ["latex"],
       style: {
-        color: "rgb(86, 156, 214)"
-      }
+        color: "rgb(86, 156, 214)",
+      },
     },
     // C & CPP
     {
       types: ["directive-hash"],
-      language:["c","cpp"],
+      language: ["c", "cpp"],
       style: {
-        color: "rgb(86, 156, 214)"
-      }
-    }
-  ]
+        color: "rgb(86, 156, 214)",
+      },
+    },
+  ],
 };
 var vsDark_default = CastamereTheme;
 ```
