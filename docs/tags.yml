@@ -1,4 +1,9 @@
 ---
+Algolia:
+  description: Algolia
+  label: Algolia
+  permalink: /Algolia
+
 Bibtex:
   description: Bibtex
   label: Bibtex
@@ -18,6 +23,11 @@ Database:
   description: Database
   label: Database
   permalink: /Database
+
+Docusaurus:
+  description: Docusaurus
+  label: Docusaurus
+  permalink: /Docusaurus
 
 Issue Tracker:
   description: Issue Tracker
@@ -118,3 +128,8 @@ Zod:
   description: Zod
   label: Zod
   permalink: /Zod
+
+Gisus:
+  description: Gisus
+  label: Gisus
+  permalink: /Gisus
