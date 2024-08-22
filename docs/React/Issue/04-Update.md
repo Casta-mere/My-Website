@@ -1,6 +1,18 @@
 ---
+tags: [React, Next.js, TypeScript, Issue Tracker]
+title: 修改 Issue
+keywords:
+  - React
+  - Next.js
+  - TypeScript
+  - MySQL
+  - Prisma
+  - Single Responsbility Principle
+  - Caching
+  - 提升 Loading 体验
+  - skeleton
 last_update:
-  date: 16 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

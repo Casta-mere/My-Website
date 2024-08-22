@@ -1,10 +1,85 @@
 ---
+Bibtex:
+  description: Bibtex
+  label: Bibtex
+  permalink: /Bibtex
+
+Daisy UI:
+  description: Daisy UI
+  label: Daisy UI
+  permalink: /DaisyUI
+
+Database:
+  description: Database
+  label: Database
+  permalink: /Database
+
+Issue Tracker:
+  description: Issue Tracker
+  label: Issue Tracker
+  permalink: /Issue-Tracker
+
 Latex:
   description: Latex
   label: Latex
   permalink: /Latex
 
-Bibtex:
-  description: Bibtex
-  label: Bibtex
-  permalink: /Bibtex
+MarkDown:
+  description: MarkDown
+  label: MarkDown
+  permalink: /MarkDown
+
+Next Auth:
+  description: Next Auth
+  label: Next Auth
+  permalink: /Next-Auth
+
+Next.js:
+  description: Next.js
+  label: Next.js
+  permalink: /NextJs
+
+Prisma:
+  description: Prisma
+  label: Prisma
+  permalink: /Prisma
+
+Radix-UI:
+  description: Radix-UI
+  label: Radix-UI
+  permalink: /Radix-UI
+
+React:
+  description: React
+  label: React
+  permalink: /React
+
+React-Query:
+  description: React-Query
+  label: React-Query
+  permalink: /React-Query
+
+React-icon:
+  description: React-icon
+  label: React-icon
+  permalink: /React-icon
+
+Rechart:
+  description: Rechart
+  label: Rechart
+  permalink: /Rechart
+
+Tailwind CSS:
+  description: Tailwind CSS
+  label: Tailwind CSS
+  permalink: /TailwindCSS
+
+TypeScript:
+  description: TypeScript
+  label: TypeScript
+  permalink: /TypeScript
+
+Zod:
+  description: Zod
+  label: Zod
+  permalink: /Zod

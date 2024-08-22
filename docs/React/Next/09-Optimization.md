@@ -1,6 +1,16 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 优化技巧
+keywords:
+  - React
+  - Next.js
+  - 优化图片
+  - 使用第三方脚本
+  - 字体
+  - 搜索引擎优化 SEO
+  - Lazy Loading
 last_update:
-  date: 28 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

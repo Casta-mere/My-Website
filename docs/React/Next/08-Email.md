@@ -1,6 +1,12 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 发送邮件
+keywords:
+  - React
+  - Next.js
+  - React Email
 last_update:
-  date: 28 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

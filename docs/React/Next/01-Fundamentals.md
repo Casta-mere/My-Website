@@ -1,6 +1,15 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 基础知识
+keywords:
+  - React
+  - Next.js
+  - 客户端渲染(Client-side Rendering)
+  - 服务端渲染(Server-side Rendering)
+  - Node
+  - VS Code 插件
 last_update:
-  date: 21 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

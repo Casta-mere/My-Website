@@ -1,6 +1,18 @@
 ---
+tags: [React, Next.js, TypeScript, Next Auth]
+title: 身份验证
+keywords:
+  - React
+  - Next.js
+  - Next Auth
+  - Authenticator Provider
+  - Github Provider
+  - Authentication sessions
+  - 数据库适配器
+  - Database adapters
+  - 路由保护
 last_update:
-  date: 27 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

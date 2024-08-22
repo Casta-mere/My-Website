@@ -1,6 +1,16 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 路由与跳转
+keywords:
+  - React
+  - Next.js
+  - 动态路由
+  - catch-all 路由
+  - skeleton
+  - 导航
+  - 程序性跳转
 last_update:
-  date: 23 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

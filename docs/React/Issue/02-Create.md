@@ -1,6 +1,18 @@
 ---
+tags: [React, Next.js, TypeScript, Issue Tracker, Zod, Radix-UI, MarkDown]
+title: 创建 Issue
+keywords:
+  - React
+  - Next.js
+  - TypeScript
+  - MySQL
+  - Prisma
+  - Radix-UI 自定义
+  - react-simplemde-editor
+  - Zod
+  - 用户端验证
 last_update:
-  date: 15 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

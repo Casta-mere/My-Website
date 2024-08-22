@@ -1,6 +1,13 @@
 ---
+tags: [React, Next.js, Tailwind CSS, Daisy UI]
+title: 风格化
+keywords:
+  - React
+  - Next.js
+  - Tailwind CSS
+  - Daisy UI
 last_update:
-  date: 21 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 
@@ -10,7 +17,7 @@ last_update:
 
 - Global styles
 - CSS modules
-- Tailwind CSs
+- Tailwind CSS
 - Daisy UI
 
 ## Global styles

@@ -1,6 +1,16 @@
 ---
+tags: [React, Next.js, TypeScript, Issue Tracker, Rechart]
+title: Dashboard
+keywords:
+  - React
+  - Next.js
+  - TypeScript
+  - MySQL
+  - Prisma
+  - Rechart
+  - Layout
 last_update:
-  date: 17 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

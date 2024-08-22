@@ -1,6 +1,14 @@
 ---
+tags: [React, Next.js, TypeScript, Prisma, Database]
+title: 数据库
+keywords:
+  - React
+  - Next.js
+  - Prisma
+  - Prisma Client
+  - Database
 last_update:
-  date: 24 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

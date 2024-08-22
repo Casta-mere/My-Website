@@ -1,6 +1,12 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 写在前面
+keywords:
+  - React
+  - Next.js
+  - TypeScript
 last_update:
-  date: 23 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

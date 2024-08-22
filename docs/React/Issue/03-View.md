@@ -1,6 +1,17 @@
 ---
+tags: [React, Next.js, TypeScript, Issue Tracker]
+title: 查看 Issue
+keywords:
+  - React
+  - Next.js
+  - TypeScript
+  - 制作 Badge
+  - Loading Skeleton
+  - 自定义 Link Component
+  - 动态导入(关闭 SSR)
+  - 整理 imports
 last_update:
-  date: 16 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

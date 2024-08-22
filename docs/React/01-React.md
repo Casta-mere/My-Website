@@ -1,4 +1,9 @@
 ---
+tags: [React]
+title: 初识 React
+keywords:
+  - React
+  - bootstrap
 last_update:
   date: 6 NOV 2023 GMT
   author: Casta-mere
@@ -59,5 +64,5 @@ const { count } = obj;
 // 从字典 obj 中结构出 count
 ```
 
-[n]:https://github.com/tj/n
-[Mosh 教程]:https://www.youtube.com/watch?v=Ke90Tje7VS0
+[n]: https://github.com/tj/n
+[Mosh 教程]: https://www.youtube.com/watch?v=Ke90Tje7VS0

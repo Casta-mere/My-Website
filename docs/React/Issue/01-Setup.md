@@ -1,6 +1,14 @@
 ---
+tags: [React, Next.js, TypeScript, Issue Tracker, React-icon]
+title: 创建项目
+keywords:
+  - React
+  - Next.js
+  - TypeScript
+  - NavBar
+  - react-icon
 last_update:
-  date: 15 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

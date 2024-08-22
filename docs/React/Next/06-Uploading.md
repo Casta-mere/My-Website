@@ -1,6 +1,12 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 上传文件
+keywords:
+  - React
+  - Next.js
+  - Cloudinary
 last_update:
-  date: 26 Feb 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

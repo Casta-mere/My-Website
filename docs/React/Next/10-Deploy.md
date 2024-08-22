@@ -1,6 +1,13 @@
 ---
+tags: [React, Next.js, TypeScript]
+title: 部署
+keywords:
+  - React
+  - Next.js
+  - npm run build
+  - 服务器部署
 last_update:
-  date: 07 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 

@@ -1,4 +1,9 @@
 ---
+tags: [React]
+title: Rendering
+keywords:
+  - React
+  - React 渲染方法
 last_update:
   date: 6 NOV 2023 GMT
   author: Casta-mere
@@ -13,7 +18,9 @@ last_update:
 > 文档对象模型（DOM）是一个网络文档的编程接口。它代表页面，以便程序可以改变文档的结构、风格和内容。DOM 将文档表示为节点和对象；这样，编程语言就可以与页面交互。
 
 <!-- ## Rendering Lists -->
+
 ## 列表渲染
+
 列表渲染，即对于很多结构上重复的内容，可以通过循环的方式来渲染每一个元素
 
 ```jsx showLineNumbers
@@ -23,6 +30,7 @@ state = {
 ```
 
 对于以上的列表，可以使用 `map` 函数来进行简单的列表渲染，代码如下。其中要求 **key** 的值必须唯一
+
 ```jsx showLineNumbers
 // map函数用法
 // map((pram1,pram2)=> <li key={pram1}>{pram2}</li>)
@@ -35,7 +43,9 @@ state = {
 ```
 
 <!-- ## Conditional Rendering -->
+
 ## 条件渲染
+
 根据状态不同，去修改某个元素的状态(比如切换颜色)
 
 ```jsx showLineNumbers
@@ -57,20 +67,22 @@ getClassName() {
 更新 state 并重新渲染界面
 
 想象中的逻辑如下所示，直接 this.state+=1
+
 ```jsx showLineNumbers
 increment(){
   this.state.count+=1;
 }
 ```
 
-然后在button中直接像这样绑定过去
+然后在 button 中直接像这样绑定过去
+
 ```html showLineNumbers
-<button onClick={this.increment}>test</button>
+<button onClick="{this.increment}">test</button>
 ```
 
 但是这里会出现两个问题
 
-首先是 **this** 指针的问题。在React中，如果直接调用 `ans = function()` ，那么在function中的 this 指针是可以正常指向当前对象的。但是在这里我们传入的是函数本身 `onClick = increment`，会丢失掉 this 绑定对象的信息。
+首先是 **this** 指针的问题。在 React 中，如果直接调用 `ans = function()` ，那么在 function 中的 this 指针是可以正常指向当前对象的。但是在这里我们传入的是函数本身 `onClick = increment`，会丢失掉 this 绑定对象的信息。
 
 ```bash showLineNumbers
 func = increment   # 直接引用函数，函数体内不可以直接用this指针
@@ -81,7 +93,7 @@ ans  = increment() # 调用函数，函数体内可以直接用this指针
 
 :::note
 
-this.state.count 是可以正常+1的，如果不需要这个数字展示给用户，就无所谓了
+this.state.count 是可以正常+1 的，如果不需要这个数字展示给用户，就无所谓了
 
 :::
 
@@ -108,7 +120,7 @@ increment(){
 ```jsx showLineNumbers
 // 箭头函数
 increment = () => {
-  this.state.count+=1;
+  this.state.count += 1;
 };
 ```
 

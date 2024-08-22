@@ -1,6 +1,15 @@
 ---
+tags: [React, Next.js, TypeScript, Issue Tracker]
+title: 删除 Issue
+keywords:
+  - React
+  - Next.js
+  - TypeScript
+  - MySQL
+  - Prisma
+  - 用户端验证
 last_update:
-  date: 17 Mar 2024 GMT
+  date: 22 AUG 2024 GMT
   author: Casta-mere
 ---
 
