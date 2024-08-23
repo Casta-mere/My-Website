@@ -1,6 +1,6 @@
 ---
 tags: [Nginx, Server]
-title: Nginx反代理
+title: Nginx 反代理
 keywords:
   - Nginx
   - Revese proxy
@@ -18,9 +18,9 @@ last_update:
 
 ## 缘起
 
-在我的服务器上一直部署着两个项目，一个开放在 3000 端口，一个在 8500 端口。之前采用的方法是将 www.前缀的域名直接解析到服务器 IP 地址，然后再用两个不同的域名前缀使用**隐性 URL 转发**分别解析到 www.<span></span>castamerego.com:3000 和 www.<span></span>castamerego.<span></span>com:8500。
+在我的服务器上一直部署着两个项目，一个开放在 3000 端口，一个在 8500 端口。之前采用的方法是将 `www.` 前缀的域名直接解析到服务器 IP 地址，然后再用两个不同的域名前缀使用**隐性 URL 转发**分别解析到 `www.castamerego.com:3000` 和 `www.castamerego.com:8500`。
 
-使用隐性 URL 转发的好处是，在浏览器中显示的将是 readbook.<span></span>castamerego.<span></span>com 而不是 www.<span></span>castamerego.com:3000 的形式
+使用隐性 URL 转发的好处是，在浏览器中显示的将是 `readbook.castamerego.com` 而不是 `www.castamerego.com:3000` 的形式
 
 :::tip
 
@@ -30,7 +30,7 @@ last_update:
 
 之前在测试环境(localhost)都是正常的，但是在部署环境中没有仔细观察，使用隐性 URL 转发导致出现了以下两个问题:
 
-- 在网站内跳转时，无论到了站内哪个页面，页面 URL 都是固定的 readbook.<span></span>castamerego.<span></span>com，而不是如 readbook.<span></span>castamerego.<span></span>com/books 的形式。
+- 在网站内跳转时，无论到了站内哪个页面，页面 URL 都是固定的 `readbook.castamerego.com`，而不是如 `readbook.castamerego.com/books` 的形式。
 - 由于隐性 URL 转发时，通过 frame 嵌套目标网站的内容，导致移动端不能自适应网页大小
 
 ## nginx
@@ -68,7 +68,7 @@ Nginx 的配置文件其实是`/etc/nginx.conf`，在这个文件中会`include 
 
 ![路径](./image/nginx反代理/server.confpwd.png "nginx config路径")
 
-在打开的.conf 文件中添加以下内容，将`server_name`, `proxy_pass`换成你对应的域名和端口号(端口号要以 http://<span></span>localhost:1234 的形式)
+在打开的.conf 文件中添加以下内容，将`server_name`, `proxy_pass`换成你对应的域名和端口号(端口号要以 `http://localhost:1234` 的形式)
 
 ```bash showLineNumbers
 server {
