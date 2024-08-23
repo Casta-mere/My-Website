@@ -1,11 +1,18 @@
-Castamere:
-  name: Castamere
-  title: 热爱Coding
-  url: https://github.com/Casta-mere
-  image_url: https://github.com/Casta-mere.png
-
+---
 Achinoise:
-  name: Achinoise
-  title: 热爱Coding
-  url: https://github.com/Achinoise1
   image_url: https://github.com/Achinoise1.png
+  name: Achinoise
+  page: true
+  socials:
+    github: Achinoise1
+  title: 吹灭读书灯，一身都是月
+
+Castamere:
+  image_url: https://github.com/Casta-mere.png
+  name: Castamere
+  page: true
+  socials:
+    x: "@Casta_mere"
+    github: Casta-mere
+    stackoverflow: "26959112"
+  title: 热爱 Coding
