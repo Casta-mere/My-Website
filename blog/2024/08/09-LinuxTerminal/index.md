@@ -215,7 +215,7 @@ plugins=(git zsh-autosuggestions zsh-syntax-highlighting z extract)
 
 ## 其他玩具
 
-下面都是一些 liunx 的小玩具，图一乐系列
+下面都是一些 linux 的小玩具，图一乐系列
 
 ### cowsay
 
