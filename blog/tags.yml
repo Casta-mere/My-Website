@@ -19,6 +19,11 @@ Computer Networks:
   label: Computer Networks
   permalink: /Computer-Networks
 
+Conda:
+  description: Conda
+  label: Conda
+  permalink: /Conda
+
 Git:
   description: Git
   label: Git
@@ -43,6 +48,11 @@ Love Story:
   description: Love Story
   label: Love Story
   permalink: /Love-Story
+
+MiniConda:
+  description: MiniConda
+  label: MiniConda
+  permalink: /MiniConda
 
 MySQL:
   description: MySQL
@@ -98,6 +108,11 @@ Version Control:
   description: Version Control
   label: Version Control
   permalink: /Version-Control
+
+Windows:
+  description: Windows
+  label: Windows
+  permalink: /Windows
 
 Zsh:
   description: Zsh
