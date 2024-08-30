@@ -40,7 +40,10 @@ const config = {
     // locales: ['zh-Hans', 'en'],
     // TODO add English
   },
-  themes: ['@docusaurus/theme-live-codeblock'],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-live-codeblock','@docusaurus/theme-mermaid'],
   plugins: [require.resolve("docusaurus-plugin-image-zoom")],
   presets: [
     [
