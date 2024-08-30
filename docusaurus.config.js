@@ -40,7 +40,7 @@ const config = {
     // locales: ['zh-Hans', 'en'],
     // TODO add English
   },
-
+  themes: ['@docusaurus/theme-live-codeblock'],
   presets: [
     [
       'classic',
