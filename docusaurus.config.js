@@ -41,6 +41,7 @@ const config = {
     // TODO add English
   },
   themes: ['@docusaurus/theme-live-codeblock'],
+  plugins: [require.resolve("docusaurus-plugin-image-zoom")],
   presets: [
     [
       'classic',
@@ -230,6 +231,16 @@ const config = {
         category: 'Announcements',
         categoryId: 'DIC_kwDOKWf4jM4Chy8X',
       },
+      zoom: {
+        selector: '.markdown :not(em) > img',
+        config: {
+          margin:0,
+          background: {
+            light: 'rgb(255, 255, 255)',
+            dark: 'rgb(50, 50, 50)'
+          }
+        }
+      }
     }),
 };
 
