@@ -11,6 +11,8 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import Typewriter1 from "./demo/TypeWriter1";
 import Typewriter2 from "./demo/TypeWriter2";
+import Typewriter3 from "./demo/TypeWriter3";
+import Typewriter4 from "./demo/TypeWriter4";
 
 一个简单的 React 打字机效果小组件
 
@@ -130,7 +132,7 @@ function TypeWirter() {
 
 <TabItem value="code diff" label="代码对比">
 
-```tsx showLineNumbers title="TypeWriter.tsx"
+```tsx showLineNumbers title="TypeWriter2.tsx"
   function TypeWirter() {
     const text = "Castamere Typing...";
 
@@ -185,7 +187,284 @@ function TypeWirter() {
 
 ### 等待
 
+<h3>
+  <Typewriter3 />
+</h3>
+
+在打印结束之后，希望他等待几秒再删除，否则读者可能还没来得及阅读，就结束了，导致体验不好
+
+我们添加一个新的状态 `isTypingFinished`，表示是否打印完成，下图列出了目前三个状态的转换关系，以及对应的标志状态(`isDeleting`, `isTypingFinished`)
+
+```mermaid
+---
+title: 状态转换图
+---
+stateDiagram
+  direction LR
+  打印 --> 打印完成
+  note left of 打印
+    isDeleting(false)
+    IsTypingFinished(false)
+  end note
+
+  打印完成 --> 打印完成 : 等待
+  打印完成 --> 删除
+  note right of 打印完成
+    isDeleting(false)
+    IsTypingFinished(true)
+  end note
+
+  删除 --> 打印
+  note left of 删除
+    isDeleting(true)
+    IsTypingFinished(false)
+  end note
+```
+
+根据上面的图，编写逻辑即可，同样的，查看下面的**代码对比**来更直观的理解代码的变化
+
+<Tabs>
+
+<TabItem value="live" label="实时编辑器">
+
+```tsx live
+function TypeWirter() {
+  const text = "Castamere Typing...";
+
+  const [displayText, setDisplayText] = useState(text);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isTypingFinished, setIsTypingFinished] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (isDeleting) {
+      interval = setInterval(() => {
+        setDisplayText((prevText) => prevText.slice(0, -1));
+        if (displayText.length === 0) {
+          setIsDeleting(false);
+        }
+      }, 100);
+    } else if (isTypingFinished) {
+      interval = setTimeout(() => {
+        setIsDeleting(true);
+        setIsTypingFinished(false);
+      }, 1000);
+    } else {
+      interval = setInterval(() => {
+        if (displayText.length < text.length) {
+          setDisplayText((prevText) => prevText + text[displayText.length]);
+        } else {
+          clearInterval(interval);
+          setIsTypingFinished(true);
+        }
+      }, 100);
+    }
+
+    return () => clearInterval(interval);
+  });
+
+  return <div>{displayText}|</div>;
+}
+```
+
+</TabItem>
+
+<TabItem value="code diff" label="代码对比">
+
+```tsx showLineNumbers title="TypeWriter3.tsx"
+  function TypeWirter() {
+    const text = "Castamere Typing...";
+
+    const [displayText, setDisplayText] = useState(text);
+    const [isDeleting, setIsDeleting] = useState(false);
+    // git-add-next-line
++   const [isTypingFinished, setIsTypingFinished] = useState(false);
+
+    useEffect(() => {
+      let interval;
+
+      if (isDeleting) {
+        interval = setInterval(() => {
+          setDisplayText((prevText) => prevText.slice(0, -1));
+          if (displayText.length === 0) {
+            setIsDeleting(false);
+          }
+        }, 100);
+        // git-add-start
++     } else if (isTypingFinished) {
++       interval = setTimeout(() => {
++         setIsDeleting(true);
++         setIsTypingFinished(false);
++       }, 1000);
++     } else {
+        // git-add-end
+        interval = setInterval(() => {
+          if (displayText.length < text.length) {
+            setDisplayText((prevText) => prevText + text[displayText.length]);
+          } else {
+            clearInterval(interval);
+            // git-add-next-line
++           setIsTypingFinished(true);
+            // git-remove-next-line
+-           setIsDeleting(true);
+          }
+        }, 100);
+      }
+
+      return () => clearInterval(interval);
+    });
+
+    return <div>{displayText}|</div>;
+  }
+```
+
+</TabItem>
+
+</Tabs>
+
+:::important
+这一步的关键是要把状态转换理解清楚，就能很好的判断了
+:::
+
 ### 切换
+
+<h3>
+  <Typewriter4 />
+</h3>
+
+我们想要打印多个内容，在每次打印完之后，删除，然后打印下一个，直到所有内容打印完，想到一个很好的例子就是想要打 Waiting for love 里面的 Monday ~ Sunday 的歌词，也就是本篇开头的那个效果
+
+因为最后要在 Mark ↓ 里(docusaurus)调用，传入的内容只能是一个字符串，所以如下设计：首先传入的字符串用 ";" 分隔开多个句子，在函数里将其 `split` 开。每次打印一句，在打印完之后，删除，然后打印下一个，直到所有内容打印完
+
+根据下面的状态图，我们在每次删除**结束**之后，切换即可
+
+```mermaid
+---
+title: 状态转换图
+---
+stateDiagram
+  direction LR
+  打印 --> 打印完成
+  打印完成 --> 打印完成 : 等待
+  打印完成 --> 删除
+  删除 --> 切换
+  切换 --> 打印
+```
+
+<Tabs>
+
+<TabItem value="live" label="实时编辑器">
+
+```tsx live
+function TypeWirter() {
+  const text = "Castamere Typing...;Typing again...;And again...";
+
+  const texts = text.split(";");
+  const [displayText, setDisplayText] = useState("");
+  const [textIndex, setTextIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isTypingFinished, setIsTypingFinished] = useState(false);
+
+  useEffect(() => {
+    const currentText = texts[textIndex];
+
+    let interval;
+
+    if (isDeleting) {
+      interval = setInterval(() => {
+        setDisplayText((prevText) => prevText.slice(0, -1));
+        if (displayText.length === 0) {
+          setIsDeleting(false);
+          setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+        }
+      }, 100);
+    } else if (isTypingFinished) {
+      interval = setTimeout(() => {
+        setIsDeleting(true);
+        setIsTypingFinished(false);
+      }, 1000);
+    } else {
+      interval = setInterval(() => {
+        if (displayText.length < currentText.length) {
+          setDisplayText(
+            (prevText) => prevText + currentText[displayText.length]
+          );
+        } else {
+          clearInterval(interval);
+          setIsTypingFinished(true);
+        }
+      }, 100);
+    }
+
+    return () => clearInterval(interval);
+  });
+
+  return <div>{displayText}|</div>;
+}
+```
+
+</TabItem>
+
+<TabItem value="code diff" label="代码对比">
+
+```tsx showLineNumbers title="TypeWriter4.tsx"
+  function TypeWirter() {
+    const text = "Castamere Typing...;Typing again...;And again...";
+    // git-add-next-line
++   const texts = text.split(";");
+    // git-add-next-line
++   const [textIndex, setTextIndex] = useState(0);
+    const [displayText, setDisplayText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isTypingFinished, setIsTypingFinished] = useState(false);
+
+    useEffect(() => {
+      // git-add-next-line
++     const currentText = texts[textIndex];
+      let interval;
+
+      if (isDeleting) {
+        interval = setInterval(() => {
+          setDisplayText((prevText) => prevText.slice(0, -1));
+          if (displayText.length === 0) {
+            setIsDeleting(false);
+            // git-add-next-line
++           setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+          }
+        }, 100);
+      } else if (isTypingFinished) {
+        interval = setTimeout(() => {
+          setIsDeleting(true);
+          setIsTypingFinished(false);
+        }, 1000);
+      } else {
+        interval = setInterval(() => {
+          // git-add-next-line
++         if (displayText.length < currentText.length) {
+          // git-remove-next-line
+-         if (displayText.length < text.length) {
+            // git-add-next-line
++           setDisplayText((prevText) => prevText + currentText[displayText.length]);
+            // git-remove-next-line
+-           setDisplayText((prevText) => prevText + text[displayText.length]);
+          } else {
+            clearInterval(interval);
+            setIsTypingFinished(true);
+          }
+        }, 100);
+      }
+
+      return () => clearInterval(interval);
+    });
+
+    return <div>{displayText}|</div>;
+  }
+```
+
+</TabItem>
+
+</Tabs>
 
 ### 闪动光标
 
@@ -229,13 +508,13 @@ function Typewriter({
         if (displayText.length === 0) {
           clearInterval(interval);
           setIsDeleting(false);
-          setIsTypingFinished(false);
           setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
         }
       }, typingSpeed / 3);
     } else if (isTypingFinished) {
       interval = setTimeout(() => {
         setIsDeleting(true);
+        setIsTypingFinished(false);
       }, delinterval);
     } else {
       interval = setInterval(() => {
