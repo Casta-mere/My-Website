@@ -9,6 +9,8 @@ draft: true
 import Typewriter from "@site/src/components/TypeWriter";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import Typewriter1 from "./demo/TypeWriter1";
+import Typewriter2 from "./demo/TypeWriter2";
 
 一个简单的 React 打字机效果小组件
 
@@ -21,17 +23,173 @@ import Tabs from "@theme/Tabs";
 
 ## 缘起
 
+之前看到一个打字机效果的页面，觉得很有意思，于是想用 React 实现一个类似的效果。刚好最近想做一些好玩的小组件，由此开始吧
+
+:::tip
+全文使用的都是**实时编辑器**，在编辑器中修改代码，实时预览效果吧
+:::
+
 ## 实现
 
 ### 打字
 
+<h3>
+  <Typewriter1 />
+</h3>
+
+想要实现基础的"挨个打字"还是比较简单的，如下面代码，通过 `useEffect` 来更新页面，其中添加一个 `interval` 对象，每隔一定时间，判断当前的 `displayText` 和完整的 `text` 是否相等。如果不相等，就让 `displayText` 加上 `text` 的下一个字符；如果相等，那就证明已经打完，这里添加了一个 `setTimeout` 来重置 `displayText`，实现循环打字的效果
+
+<Tabs>
+
+<TabItem value="live" label="实时编辑器">
+
+```tsx live
+function TypeWirter() {
+  const text = "Castamere Typing...";
+
+  const [displayText, setDisplayText] = useState(text);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (displayText.length < text.length) {
+        setDisplayText((prevText) => prevText + text[displayText.length]);
+      } else {
+        clearInterval(interval);
+        // 重置状态以重新开始打字
+        setTimeout(() => {
+          setDisplayText("");
+        }, 1000); // 1 秒后重置状态以实现循环
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  });
+
+  return <div>{displayText}|</div>;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### 删除
+
+<h3>
+  <Typewriter2 />
+</h3>
+
+如果我们想要打的内容比较多，或者需要多次打印。这时就需要添加一个删除的效果，像上面那种整行直接"消除"掉的形式，没那么 cool ，想要打完一整行后，再从后往前挨个删除掉，看起来会更真实
+
+:::tip
+下方有实时编辑器和**代码对比**，可以查看相比上一步修改了哪些内容
+:::
+
+想要删除也比较简单，首先添加一个 `isDeleting` 的状态，用来表示当前是删除状态还是添加状态。然后修改 `useEffect` 中的逻辑，当 `isDeleting` 为 `true` 时，就挨个删除 `displayText` 的最后一个字符，直到 `displayText` 为空。当 `displayText` 为空时，重置 `isDeleting` 为 `false`，重新开始添加字符，添加满之后，再重置 `isDeleting` 为 `true`，开始删除字符，如此循环
+
+<Tabs>
+
+<TabItem value="live" label="实时编辑器">
+
+```tsx live
+function TypeWirter() {
+  const text = "Castamere Typing...";
+
+  const [displayText, setDisplayText] = useState(text);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (isDeleting) {
+      interval = setInterval(() => {
+        setDisplayText((prevText) => prevText.slice(0, -1));
+        if (displayText.length === 0) {
+          setIsDeleting(false);
+        }
+      }, 100);
+    } else {
+      interval = setInterval(() => {
+        if (displayText.length < text.length) {
+          setDisplayText((prevText) => prevText + text[displayText.length]);
+        } else {
+          clearInterval(interval);
+          setIsDeleting(true);
+        }
+      }, 100);
+    }
+
+    return () => clearInterval(interval);
+  });
+
+  return <div>{displayText}|</div>;
+}
+```
+
+</TabItem>
+
+<TabItem value="code diff" label="代码对比">
+
+```tsx showLineNumbers title="TypeWriter.tsx"
+  function TypeWirter() {
+    const text = "Castamere Typing...";
+
+    const [displayText, setDisplayText] = useState(text);
+    // git-add-next-line
++   const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+      // git-add-start
++     let interval;
++
++     if (isDeleting) {
++       interval = setInterval(() => {
++         setDisplayText((prevText) => prevText.slice(0, -1));
++         if (displayText.length === 0) {
++           setIsDeleting(false);
++         }
++       }, 100);
++     } else {
+      // git-add-end
+        // git-remove-next-line
+-       const interval = setInterval(() => {
+        // git-add-next-line
++       interval = setInterval(() => {
+          if (displayText.length < text.length) {
+            setDisplayText((prevText) => prevText + text[displayText.length]);
+          } else {
+            clearInterval(interval);
+            // git-add-next-line
++           setIsDeleting(true);
+            // git-delete-start
+-           // 重置状态以重新开始打字
+-           setTimeout(() => {
+-             setDisplayText("");
+-             setTextIndex(0);
+-           }, 1000); // 1 秒后重置状态以实现循环
+            // git-delete-end
+          }
+        }, 100);
+      }
+
+      return () => clearInterval(interval);
+    });
+
+    return <div>{displayText}|</div>;
+  }
+```
+
+</TabItem>
+
+</Tabs>
+
+### 等待
 
 ### 切换
 
 ### 闪动光标
 
-## 用法
+## 优化
 
 ## 完整代码
 
@@ -144,3 +302,9 @@ export default Typewriter;
 </TabItem>
 </Tabs>
 </details>
+
+## 后记
+
+笔者也是写到一半发现，这是一个很好的 React 教学机会，于是决定把每一步拆解出来，希望读者能真正理解并写出来，而不是复制粘贴
+
+希望这篇文章能帮助到你，如果你有任何问题，欢迎在评论区留言

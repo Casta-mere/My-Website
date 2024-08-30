@@ -74,10 +74,20 @@ Open Stack:
   label: Open Stack
   permalink: /Open-Stack
 
+React:
+  description: React
+  label: React
+  permalink: /React
+
 SVN:
   description: SVN
   label: SVN
   permalink: /SVN
+
+Snippet:
+  description: Snippet
+  label: Snippet
+  permalink: /Snippet
 
 Terminal:
   description: Terminal
