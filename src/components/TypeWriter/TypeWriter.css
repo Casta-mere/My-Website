@@ -1,0 +1,18 @@
+.typewriter {
+  display: inline-block;
+  position: relative;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 0.75s step-start infinite;
+  font-weight: bold;
+  font-size: 1em;
+  margin-left: 1px; /* 调整光标与文本的间距 */
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
