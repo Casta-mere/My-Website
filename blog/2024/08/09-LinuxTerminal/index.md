@@ -171,6 +171,16 @@ oh-my-zsh 内置了 git 插件，该插件用于显示当前 git 仓库的状态
 
 ![zsh-autosuggestions](./image/zsh-autosuggestion.png)
 
+:::tip
+想要设置根据 tab 会补全哪些命令来提示你，可以执行如下命令，然后再 `source ~/.zshrc` 即可
+
+```bash
+
+echo "ZSH_AUTOSUGGEST_STRATEGY=(history completion)" >> /root/.oh-my-zsh/custom/my_patch.zsh
+```
+
+:::
+
 ### zsh-syntax-highlighting
 
 [zsh-syntax-highlighting] 用于告诉你当前命令是否合法，如果是绿色，说明命令存在，可以执行，反之显示红色，效果如下：
