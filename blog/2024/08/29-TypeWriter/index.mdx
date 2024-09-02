@@ -3,7 +3,6 @@ slug: TypeWriter
 title: React 打字机效果小组件
 authors: [Castamere]
 tags: [React, Snippet]
-draft: true
 ---
 
 import Typewriter from "@site/src/components/TypeWriter";
@@ -13,13 +12,18 @@ import Typewriter1 from "./demo/TypeWriter1";
 import Typewriter2 from "./demo/TypeWriter2";
 import Typewriter3 from "./demo/TypeWriter3";
 import Typewriter4 from "./demo/TypeWriter4";
+import Typewriter5 from "./demo/TypeWriter5";
+import Typewriter6 from "./demo/TypeWriter6";
+import Typewriter7 from "./demo/TypeWriter7";
 
 一个简单的 React 打字机效果小组件
 
-<Typewriter
-  text="Monday left me broken; Tuesday, I was through with hoping; Wednesday, my empty arms are open; Thursday, waiting for love, waiting for love; Thank the stars, it's Friday; I'm burning like a fire gone wild on Saturday; Guess I won't be coming to church on Sunday; I'll be waiting for love, waiting for love; to come around;◢◤"
-  delinterval={2000}
-/>
+<h2>
+  <Typewriter
+    text="Monday left me broken; Tuesday, I was through with hoping; Wednesday, my empty arms are open; Thursday, waiting for love, waiting for love; Thank the stars, it's Friday; I'm burning like a fire gone wild on Saturday; Guess I won't be coming to church on Sunday; I'll be waiting for love, waiting for love; to come around;◢◤"
+    delinterval={2000}
+  />
+</h2>
 
 {/* truncate */}
 
@@ -468,9 +472,207 @@ function TypeWirter() {
 
 ### 闪动光标
 
+<h3>
+  <Typewriter5 text="第五步：画龙点睛，闪动的光标" />
+</h3>
+
+打字机的灵魂，还是这个闪动的光标，这里使用 css 即可实现，在 css 中定义一个 `@keyframes` 动画，然后在光标元素上应用这个动画即可
+
+<Tabs>
+
+<TabItem value="code diff" label="代码对比">
+
+```tsx showLineNumbers title="TypeWriter5.tsx"
+  function TypeWirter() {
+    ...
+    // git-remove-next-line
+-   return <div>{displayText}|</div>;
+    // git-add-start
++   return (
++     <div>
++       {displayText}
++       <span className="cursor">|</span>
++     </div>
++   );
+    // git-add-end
+  }
+```
+
+</TabItem>
+
+<TabItem value="css" label="TypeWriter.css">
+
+```css
+.cursor {
+  display: inline-block;
+  animation: blink 0.75s step-start infinite;
+  font-weight: bold;
+  font-size: 1em;
+  margin-left: 1px; /* 调整光标与文本的间距 */
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ## 优化
 
+到现在可以说这个小组件已初见雏形，但仍有一些可以优化的点
+
+### 参数设置
+
+首先，`text` 变量需要我们传入组件，而且我们可以添加更多可用户自定义的参数，比如打字速度、等待多久删除、分隔符设置等等
+
+<Typewriter6 text="Castamere Typing..." />
+`<Typewriter6 text="Castamere Typing..." />`
+
+<Typewriter6 text="Castamere Typing..." typingSpeed={100} />
+`<Typewriter6 text="Castamere Typing..." typingSpeed={100} />`
+
+<Typewriter6 text="Castamere Typing..." delinterval={1000} />
+`<Typewriter6 text="Castamere Typing..." delinterval={1000} />`
+
+实现代码如下：
+
+```tsx showLineNumbers title="TypeWriter6.tsx"
+  import React, { useEffect, useState } from "react";
+  import "./TypeWriter.css";
+
+  // git-add-start
++ const SEPERATOR = ";";
++ const INTERVAL = 3000;
++ const TYPING_SPEED = 30;
+  // git-add-end
+
+  export default function TypeWirter6({
+    // git-add-start
++   text,
++   textSeparator = SEPERATOR,
++   typingSpeed = TYPING_SPEED,
++   delinterval = INTERVAL,
+    // git-add-end
+  }) {
+    // git-remove-next-line
+-   const text = "Castamere Typing...";
+
+    const texts = text.split(textSeparator);
+    const [displayText, setDisplayText] = useState("");
+    const [textIndex, setTextIndex] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isTypingFinished, setIsTypingFinished] = useState(false);
+
+    useEffect(() => {
+      const currentText = texts[textIndex];
+
+      let interval;
+
+      if (isDeleting) {
+        interval = setInterval(() => {
+          setDisplayText((prevText) => prevText.slice(0, -1));
+          if (displayText.length === 0) {
+            setIsDeleting(false);
+            setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+          }
+        // git-remove-next-line
+-       }, 100);
+        // git-add-next-line
++       }, typingSpeed);
+      } else if (isTypingFinished) {
+        interval = setTimeout(() => {
+          setIsDeleting(true);
+          setIsTypingFinished(false);
+        // git-remove-next-line
+-       }, 500);
+        // git-add-next-line
++       }, delinterval);
+      } else {
+        interval = setInterval(() => {
+          if (displayText.length < currentText.length) {
+            setDisplayText(
+              (prevText) => prevText + currentText[displayText.length]
+            );
+          } else {
+            clearInterval(interval);
+            setIsTypingFinished(true);
+          }
+        // git-remove-next-line
+-       }, 100);
+        // git-add-next-line
++       }, typingSpeed);
+      }
+
+      return () => clearInterval(interval);
+    });
+
+    return (
+      <div>
+        {displayText}
+        <span className="cursor">|</span>
+      </div>
+    );
+  }
+```
+
+### 删除速度
+
+读者可以看一下以下两个打字机的效果：
+
+<h3>
+  <Typewriter6
+    text="Monday left me broken; Tuesday, I was through with hoping; Wednesday, my empty arms are open; Thursday, waiting for love, waiting for love; Thank the stars, it's Friday; I'm burning like a fire gone wild on Saturday; Guess I won't be coming to church on Sunday; I'll be waiting for love, waiting for love; to come around;◢◤"
+    delinterval={2000}
+  />
+</h3>
+<h3>
+  <Typewriter7
+    text="Monday left me broken; Tuesday, I was through with hoping; Wednesday, my empty arms are open; Thursday, waiting for love, waiting for love; Thank the stars, it's Friday; I'm burning like a fire gone wild on Saturday; Guess I won't be coming to church on Sunday; I'll be waiting for love, waiting for love; to come around;◢◤"
+    delinterval={2000}
+  />
+</h3>
+
+其实不难发现，正常来说，删除速度应该快于打字速度，无论是从视觉上还是从逻辑上都会让人更舒服，想要实现也很简单。如下，将删除速度设为 `typingSpeed / 3` 即可达到一个较为舒服的区间，尤其是在打多段内容时
+
+```tsx showLineNumbers title="TypeWriter7.tsx"
+  ...
+
+  export default function TypeWirter6({
+    ...
+
+    useEffect(() => {
+      ...
+
+      if (isDeleting) {
+        interval = setInterval(() => {
+          setDisplayText((prevText) => prevText.slice(0, -1));
+          if (displayText.length === 0) {
+            setIsDeleting(false);
+            setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+          }
+        // git-remove-next-line
+-       }, typingSpeed);
+        // git-add-next-line
++       }, typingSpeed / 3);
+      } else if (isTypingFinished) {
+        ...
+
+      } else {
+        ...
+
+      }
+    ...
+  }
+```
+
 ## 完整代码
+
+最终完整代码如下：
 
 <details>
   <summary>完整代码</summary>
@@ -508,13 +710,13 @@ function Typewriter({
         if (displayText.length === 0) {
           clearInterval(interval);
           setIsDeleting(false);
+          setIsTypingFinished(false);
           setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
         }
       }, typingSpeed / 3);
     } else if (isTypingFinished) {
       interval = setTimeout(() => {
         setIsDeleting(true);
-        setIsTypingFinished(false);
       }, delinterval);
     } else {
       interval = setInterval(() => {
@@ -543,10 +745,8 @@ function Typewriter({
 
   return (
     <div className="typewriter">
-      <span style={{ fontSize: "20px" }}>{displayText}</span>
-      <span style={{ fontSize: "20px" }} className="cursor">
-        |
-      </span>
+      <span>{displayText}</span>
+      <span className="cursor">|</span>
     </div>
   );
 }
@@ -582,8 +782,20 @@ export default Typewriter;
 </Tabs>
 </details>
 
+### docusaurus 中使用
+
+想在 docusaurus 中使用自定义组件也很简单，将其放到 `src/components` 目录下，然后在 md/mdx 文件中引入即可
+
+![component](./image/component.png)
+
+```md
+import Typewriter from "@site/src/components/Typewriter";
+
+<Typewriter text="Hello, world!" />
+```
+
 ## 后记
 
-笔者也是写到一半发现，这是一个很好的 React 教学机会，于是决定把每一步拆解出来，希望读者能真正理解并写出来，而不是复制粘贴
+笔者也是写到一半发现，这是一个很好的 React 教学机会，于是决定把每一步拆解出来，希望读者能真正理解并写出来，而不仅仅是复制粘贴
 
 希望这篇文章能帮助到你，如果你有任何问题，欢迎在评论区留言
