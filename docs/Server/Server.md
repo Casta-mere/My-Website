@@ -9,7 +9,6 @@ sidebar_position: 0
 last_update:
   date: 2 SEP 2024 GMT
   author: Casta-mere
-draft: true
 ---
 
 import Terminal_1 from "./components/Server/ssh_1";
@@ -80,6 +79,95 @@ PasswordAuthentication no
 
 ## 配置 zsh
 
+参考 [配置 Linux 终端 (zsh)]
+
+or 一步到位流：
+
+```bash
+sudo apt update
+sudo apt install zsh
+sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+cd /root/.oh-my-zsh/custom/plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions.git
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+echo "ZSH_AUTOSUGGEST_STRATEGY=(history completion)" >> /root/.oh-my-zsh/custom/my_patch.zsh
+sudo apt install cowsay lolcat figlet sl cmatrix
+```
+
+然后将下面内容放入 `~/.zshrc` 文件中
+
+```txt title="~/.zshrc" showLineNumbers
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"
+plugins=(git colored-man-pages colorize cp man command-not-found sudo ubuntu archlinux zsh-navigation-tools z extract history-substring-search python zsh-autosuggestions zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
+alias cls='clear'
+alias -g setzsh="source ~/.zshrc"
+alias -g catzsh='cat ~/.zshrc | grep -v "^#" | grep -v "^$"'
+alias -g ifc="cls && ifconfig | grep -E '.inet.|.flags.' | cowsay -f dragon -W 100 -n | lolcat"
+alias -g ifcc="cls && ifconfig | grep -E 'inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' -o  | grep -v '127.0.0.1' | cowthink -d -W 20 | lolcat"
+alias -s {txt, md}=vim
+alias -g G='| grep -i'
+```
+
+执行 `source ~/.zshrc` 即可
+
+## 配置 Git
+
+```bash
+apt install git
+git config --global user.name "Casta-mere"
+git config --global user.email "castamerego@gmail.com"
+git config --global core.editor code
+```
+
 ## 配置 npm
 
-## 安装软件
+### 服务器
+
+```bash
+sudo apt install nodejs npm
+npm config set registry http://mirrors.cloud.tencent.com/npm/
+npm config set loglevel=http
+npm install -g n
+n install 18.18.2
+```
+
+### wsl
+
+首先使用如下命令安装 `nvm`
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+
+
+```
+
+安装完成应该有如下输出，表示安装成功。此时重启终端，或者使用 `source ~/.zshrc` 来在当前终端刷新配置。使用 `command -v nvm` 来查看是否能正常运行，若输出 `nvm` 则没什么问题
+
+```bash
+=> Compressing and cleaning up git repository
+
+=> Appending nvm source string to /root/.zshrc
+=> Appending bash_completion source string to /root/.zshrc
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+```
+
+:::tip
+如果没有成功运行，可以查看一下 `~/.zshrc` 文件，其最后应该是上面刚刚输出的那几行，如果没有，可以手动加到最后面
+
+```bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+```
+
+:::
+
+安装好 `nvm` 之后，使用 `nvm install node` 即可
+
+[配置 Linux 终端 (zsh)]: /blog/LinuxTerminal
