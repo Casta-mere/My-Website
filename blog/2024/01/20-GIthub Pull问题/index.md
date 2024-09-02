@@ -17,7 +17,7 @@ tags: [Git, Github, Version Control]
 
 找了很多解决方法都不太行，下面是最后成功的办法
 
-在 `/etc/hosts` 中的 `IPV4` 部分添加以下内容，再 `git pull ` 就正常了。
+在 `/etc/hosts` 中的 `IPV4` 部分添加以下内容，重启设备，再 `git pull ` 就正常了。
 
 ```txt showLineNumbers
 # GitHub Start
