@@ -1,4 +1,6 @@
 .cursor {
+  font-family: MesloLGS NF Regular;
+  src: url("@site/src/fonts/MesloLGS NF Font/MesloLGS NF Regular.ttf");
   display: inline-block;
   animation: blink 0.75s step-start infinite;
   font-weight: bold;
