@@ -5,7 +5,7 @@ const SEPERATOR = ";";
 const INTERVAL = 3000;
 const TYPING_SPEED = 30;
 
-function Typewriter({
+export default function TypeWirter6({
   text,
   textSeparator = SEPERATOR,
   typingSpeed = TYPING_SPEED,
@@ -19,13 +19,13 @@ function Typewriter({
 
   useEffect(() => {
     const currentText = texts[textIndex];
+
     let interval;
 
     if (isDeleting) {
       interval = setInterval(() => {
         setDisplayText((prevText) => prevText.slice(0, -1));
         if (displayText.length === 0) {
-          clearInterval(interval);
           setIsDeleting(false);
           setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
         }
@@ -48,24 +48,13 @@ function Typewriter({
       }, typingSpeed);
     }
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [
-    texts,
-    typingSpeed,
-    displayText,
-    isDeleting,
-    isTypingFinished,
-    textIndex,
-  ]);
+    return () => clearInterval(interval);
+  });
 
   return (
-    <div className="typewriter">
-      <span>{displayText}</span>
+    <div>
+      {displayText}
       <span className="cursor">|</span>
     </div>
   );
 }
-
-export default Typewriter;
