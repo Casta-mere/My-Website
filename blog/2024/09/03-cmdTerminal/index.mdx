@@ -3,7 +3,230 @@ slug: cmdTerminal
 title: 模拟命令行终端小组件
 authors: [Castamere]
 tags: [Terminal, Snippet]
-draft: true
 ---
 
+import {
+  Args,
+  Cmd,
+  Comment,
+  Emph,
+  Line,
+  TerminalLine,
+  TerminalResponse,
+  TerminalRoot,
+  Tunnel,
+} from "@site/src/components/CommandLine";
+import Terminal from "./components/Terminal";
+
+<Terminal />
 {/* truncate */}
+
+## 缘起
+
+## 自定义内容
+
+<TerminalRoot title={"test"}>
+  <TerminalLine>
+    <Comment text="# 1" />
+  </TerminalLine>
+</TerminalRoot>
+
+### 用户
+
+<TerminalRoot title={"用户"}>
+  <TerminalLine userName="castamere" dir="">
+    <Comment text="# 有用户" />
+  </TerminalLine>
+  <TerminalLine dir="">
+    <Comment text="# 无用户" />
+  </TerminalLine>
+</TerminalRoot>
+
+### 路径
+
+<TerminalRoot title={"路径"}>
+  <TerminalLine dir="home">
+    <Cmd text="cd" />
+    <Line text="./castamere/My-Website" />
+  </TerminalLine>
+  <TerminalLine dir="home/castamere/My-Website">
+    <Line text="" />
+  </TerminalLine>
+</TerminalRoot>
+
+### conda
+
+<TerminalRoot title={"conda"}>
+  <TerminalLine>
+    <Cmd text="conda activate" />
+    <Line text="base" />
+  </TerminalLine>
+  <TerminalLine conda="base">
+    <Line text="" />
+  </TerminalLine>
+</TerminalRoot>
+
+## 输入
+
+### 命令
+
+<TerminalRoot title={"命令"}>
+  <TerminalLine>
+    <Cmd text="ll" />
+  </TerminalLine>
+  <TerminalLine>
+    <Cmd text="grep" />
+  </TerminalLine>
+  <TerminalLine>
+    <Cmd text="mysql" />
+  </TerminalLine>
+</TerminalRoot>
+
+### 参数
+
+<TerminalRoot title={"参数"}>
+  <TerminalLine>
+    <Cmd text="ps" />
+    <Args text="-a" />
+  </TerminalLine>
+  <TerminalLine>
+    <Cmd text="awk" />
+    <Args text="-F'|'" />
+    <Line text="'{print $1}'" />
+  </TerminalLine>
+</TerminalRoot>
+
+### 管道
+
+<TerminalRoot title={"管道"}>
+  <TerminalLine>
+    <Cmd text="docker ps" />
+    <Args text="-a" />
+    <Tunnel text="|" />
+    <Cmd text="grep" />
+    <Line text="neutron" />
+  </TerminalLine>
+  <TerminalLine>
+    <Cmd text="cat" />
+    <Line text="/etc/ssh/sshd_config" />
+    <Tunnel text="|" />
+    <Cmd text="grep" />
+    <Line text="-v '^#'" />
+    <Tunnel text="|" />
+    <Cmd text="grep" />
+    <Line text="-v '^$'" />
+  </TerminalLine>
+  <TerminalLine>
+    <Cmd text="cat" />
+    <Line text="./id_rsa.pub" />
+    <Tunnel text="&gt;&gt;" />
+    <Line text="authorized_keys" />
+  </TerminalLine>
+</TerminalRoot>
+
+### 注释
+
+<TerminalRoot title={"注释"}>
+  <TerminalLine>
+    <Comment text="# 这是一条注释" />
+  </TerminalLine>
+</TerminalRoot>
+
+## 输出
+
+### 换行顶格输出
+
+<TerminalRoot title={"输出方式1: 换行顶格输出"}>
+  <TerminalLine
+    userName="castamere"
+    dir="home/castamere/My-Website"
+    conda="py26"
+  >
+    <Comment text="# 当前缀比较长，建议用👇这种方式" />
+  </TerminalLine>
+  <TerminalLine
+    userName="castamere"
+    dir="home/castamere/My-Website"
+    conda="py26"
+  >
+    <Cmd text="ps" />
+    <Args text="-a" />
+  </TerminalLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Line text="PID TTY          TIME CMD" />
+    <Line text=" 12 tty1     00:00:00 sh" />
+    <Line text=" 13 tty1     00:00:00 sh" />
+    <Line text=" 18 tty1     00:00:00 sh" />
+    <Line text=" 22 tty1     00:00:08 node" />
+  </TerminalResponse>
+  <TerminalLine
+    userName="castamere"
+    dir="home/castamere/My-Website"
+    conda="py26"
+  >
+    <Comment text="# 对比这个👇就会觉得很丑" />
+  </TerminalLine>
+  <TerminalLine
+    userName="castamere"
+    dir="home/castamere/My-Website"
+    conda="py26"
+  >
+    <Cmd text="ps" />
+    <Args text="-a" />
+  </TerminalLine>
+  <TerminalResponse
+    userName="castamere"
+    dir="home/castamere/My-Website"
+    conda="py26"
+  >
+    <Line text="PID TTY          TIME CMD" />
+    <Line text=" 12 tty1     00:00:00 sh" />
+    <Line text=" 13 tty1     00:00:00 sh" />
+    <Line text=" 18 tty1     00:00:00 sh" />
+    <Line text=" 22 tty1     00:00:08 node" />
+  </TerminalResponse>
+</TerminalRoot>
+
+### 前缀空格，对齐输出
+
+<TerminalRoot title={"输出方式2: 前缀空格，对齐输出"}>
+  <TerminalLine dir="">
+    <Comment text="# 大部分时候，用这个👇会比较舒服" />
+  </TerminalLine>
+  <TerminalLine dir="">
+    <Cmd text="ps" />
+    <Args text="-a" />
+  </TerminalLine>
+  <TerminalResponse dir="">
+    <Line text="PID TTY          TIME CMD" />
+    <Line text=" 12 tty1     00:00:00 sh" />
+    <Line text=" 13 tty1     00:00:00 sh" />
+    <Line text=" 18 tty1     00:00:00 sh" />
+    <Line text=" 22 tty1     00:00:08 node" />
+  </TerminalResponse>
+</TerminalRoot>
+
+### 高亮
+
+<TerminalRoot title={"高亮"}>
+  <TerminalLine dir="">
+    <Comment text="# 给读者介绍时，有时可能想高亮某一行" />
+  </TerminalLine>
+  <TerminalLine dir="">
+    <Cmd text="ps" />
+    <Args text="-a" />
+  </TerminalLine>
+  <TerminalResponse dir="">
+    <Line text="PID TTY          TIME CMD" />
+    <Line text=" 12 tty1     00:00:00 sh" />
+    <Emph text=" 13 tty1     00:00:00 sh" />
+    <Line text=" 18 tty1     00:00:00 sh" />
+    <Line text=" 22 tty1     00:00:08 node" />
+  </TerminalResponse>
+</TerminalRoot>
+
+## 后记
+
+希望这篇文章能帮助到你，如果你有任何问题，欢迎在评论区留言
+
+P.S: 如果有什么好的需求与建议，也欢迎留言
