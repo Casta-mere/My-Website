@@ -92,12 +92,15 @@
 }
 
 .main .emph {
+  font-weight: 700;
   color: rgb(55, 111, 234);
+  white-space: pre;
 }
 
 .main .comment {
   font-style: italic;
   color: rgb(82, 153, 73);
+  white-space: pre;
 }
 
 .main .fontBold {
