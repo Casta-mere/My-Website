@@ -71,19 +71,6 @@ export const TerminalResponse = ({ children, dir = "castamere" }) => {
   );
 };
 
-const TerminalResponse_ = ({ children }) => (
-  <div style={{ lineHeight: "1.5rem" }}>
-    <span className={styles.rightArrow} aria-hidden="true">
-      →{"  "}
-    </span>
-
-    <span className={styles.userName} aria-hidden="true">
-      ~/{"castamere"}{" "}
-    </span>
-    <span>{children}</span>
-  </div>
-);
-
 export const TerminalRoot = ({ children, title }) => {
   return (
     <div className={styles.card}>
@@ -140,7 +127,6 @@ export default function Terminal({}) {
         </TerminalResponse>
 
         <TerminalResponse>./Miniconda3-latest-Linux-x86_64.sh</TerminalResponse>
-        <TerminalLine />
         <TerminalResponse>2</TerminalResponse>
       </div>
     </div>
