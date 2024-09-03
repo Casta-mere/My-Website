@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 const USERNAME = "";
 const CONDA = "";
 const DIR = "castamere";
+const RESPONSE_STYLE = "PLAIN";
 
 export const TerminalLine = ({
   children,
@@ -13,14 +14,19 @@ export const TerminalLine = ({
 }) => {
   const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
   const env = conda === "" ? "" : `(${conda}) `;
-
-  return (
-    <div>
+  const frontMatterContent = (
+    <>
       <span className={styles.rightArrow}>→ </span>
       <span className={styles.env}>{env}</span>
       <span className={styles.userNamePath}>{userNamePath}</span>
       <span className={styles.dolar}>$ </span>
-      <span>{children}</span>
+    </>
+  );
+
+  return (
+    <div>
+      {frontMatterContent}
+      {children}
     </div>
   );
 };
@@ -30,39 +36,55 @@ export const TerminalResponse = ({
   conda = CONDA,
   userName = USERNAME,
   dir = DIR,
+  response_style = RESPONSE_STYLE,
 }) => {
   const childrenArray = React.Children.toArray(children);
-
   const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
   const env = conda === "" ? "" : `(${conda}) `;
-
-  return (
-    <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
-      {childrenArray.map((child, index) => {
-        const frontMatter =
-          index === 0 ? (
-            <>
-              <span className={styles.rightArrow}>+ </span>
-              <span className={styles.env}>{env}</span>
-              <span className={styles.userNamePath}>{userNamePath}</span>
-            </>
-          ) : (
-            <span style={{ opacity: 0 }}>
-              <span className={styles.rightArrow}>+ </span>
-              <span className={styles.env}>{env}</span>
-              <span className={styles.userNamePath}>{userNamePath}</span>
-            </span>
-          );
-
-        return (
-          <div>
-            {frontMatter}
-            {child}
-          </div>
-        );
-      })}
-    </div>
+  const frontMatterContent = (
+    <>
+      <span className={styles.rightArrow}>+ </span>
+      <span className={styles.env}>{env}</span>
+      <span className={styles.userNamePath}>{userNamePath}</span>
+    </>
   );
+
+  switch (response_style) {
+    case "NEWLINE":
+      return (
+        <>
+          <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+            {childrenArray.map((child, index) => (
+              <div key={index}>{child}</div>
+            ))}
+          </div>
+        </>
+      );
+
+    case "PLAIN":
+      return (
+        <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+          {childrenArray.map((child, index) => {
+            const frontMatter =
+              index === 0 ? (
+                frontMatterContent
+              ) : (
+                <span style={{ opacity: 0 }}>{frontMatterContent}</span>
+              );
+
+            return (
+              <div key={index}>
+                {frontMatter}
+                {child}
+              </div>
+            );
+          })}
+        </div>
+      );
+
+    default:
+      break;
+  }
 };
 
 export const TerminalHeader = ({ title }) => {
