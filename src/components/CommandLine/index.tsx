@@ -82,6 +82,10 @@ export const Comment = ({ text }) => {
   return <span className={styles.comment}>{text} </span>;
 };
 
+export const Args = ({ text }) => {
+  return <span className={styles.args}>{text} </span>;
+};
+
 export const TerminalRoot = ({ children, title }) => {
   return (
     <div className={styles.card} aria-hidden="true">

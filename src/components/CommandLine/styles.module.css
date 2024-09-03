@@ -73,6 +73,10 @@
   color: rgb(13, 188, 92);
 }
 
+.main .args {
+  color: rgb(160, 147, 147);
+}
+
 .main .line {
   color: rgb(28, 30, 33);
   white-space: pre;
