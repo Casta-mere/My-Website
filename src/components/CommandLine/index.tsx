@@ -16,8 +16,8 @@ export const TerminalLine = ({
   const env = conda === "" ? "" : `(${conda}) `;
   const frontMatterContent = (
     <>
-      <span className={styles.rightArrow}>→ </span>
       <span className={styles.env}>{env}</span>
+      <span className={styles.rightArrow}>→ </span>
       <span className={styles.userNamePath}>{userNamePath}</span>
       <span className={styles.dolar}>$ </span>
     </>
@@ -43,8 +43,8 @@ export const TerminalResponse = ({
   const env = conda === "" ? "" : `(${conda}) `;
   const frontMatterContent = (
     <>
-      <span className={styles.rightArrow}>+ </span>
       <span className={styles.env}>{env}</span>
+      <span className={styles.rightArrow}>+ </span>
       <span className={styles.userNamePath}>{userNamePath}</span>
     </>
   );
