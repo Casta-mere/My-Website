@@ -63,6 +63,11 @@
   font-weight: 700;
 }
 
+.main .env {
+  color: rgb(160, 147, 147);
+  font-weight: 700;
+}
+
 .main .dolar {
   font-weight: 700;
   color: rgb(55, 65, 81);

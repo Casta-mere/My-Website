@@ -2,13 +2,22 @@ import React from "react";
 import styles from "./styles.module.css";
 
 const USERNAME = "";
+const CONDA = "";
 const DIR = "castamere";
 
-export const TerminalLine = ({ children, userName = USERNAME, dir = DIR }) => {
+export const TerminalLine = ({
+  children,
+  conda = CONDA,
+  userName = USERNAME,
+  dir = DIR,
+}) => {
   const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
+  const env = conda === "" ? "" : `(${conda}) `;
+
   return (
     <div>
       <span className={styles.rightArrow}>→ </span>
+      <span className={styles.env}>{env}</span>
       <span className={styles.userNamePath}>{userNamePath}</span>
       <span className={styles.dolar}>$ </span>
       <span>{children}</span>
@@ -18,12 +27,15 @@ export const TerminalLine = ({ children, userName = USERNAME, dir = DIR }) => {
 
 export const TerminalResponse = ({
   children,
+  conda = CONDA,
   userName = USERNAME,
   dir = DIR,
 }) => {
   const childrenArray = React.Children.toArray(children);
 
   const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
+  const env = conda === "" ? "" : `(${conda}) `;
+
   return (
     <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
       {childrenArray.map((child, index) => {
@@ -31,11 +43,13 @@ export const TerminalResponse = ({
           index === 0 ? (
             <>
               <span className={styles.rightArrow}>+ </span>
+              <span className={styles.env}>{env}</span>
               <span className={styles.userNamePath}>{userNamePath}</span>
             </>
           ) : (
             <span style={{ opacity: 0 }}>
               <span className={styles.rightArrow}>+ </span>
+              <span className={styles.env}>{env}</span>
               <span className={styles.userNamePath}>{userNamePath}</span>
             </span>
           );
