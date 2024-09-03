@@ -1,134 +1,92 @@
 import React from "react";
 import styles from "./styles.module.css";
 
-export const TerminalLine = ({
-  children,
-  blinking = false,
-  dir = "castamere",
-}) => (
-  <div>
-    <span className={styles.rightArrow} aria-hidden="true">
-      →{"  "}
-    </span>
-    <span className={styles.userName} aria-hidden="true">
-      ~/{dir}{" "}
-    </span>
-    {blinking ? (
-      <span className={styles.blinkCursor} aria-hidden="true">
-        ${" "}
-      </span>
-    ) : (
-      <span className={styles.dolar}>$</span>
-    )}{" "}
-    <span>{children}</span>
-  </div>
-);
+const USERNAME = "";
+const DIR = "castamere";
 
-export const TerminalResponse = ({ children, dir = "castamere" }) => {
-  const childrenArray = React.Children.toArray(children);
+export const TerminalLine = ({ children, userName = USERNAME, dir = DIR }) => {
+  const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
   return (
-    <div
-      style={{
-        lineHeight: "1.5rem",
-        alignItems: "",
-        // justifyContent: "left",
-        // justifyItems: "left",
-        // alignItems: "normal",
-      }}
-    >
+    <div>
+      <span className={styles.rightArrow}>→ </span>
+      <span className={styles.userNamePath}>{userNamePath}</span>
+      <span className={styles.dolar}>$ </span>
+      <span>{children}</span>
+    </div>
+  );
+};
+
+export const TerminalResponse = ({
+  children,
+  userName = USERNAME,
+  dir = DIR,
+}) => {
+  const childrenArray = React.Children.toArray(children);
+
+  const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
+  return (
+    <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
       {childrenArray.map((child, index) => {
-        // 判断当前是否是第一行
-        if (index === 0) {
-          return (
+        const frontMatter =
+          index === 0 ? (
             <>
-              <span className={styles.rightArrow} aria-hidden="true">
-                +{" "}
-              </span>
-              <span className={styles.userName} aria-hidden="true">
-                ~/{dir}{" "}
-              </span>
-              {child}
+              <span className={styles.rightArrow}>+ </span>
+              <span className={styles.userNamePath}>{userNamePath}</span>
             </>
+          ) : (
+            <span style={{ opacity: 0 }}>
+              <span className={styles.rightArrow}>+ </span>
+              <span className={styles.userNamePath}>{userNamePath}</span>
+            </span>
           );
-        } else {
-          // 对后续行添加等长的空白
-          return (
-            <div>
-              <span style={{ opacity: 0 }}>
-                <span className={styles.rightArrow} aria-hidden="true">
-                  →{"  "}
-                </span>
-                <span className={styles.userName} aria-hidden="true">
-                  ~/{dir}{" "}
-                </span>
-              </span>
-              {child}
-            </div>
-          );
-        }
+
+        return (
+          <div>
+            {frontMatter}
+            {child}
+          </div>
+        );
       })}
     </div>
   );
 };
 
-export const TerminalRoot = ({ children, title }) => {
+export const TerminalHeader = ({ title }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.toolBar}>
-        <div className={styles.dot} style={{ backgroundColor: "#fb5f57" }} />
-        <div className={styles.dot} style={{ backgroundColor: "#fdbf2d" }} />
-        <div className={styles.dot} style={{ backgroundColor: "#27cb3f" }} />
-        <div className={styles.title} aria-hidden="true">
-          {title}
-        </div>
-      </div>
-      <div className={styles.main}>{children}</div>
+    <div className={styles.toolBar}>
+      <div className={styles.dot} style={{ backgroundColor: "#fb5f57" }} />
+      <div className={styles.dot} style={{ backgroundColor: "#fdbf2d" }} />
+      <div className={styles.dot} style={{ backgroundColor: "#27cb3f" }} />
+      <div className={styles.title}>{title}</div>
     </div>
   );
 };
 
-export default function Terminal({}) {
+export const Line = ({ text }) => {
+  return <span className={styles.line}>{text} </span>;
+};
+
+export const Cmd = ({ text }) => {
+  return <span className={styles.command}>{text} </span>;
+};
+
+export const Tunnel = ({ text }) => {
+  return <span className={styles.tunnel}>{text} </span>;
+};
+
+export const Emph = ({ text }) => {
+  return <span className={styles.emph}>{text} </span>;
+};
+
+export const Comment = ({ text }) => {
+  return <span className={styles.comment}>{text} </span>;
+};
+
+export const TerminalRoot = ({ children, title }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.toolBar}>
-        <div className={styles.dot} style={{ backgroundColor: "#fb5f57" }} />
-        <div className={styles.dot} style={{ backgroundColor: "#fdbf2d" }} />
-        <div className={styles.dot} style={{ backgroundColor: "#27cb3f" }} />
-        <div className={styles.title} aria-hidden="true">
-          Console
-        </div>
-      </div>
-      <div className={styles.main}>
-        <TerminalLine>
-          <span className={styles.command}>ll</span>
-        </TerminalLine>
-        <TerminalResponse>
-          <span>total 143M</span>
-          <span>
-            -rw-r--r-- 1 143M Aug 29 11:41 Miniconda3-latest-Linux-x86_64.sh
-          </span>
-          <span>drwxr-xr-x 1 4.0K Aug 22 14:55 My-Website</span>
-        </TerminalResponse>
-
-        <TerminalLine>
-          <span className={styles.command}>chmod</span> 777
-          Miniconda3-latest-Linux-x86_64.sh
-        </TerminalLine>
-
-        <TerminalLine>
-          <span className={styles.command}>ll</span>
-        </TerminalLine>
-        <TerminalResponse>
-          <span>total 143M</span>
-          <span>
-            -rwxrwxrwx 1 143M Aug 29 11:41 Miniconda3-latest-Linux-x86_64.sh
-          </span>
-          <span>drwxr-xr-x 1 4.0K Aug 22 14:55 My-Website</span>
-        </TerminalResponse>
-
-        <TerminalResponse>./Miniconda3-latest-Linux-x86_64.sh</TerminalResponse>
-        <TerminalResponse>2</TerminalResponse>
-      </div>
+    <div className={styles.card} aria-hidden="true">
+      <TerminalHeader title={title} />
+      <div className={styles.main}>{children}</div>
     </div>
   );
-}
+};
