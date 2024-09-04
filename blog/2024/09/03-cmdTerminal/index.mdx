@@ -31,7 +31,9 @@ import Terminal from "./components/Terminal";
 
 ## 使用
 
-使用方式大致如下(在 docusaurus 中)，首先在文件中将必要的组件 import 进来
+使用方式大致如下(在 docusaurus 中)，首先将组件放到 `src/components` 目录下(组件在[完整代码](#完整代码)处查看)，然后在文件中将必要的组件 import 进来
+
+![component](./image/component.png)
 
 ```tsx showLineNumbers
 import {
@@ -43,7 +45,7 @@ import {
 import Terminal from "./components/Terminal";
 ```
 
-然后再需要使用的地方添加 `TerminalRoot` 组件，只有唯一参数 `title`，然后在其中根据需求使用 `TerminalLine` 和 `TerminalResponse` 即可，这里给出一个样例：
+然后在需要使用的地方添加 `TerminalRoot` 组件，只有唯一参数 `title`，然后在其中根据需求使用 `TerminalLine` 和 `TerminalResponse` 即可，这里给出一个样例：
 
 <Tabs>
 
@@ -558,6 +560,275 @@ import React from "react";
   </TerminalLine>
 </TerminalRoot>
 
+## 完整代码
+
+最终完整代码如下，也可访问 [github] 下载
+
+<details>
+  <summary>完整代码</summary>
+
+<Tabs>
+<TabItem value="tsx" label="CommandLine.tsx">
+
+```tsx showLineNumbers title="CommandLine.tsx"
+import React from "react";
+import styles from "./styles.module.css";
+
+const USERNAME = "";
+const CONDA = "";
+const DIR = "castamere";
+const RESPONSE_STYLE = "PLAIN";
+
+export const TerminalLine = ({
+  children,
+  conda = CONDA,
+  userName = USERNAME,
+  dir = DIR,
+}) => {
+  const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
+  const env = conda === "" ? "" : `(${conda}) `;
+  const frontMatterContent = (
+    <>
+      <span className={styles.env}>{env}</span>
+      <span className={styles.rightArrow}>→ </span>
+      <span className={styles.userNamePath}>{userNamePath}</span>
+      <span className={styles.dolar}>$ </span>
+    </>
+  );
+
+  return (
+    <div>
+      {frontMatterContent}
+      {children}
+    </div>
+  );
+};
+
+export const TerminalResponse = ({
+  children,
+  conda = CONDA,
+  userName = USERNAME,
+  dir = DIR,
+  response_style = RESPONSE_STYLE,
+}) => {
+  const childrenArray = React.Children.toArray(children);
+  const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
+  const env = conda === "" ? "" : `(${conda}) `;
+  const frontMatterContent = (
+    <>
+      <span className={styles.env}>{env}</span>
+      <span className={styles.rightArrow}>+ </span>
+      <span className={styles.userNamePath}>{userNamePath}</span>
+    </>
+  );
+
+  switch (response_style) {
+    case "NEWLINE":
+      return (
+        <>
+          <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+            {childrenArray.map((child, index) => (
+              <div key={index}>{child}</div>
+            ))}
+          </div>
+        </>
+      );
+
+    case "PLAIN":
+      return (
+        <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+          {childrenArray.map((child, index) => {
+            const frontMatter =
+              index === 0 ? (
+                frontMatterContent
+              ) : (
+                <span style={{ opacity: 0 }}>{frontMatterContent}</span>
+              );
+
+            return (
+              <div key={index}>
+                {frontMatter}
+                {child}
+              </div>
+            );
+          })}
+        </div>
+      );
+
+    default:
+      break;
+  }
+};
+
+export const TerminalHeader = ({ title }) => {
+  return (
+    <div className={styles.toolBar}>
+      <div className={styles.dot} style={{ backgroundColor: "#fb5f57" }} />
+      <div className={styles.dot} style={{ backgroundColor: "#fdbf2d" }} />
+      <div className={styles.dot} style={{ backgroundColor: "#27cb3f" }} />
+      <div className={styles.title}>{title}</div>
+    </div>
+  );
+};
+
+export const Line = ({ text }) => {
+  return <span className={styles.line}>{text} </span>;
+};
+
+export const Cmd = ({ text }) => {
+  return <span className={styles.command}>{text} </span>;
+};
+
+export const Tunnel = ({ text }) => {
+  return <span className={styles.tunnel}>{text} </span>;
+};
+
+export const Emph = ({ text }) => {
+  return <span className={styles.emph}>{text} </span>;
+};
+
+export const Comment = ({ text }) => {
+  return <span className={styles.comment}>{text} </span>;
+};
+
+export const Args = ({ text }) => {
+  return <span className={styles.args}>{text} </span>;
+};
+
+export const TerminalRoot = ({ children, title }) => {
+  return (
+    <div className={styles.card} aria-hidden="true">
+      <TerminalHeader title={title} />
+      <div className={styles.main}>{children}</div>
+    </div>
+  );
+};
+```
+
+</TabItem>
+
+<TabItem value="css" label="styles.module.css">
+
+```css title="styles.module.css" showLineNumbers
+.card {
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  background-color: rgba(255, 255, 254, 1);
+  border: 1px solid #e5e7eb;
+  border-bottom-color: #00000026;
+  border-radius: 0.375rem;
+  box-shadow: 0 0 0 #0000, 0 0 0 #0000, 0 0 0 #0000, 0 0 0 #0000,
+    0 30px 100px -4px #336fef33;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+  font-family: MesloLGS NF Regular;
+  src: url("@site/src/fonts/MesloLGS NF Font/MesloLGS NF Regular.ttf");
+  margin-bottom: 20px;
+}
+
+.toolBar {
+  padding: 0.5rem;
+  background-color: hsla(0, 0%, 100%, 0.001);
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 6px;
+}
+
+.toolBar .dot {
+  border-radius: 9999px;
+  cursor: no-drop;
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.toolBar .title {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  color: rgb(28, 30, 33);
+}
+
+.main {
+  padding: 1rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.main .rightArrow {
+  color: rgb(234, 74, 170);
+  line-height: 1.5rem;
+  font-weight: 700;
+}
+
+.main .userNamePath {
+  color: rgb(102, 231, 119);
+  font-weight: 700;
+}
+
+.main .env {
+  color: rgb(160, 147, 147);
+  font-weight: 700;
+}
+
+.main .dolar {
+  font-weight: 700;
+  color: rgb(55, 65, 81);
+  transition-duration: 0.2s;
+}
+
+.main .command {
+  color: rgb(13, 188, 92);
+}
+
+.main .args {
+  color: rgb(160, 147, 147);
+}
+
+.main .line {
+  color: rgb(28, 30, 33);
+  white-space: pre;
+}
+
+.main .tunnel {
+  color: rgb(193, 156, 0);
+}
+
+.main .emph {
+  font-weight: 700;
+  color: rgb(55, 111, 234);
+  white-space: pre;
+}
+
+.main .comment {
+  font-style: italic;
+  color: rgb(82, 153, 73);
+  white-space: pre;
+}
+
+.main .fontBold {
+  font-weight: 700;
+}
+
+.main a {
+  color: inherit;
+  text-decoration: none;
+}
+```
+
+</TabItem>
+</Tabs>
+</details>
+
 ## 后记
 
 希望这篇文章能帮助到你，如果你有任何问题，欢迎在评论区留言
@@ -565,3 +836,4 @@ import React from "react";
 P.S: 如果有什么好的需求与建议，也欢迎留言
 
 [prismjs]: https://prismjs.com/plugins/command-line/
+[github]: https://github.com/Casta-mere/My-Website/tree/master/src/components/CommandLine
