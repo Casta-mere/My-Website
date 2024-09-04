@@ -119,6 +119,11 @@ Version Control:
   label: Version Control
   permalink: /Version-Control
 
+Vim:
+  description: Vim
+  label: Vim
+  permalink: /Vim
+
 Windows:
   description: Windows
   label: Windows
