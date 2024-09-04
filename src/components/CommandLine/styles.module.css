@@ -12,7 +12,8 @@
     text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 0.15s;
-  font-family: MesloLGS NF;
+  font-family: MesloLGS NF Regular;
+  src: url("@site/src/fonts/MesloLGS NF Font/MesloLGS NF Regular.ttf");
   margin-bottom: 20px;
 }
 
@@ -47,9 +48,8 @@
 
 .main {
   padding: 1rem;
-  white-space: normal;
-  overflow-x: hidden;
-  min-height: 200px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .main .rightArrow {
@@ -58,8 +58,13 @@
   font-weight: 700;
 }
 
-.main .userName {
+.main .userNamePath {
   color: rgb(102, 231, 119);
+  font-weight: 700;
+}
+
+.main .env {
+  color: rgb(160, 147, 147);
   font-weight: 700;
 }
 
@@ -73,6 +78,10 @@
   color: rgb(13, 188, 92);
 }
 
+.main .args {
+  color: rgb(160, 147, 147);
+}
+
 .main .line {
   color: rgb(28, 30, 33);
   white-space: pre;
@@ -83,12 +92,15 @@
 }
 
 .main .emph {
+  font-weight: 700;
   color: rgb(55, 111, 234);
+  white-space: pre;
 }
 
 .main .comment {
   font-style: italic;
   color: rgb(82, 153, 73);
+  white-space: pre;
 }
 
 .main .fontBold {

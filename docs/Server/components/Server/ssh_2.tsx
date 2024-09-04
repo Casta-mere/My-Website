@@ -1,61 +1,50 @@
 import {
+  Cmd,
+  Comment,
+  Emph,
+  Line,
   TerminalLine,
   TerminalResponse,
+  TerminalRoot,
+  Tunnel,
 } from "@site/src/components/CommandLine";
-import styles from "@site/src/components/CommandLine/styles.module.css";
 import React from "react";
-
 export default function Terminal({}) {
   const dir2 = ".ssh";
   return (
-    <div className={styles.card}>
-      <div className={styles.toolBar}>
-        <div className={styles.dot} style={{ backgroundColor: "#fb5f57" }} />
-        <div className={styles.dot} style={{ backgroundColor: "#fdbf2d" }} />
-        <div className={styles.dot} style={{ backgroundColor: "#27cb3f" }} />
-        <div className={styles.title} aria-hidden="true">
-          公钥处理(服务器端)
-        </div>
-      </div>
-      {/* cat ~/.ssh/id_rsa.pub >> authorized_keys */}
-      <div className={styles.main}>
-        <TerminalLine dir={dir2}>
-          <span className={styles.command}>cat</span>
-          <span className={styles.line}> ./id_rsa.pub</span>
-          <span className={styles.tunnel}> &gt;&gt;</span>
-          <span className={styles.line}> authorized_keys</span>
-        </TerminalLine>
+    <TerminalRoot title="公钥处理(服务器端)">
+      <TerminalLine dir={dir2}>
+        <Cmd text="cat" />
+        <Line text="./id_rsa.pub" />
+        <Tunnel text="&gt;&gt;" />
+        <Line text="authorized_keys" />
+      </TerminalLine>
 
-        <TerminalLine dir={dir2}>
-          <span className={styles.command}>vi</span>
-          <span className={styles.line}> /etc/ssh/sshd_config</span>
-        </TerminalLine>
-        <TerminalLine dir={dir2}>
-          {/* cat /etc/ssh/sshd_config | grep -v '^#' | grep -v '^$' */}
-          <span className={styles.command}>cat</span>
-          <span className={styles.line}> /etc/ssh/sshd_config</span>
-          <span className={styles.tunnel}> |</span>
-          <span className={styles.command}> grep</span>
-          <span className={styles.line}> -v '^#'</span>
-          <span className={styles.tunnel}> |</span>
-          <span className={styles.command}> grep</span>
-          <span className={styles.line}> -v '^$'</span>
-        </TerminalLine>
+      <TerminalLine dir={dir2}>
+        <Cmd text="vi" />
+        <Line text="/etc/ssh/sshd_config" />
+      </TerminalLine>
 
-        <TerminalResponse dir={dir2}>
-          <span className={styles.line}>
-            Include /etc/ssh/sshd_config.d/*.conf
-          </span>
-          <span className={styles.comment}># 把下面这行取消注释即可</span>
-          <span className={styles.emph}>PubkeyAuthentication yes</span>
-          <span className={styles.line}>KbdInteractiveAuthentication no</span>
-          <span className={styles.line}>UsePAM yes</span>
-          <span className={styles.line}>...</span>
-          <span className={styles.line}>
-            AuthorizedKeysCommandUser ecs-instance-connect
-          </span>
-        </TerminalResponse>
-      </div>
-    </div>
+      <TerminalLine dir={dir2}>
+        <Cmd text="cat" />
+        <Line text="/etc/ssh/sshd_config" />
+        <Tunnel text="|" />
+        <Cmd text="grep" />
+        <Line text="-v '^#'" />
+        <Tunnel text="|" />
+        <Cmd text="grep" />
+        <Line text="-v '^$'" />
+      </TerminalLine>
+
+      <TerminalResponse dir={dir2}>
+        <Line text="Include /etc/ssh/sshd_config.d/*.conf" />
+        <Comment text="# 把下面这行取消注释即可" />
+        <Emph text="PubkeyAuthentication yes" />
+        <Line text="KbdInteractiveAuthentication no" />
+        <Line text="UsePAM yes" />
+        <Line text="..." />
+        <Line text="AuthorizedKeysCommandUser ecs-instance-connect" />
+      </TerminalResponse>
+    </TerminalRoot>
   );
 }
