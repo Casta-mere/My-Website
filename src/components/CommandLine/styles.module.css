@@ -56,27 +56,32 @@
   color: rgb(234, 74, 170);
   line-height: 1.5rem;
   font-weight: 700;
+  user-select: none;
 }
 
 .main .userNamePath {
   color: rgb(102, 231, 119);
   font-weight: 700;
+  user-select: none;
 }
 
 .main .mysql {
   color: gray;
   white-space: pre;
+  user-select: none;
 }
 
 .main .env {
   color: rgb(160, 147, 147);
   font-weight: 700;
+  user-select: none;
 }
 
 .main .dolar {
   font-weight: 700;
   color: rgb(55, 65, 81);
   transition-duration: 0.2s;
+  user-select: none;
 }
 
 .main .command {
