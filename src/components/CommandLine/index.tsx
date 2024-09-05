@@ -5,6 +5,7 @@ const USERNAME = "";
 const CONDA = "";
 const DIR = "castamere";
 const RESPONSE_STYLE = "PLAIN";
+const LINE_BREAK = "AUTO";
 
 export const TerminalLine = ({
   children,
@@ -29,6 +30,85 @@ export const TerminalLine = ({
       {children}
     </div>
   );
+};
+
+export const MysqlLine = ({ children, linebreak = LINE_BREAK }) => {
+  const childrenArray = React.Children.toArray(children);
+  const frontMatterContent = [
+    <span className={styles.mysql}>{"mysql> "}</span>,
+    <span className={styles.mysql}>{"    -> "}</span>,
+  ];
+
+  switch (linebreak) {
+    case "AUTO":
+      return (
+        <>
+          {
+            <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+              {childrenArray.map((child, index) => {
+                if (index === 0)
+                  return (
+                    <React.Fragment key={index}>
+                      {frontMatterContent[0]}
+                      {child}
+                    </React.Fragment>
+                  );
+
+                if (
+                  React.isValidElement(child) &&
+                  typeof child.type === "function"
+                ) {
+                  if (child.type.name === "Dbkey") {
+                    return (
+                      <React.Fragment key={index}>
+                        <br />
+                        {frontMatterContent[1]}
+                        {child}
+                      </React.Fragment>
+                    );
+                  }
+                  return <React.Fragment key={index}>{child}</React.Fragment>;
+                }
+              })}
+            </div>
+          }
+        </>
+      );
+
+    case "MANUAL":
+      return (
+        <>
+          {
+            <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+              {childrenArray.map((child, index) => {
+                if (index === 0)
+                  return (
+                    <React.Fragment key={index}>
+                      {frontMatterContent[0]}
+                      {child}
+                    </React.Fragment>
+                  );
+
+                if (React.isValidElement(child)) {
+                  if (child.type === "br") {
+                    return (
+                      <React.Fragment key={index}>
+                        <br />
+                        {frontMatterContent[1]}
+                      </React.Fragment>
+                    );
+                  } else
+                    return <React.Fragment key={index}>{child}</React.Fragment>;
+                }
+              })}
+            </div>
+          }
+        </>
+      );
+      break;
+    default:
+      break;
+  }
 };
 
 export const TerminalResponse = ({
@@ -120,6 +200,18 @@ export const Comment = ({ text }) => {
 
 export const Args = ({ text }) => {
   return <span className={styles.args}>{text} </span>;
+};
+
+export const Dbkey = ({ text }) => {
+  return <span className={styles.dbkey}>{text} </span>;
+};
+
+export const Dbvalue = ({ text }) => {
+  return <span className={styles.dbvalue}>{text} </span>;
+};
+
+export const Dbfunction = ({ text }) => {
+  return <span className={styles.dbfunction}>{text}</span>;
 };
 
 export const TerminalRoot = ({ children, title }) => {

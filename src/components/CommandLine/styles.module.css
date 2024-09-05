@@ -63,6 +63,11 @@
   font-weight: 700;
 }
 
+.main .mysql {
+  color: gray;
+  white-space: pre;
+}
+
 .main .env {
   color: rgb(160, 147, 147);
   font-weight: 700;
@@ -101,6 +106,21 @@
   font-style: italic;
   color: rgb(82, 153, 73);
   white-space: pre;
+}
+
+.main .dbkey {
+  color: rgb(0, 127, 191);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.main .dbvalue {
+  color: rgb(238, 145, 0);
+}
+
+.main .dbfunction {
+  color: gray;
+  text-transform: uppercase;
 }
 
 .main .fontBold {
