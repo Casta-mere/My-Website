@@ -609,7 +609,7 @@ import React from "react";
 
 ### 智能选择
 
-现在，Terminal 组件中，前缀内容将不可选中，读者可以直接复制多行命令进行使用。如下，读者可以测试一下
+现在，Terminal 组件中，前缀内容将不可选中，读者可以直接复制多行命令进行使用。如下，读者可以体验一下区别
 
 <Tabs>
 <TabItem value="old" label="旧版">
@@ -627,7 +627,7 @@ import React from "react";
 
 ## Mysql 模式 <span class="badge badge--primary">New !</span>
 
-Mysql 模式即模仿一个 Mysql 交互命令行，同样包括输入和输出，效果如下:输入时，第一行开头固定为 `mysql>`，后续换行会自动补全 `    ->`
+Mysql 模式即模仿一个 Mysql 交互命令行，同样包括输入和输出，效果如下: 输入时，第一行开头固定为 `mysql>`，后续换行会自动补全 `    ->`
 
 <TerminalRoot title="Mysql Mode">
   <TerminalLine>
@@ -720,7 +720,7 @@ Mysql 模式即模仿一个 Mysql 交互命令行，同样包括输入和输出�
 
 ### 输入 (MysqlLine)
 
-`MysqlLine` 输入的为一个 sql 语句，其中包括 sql 关键字、函数、常量等元素，这里逐个演示
+`MysqlLine` 输入的为一个 sql 语句，其中包括 sql 关键字、函数、常量等元素，接下来逐个演示
 
 #### sql 关键字
 
@@ -775,6 +775,31 @@ sql 关键字即 `select`, `from`, `where` 这些，组件为`<Dbkey>`。尽管 
   </MysqlLine>
 </TerminalRoot>
 
+代码如下：
+
+```tsx showLineNumbers title="sql函数"
+<TerminalRoot title={"sql 函数"}>
+  <MysqlLine linebreak="MANUAL">
+    <Dbfunction text="sum" />
+    <br />
+    <Dbfunction text="concat" />
+    <br />
+    <Dbfunction text="replace" />
+    <br />
+    <Dbkey text="select" />
+    <Dbfunction text="ABS" />
+    <Line text="(-10)" />
+    <Dbkey text="as" />
+    <Line text="AbsoluteValue;" />
+    <br />
+    <Dbkey text="select" />
+    <Dbfunction text="getdate()" />
+    <Dbkey text=" as" />
+    <Line text="CurrentDate;" />
+  </MysqlLine>
+</TerminalRoot>
+```
+
 #### 常量
 
 常量包括字符串常量、数字常量、日期常量等，组件为 `<Dbvalue>`
@@ -797,6 +822,27 @@ sql 关键字即 `select`, `from`, `where` 这些，组件为`<Dbkey>`。尽管 
     <Line text="date;" />
   </MysqlLine>
 </TerminalRoot>
+
+```tsx showLineNumbers title="sql 常量"
+<TerminalRoot title={"sql 常量"}>
+  <MysqlLine linebreak="MANUAL">
+    <Dbkey text="select" />
+    <Dbvalue text="'hello world'" />
+    <Dbkey text="as" />
+    <Line text="greeting;" />
+    <br />
+    <Dbkey text="select" />
+    <Dbvalue text="123" />
+    <Dbkey text="as" />
+    <Line text="number;" />
+    <br />
+    <Dbkey text="select" />
+    <Dbvalue text="'2024-01-01'" />
+    <Dbkey text="as" />
+    <Line text="date;" />
+  </MysqlLine>
+</TerminalRoot>
+```
 
 ### 换行方式
 
