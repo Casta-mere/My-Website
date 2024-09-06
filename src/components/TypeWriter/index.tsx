@@ -4,12 +4,14 @@ import "./TypeWriter.css";
 const SEPERATOR = ";";
 const INTERVAL = 3000;
 const TYPING_SPEED = 30;
+const LINE_BREAK = "truncate";
 
 function Typewriter({
   text,
   textSeparator = SEPERATOR,
   typingSpeed = TYPING_SPEED,
   delinterval = INTERVAL,
+  lineBreak = LINE_BREAK,
 }) {
   const texts = text.split(textSeparator);
   const [displayText, setDisplayText] = useState("");
@@ -61,7 +63,7 @@ function Typewriter({
   ]);
 
   return (
-    <div className="typewriter">
+    <div className={lineBreak}>
       <span>{displayText}</span>
       <span className="cursor">|</span>
     </div>
