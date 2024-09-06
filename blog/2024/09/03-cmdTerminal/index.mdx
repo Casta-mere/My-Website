@@ -9,8 +9,12 @@ import {
   Args,
   Cmd,
   Comment,
+  Dbfunction,
+  Dbkey,
+  Dbvalue,
   Emph,
   Line,
+  MysqlLine,
   TerminalLine,
   TerminalResponse,
   TerminalRoot,
@@ -19,6 +23,13 @@ import {
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import Terminal from "./components/Terminal";
+
+一个在 React 中模拟命令行终端的小组件，用于向读者演示/教学时使用，目前支持以下功能：
+
+- [x] 支持修改终端的 title
+- [x] 支持修改用户、路径、conda 环境(同一终端能多次修改，便于演示修改的命令)
+- [x] 支持两种输出模式：换行顶格显示、前缀空格，对齐显示
+- [x] 新增支持 mysql 模式 <span class="badge badge--primary">New !</span>
 
 <Terminal />
 {/* truncate */}
@@ -31,7 +42,7 @@ import Terminal from "./components/Terminal";
 
 ## 使用
 
-使用方式大致如下(在 docusaurus 中)，首先将组件放到 `src/components` 目录下(组件在[完整代码](#完整代码)处查看)，然后在文件中将必要的组件 import 进来
+使用方式大致如下(在 docusaurus 中)，首先将组件放到 `src/components` 目录下(组件在[完整代码](/blog/cmdTerminal#完整代码)处查看)，然后在文件中将必要的组件 import 进来
 
 ![component](./image/component.png)
 
@@ -50,7 +61,42 @@ import Terminal from "./components/Terminal";
 <Tabs>
 
 <TabItem value="terminal" label="效果">
-  <Terminal />
+
+<TerminalRoot title={"终端模拟器"}>
+  <TerminalLine userName="casta" dir="">
+    <Cmd text="conda init" />
+  </TerminalLine>
+  
+  <TerminalLine userName="casta" dir="" conda="base">
+    <Cmd text="ps" />
+    <Args text="-a" />
+  </TerminalLine>
+  <TerminalResponse userName="casta" dir="" conda="base" response_style="NEWLINE">
+    <Line text="PID TTY          TIME CMD" />
+    <Line text=" 12 tty1     00:00:00 sh" />
+    <Line text=" 13 tty1     00:00:00 sh" />
+    <Line text=" 18 tty1     00:00:00 sh" />
+    <Line text=" 22 tty1     00:00:08 node" />
+  </TerminalResponse>
+
+  <TerminalLine userName="casta" dir="" conda="base">
+    <Cmd text="conda activate" />
+    <Line text="torch" />
+  </TerminalLine>
+  <TerminalLine userName="casta" dir="" conda="torch">
+    <Cmd text="ll" />
+  </TerminalLine>
+  <TerminalResponse
+    userName="casta"
+    dir=""
+    conda="torch"
+    response_style="NEWLINE"
+  >
+    <Line text="total 1" />
+    <Line text="drwxr-xr-x 2 root root 4096 Sep  3 10:00 ./" />
+  </TerminalResponse>
+</TerminalRoot>
+
 </TabItem>
 
 <TabItem value="tsx" label="代码样例">
@@ -560,6 +606,274 @@ import React from "react";
   </TerminalLine>
 </TerminalRoot>
 
+## Mysql 模式 <span class="badge badge--primary">New !</span>
+
+Mysql 模式即模仿一个 Mysql 交互命令行，同样包括输入和输出，效果如下:输入时，第一行开头固定为 `mysql>`，后续换行会自动补全 `    ->`
+
+<TerminalRoot title="Mysql Mode">
+  <TerminalLine>
+    <Cmd text="mysql" />
+    <Args text="-uroot -p" />
+  </TerminalLine>
+  <MysqlLine linebreak="MANUAL">
+    <Dbkey text="use" />
+    <Line text="my_db;" />
+    <br />
+    <Dbkey text="select" />
+    <Line text="*" />
+    <br />
+    <Dbkey text="from" />
+    <Line text="user" />
+    <br />
+    <Dbkey text="orderby" />
+    <Line text="id" />
+    <Dbkey text="desc" />
+    <Line text=";" />
+  </MysqlLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Line text="+--------+-------------+-----------------------+" />
+    <Line text="| id     | name        | email                 |" />
+    <Line text="+--------+-------------+-----------------------+" />
+    <Line text="| cltaau | Castamere   | castamerego@gmail.com |" />
+    <Line text="| cltx76 | Achinoise   | 981193371@qq.com      |" />
+    <Line text="| cltzwk | flamingo952 | 1719538377@qq.com     |" />
+    <Line text="+--------+-------------+-----------------------+" />
+  </TerminalResponse>
+
+  <MysqlLine linebreak="MANUAL">
+    <Dbkey text="select" />
+    <br />
+    <Line text="  c.customer_id, c.customer_name, o.order_id," />
+    <br />
+    <Line text="  o.order_date, p.product_name, p.product_price," />
+    <br />
+    <Line text="  oi.quantity, (oi.quantity * p.product_price)" />
+    <Dbkey text="as" />
+    <Line text="total_item_price" />
+    <br />
+    <Dbkey text="from" />
+    <br />
+    <Line text="  customers c" />
+    <br />
+    <Dbkey text="join" />
+    <Line text="orders o" />
+    <Dbkey text="on" />
+    <Line text="c.customer_id = o.customer_id" />
+    <br />
+    <Dbkey text="join" />
+    <Line text="order_items oi" />
+    <Dbkey text="on" />
+    <Line text="o.order_id = oi.order_id" />
+    <br />
+    <Dbkey text="join" />
+    <Line text="products p " />
+    <Dbkey text="on" />
+    <Line text="oi.product_id = p.product_id" />
+    <br />
+    <Dbkey text="where" />
+    <br />
+    <Line text="  o.order_date" />
+    <Dbkey text="between" />
+    <Dbvalue text="'2024-01-01'" />
+    <Dbkey text="and" />
+    <Dbvalue text="'2024-12-31'" />
+    <br />
+    <Dbkey text="group by" />
+    <br />
+    <Line text="  c.customer_id, o.order_id, p.product_name" />
+    <br />
+    <Dbkey text="having" />
+    <br />
+    <Dbfunction text="  sum" />
+    <Line text="(oi.quantity * p.product_price) >" />
+    <Dbvalue text="100" />
+    <br />
+    <Dbkey text="order by" />
+    <br />
+    <Line text="  total_item_price" />
+    <Dbkey text="desc" />
+    <br />
+    <Dbkey text="limit" />
+    <Dbvalue text="10" />
+    <Line text=";" />
+  </MysqlLine>
+</TerminalRoot>
+
+### 输入 (MysqlLine)
+
+`MysqlLine` 输入的为一个 sql 语句，其中包括 sql 关键字、函数、常量等元素，这里逐个演示
+
+#### sql 关键字
+
+sql 关键字即 `select`, `from`, `where` 这些，组件为`<Dbkey>`。尽管 sql 是大小写不敏感的，但为了美观，笔者设置了自动将关键字大写
+
+<TerminalRoot title={"sql 关键字"}>
+  <MysqlLine>
+    <Dbkey text="use" />
+    <Dbkey text="select" />
+    <Dbkey text="from" />
+    <Dbkey text="orderby" />
+    <Dbkey text="desc" />
+  </MysqlLine>
+</TerminalRoot>
+
+代码如下：
+
+```tsx showLineNumbers
+<TerminalRoot title={"sql 关键字"}>
+  <MysqlLine>
+    <Dbkey text="use" />
+    <Dbkey text="select" />
+    <Dbkey text="from" />
+    <Dbkey text="orderby" />
+    <Dbkey text="desc" />
+  </MysqlLine>
+</TerminalRoot>
+```
+
+#### 函数
+
+这里指的是 sql 的内置函数，比如 `sum`, `concat`, `replace` 这些，组件为 `<Dbfunction>`，同样设置了自动大写
+
+<TerminalRoot title={"sql 函数"}>
+  <MysqlLine linebreak="MANUAL">
+    <Dbfunction text="sum" />
+    <br />
+    <Dbfunction text="concat" />
+    <br />
+    <Dbfunction text="replace" />
+    <br />
+    <Dbkey text="select" />
+    <Dbfunction text="ABS" />
+    <Line text="(-10)" />
+    <Dbkey text="as" />
+    <Line text="AbsoluteValue;" />
+    <br />
+    <Dbkey text="select" />
+    <Dbfunction text="getdate()" />
+    <Dbkey text=" as" />
+    <Line text="CurrentDate;" />
+  </MysqlLine>
+</TerminalRoot>
+
+#### 常量
+
+常量包括字符串常量、数字常量、日期常量等，组件为 `<Dbvalue>`
+
+<TerminalRoot title={"sql 常量"}>
+  <MysqlLine linebreak="MANUAL">
+    <Dbkey text="select" />
+    <Dbvalue text="'hello world'" />
+    <Dbkey text="as" />
+    <Line text="greeting;" />
+    <br />
+    <Dbkey text="select" />
+    <Dbvalue text="123" />
+    <Dbkey text="as" />
+    <Line text="number;" />
+    <br />
+    <Dbkey text="select" />
+    <Dbvalue text="'2024-01-01'" />
+    <Dbkey text="as" />
+    <Line text="date;" />
+  </MysqlLine>
+</TerminalRoot>
+
+### 换行方式
+
+:::important
+注意，`MysqlLine` 可以设置两种换行方式，即 `AUTO` 和 `MANUAL`，默认为 `AUTO`
+
+- `AUTO`：自动换行，每次遇到 sql 关键字都会换行，适用于 sql 较短的情况
+- `MANUAL`：手动换行，只在手动添加 `<br/>` 处换行
+
+:::
+
+<TerminalRoot title="换行方式">
+  <TerminalLine>
+    <Cmd text="mysql" />
+    <Args text="-uroot -p" />
+  </TerminalLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Comment text="手动换行：" />
+  </TerminalResponse>
+  <MysqlLine linebreak="MANUAL">
+    <Dbkey text="use" />
+    <Line text="my_db;" />
+    <br />
+    <Dbkey text="select" />
+    <Line text="*" />
+    <Dbkey text="from" />
+    <Line text="user" />
+    <Dbkey text="orderby" />
+    <Line text="id" />
+    <Dbkey text="desc" />
+    <Line text=";" />
+  </MysqlLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Comment text="自动换行：" />
+  </TerminalResponse>
+  <MysqlLine>
+    <Dbkey text="use" />
+    <Line text="my_db;" />
+    <Dbkey text="select" />
+    <Line text="*" />
+    <Dbkey text="from" />
+    <Line text="user" />
+    <Dbkey text="orderby" />
+    <Line text="id" />
+    <Dbkey text="desc" />
+    <Line text=";" />
+  </MysqlLine>
+</TerminalRoot>
+
+代码如下:
+
+<details>
+  <summary>换行方式</summary>
+
+```tsx title="换行方式" showLineNumbers
+<TerminalRoot title="Mysql Mode">
+  <TerminalLine>
+    <Cmd text="mysql" />
+    <Args text="-uroot -p" />
+  </TerminalLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Comment text="手动换行：" />
+  </TerminalResponse>
+  <MysqlLine linebreak="MANUAL">
+    <Dbkey text="use" />
+    <Line text="my_db;" />
+    <br />
+    <Dbkey text="select" />
+    <Line text="*" />
+    <Dbkey text="from" />
+    <Line text="user" />
+    <Dbkey text="orderby" />
+    <Line text="id" />
+    <Dbkey text="desc" />
+    <Line text=";" />
+  </MysqlLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Comment text="自动换行：" />
+  </TerminalResponse>
+  <MysqlLine>
+    <Dbkey text="use" />
+    <Line text="my_db;" />
+    <Dbkey text="select" />
+    <Line text="*" />
+    <Dbkey text="from" />
+    <Line text="user" />
+    <Dbkey text="orderby" />
+    <Line text="id" />
+    <Dbkey text="desc" />
+    <Line text=";" />
+  </MysqlLine>
+</TerminalRoot>
+```
+
+</details>
+
 ## 完整代码
 
 最终完整代码如下，也可访问 [github] 下载
@@ -578,6 +892,7 @@ const USERNAME = "";
 const CONDA = "";
 const DIR = "castamere";
 const RESPONSE_STYLE = "PLAIN";
+const LINE_BREAK = "AUTO";
 
 export const TerminalLine = ({
   children,
@@ -602,6 +917,85 @@ export const TerminalLine = ({
       {children}
     </div>
   );
+};
+
+export const MysqlLine = ({ children, linebreak = LINE_BREAK }) => {
+  const childrenArray = React.Children.toArray(children);
+  const frontMatterContent = [
+    <span className={styles.mysql}>{"mysql> "}</span>,
+    <span className={styles.mysql}>{"    -> "}</span>,
+  ];
+
+  switch (linebreak) {
+    case "AUTO":
+      return (
+        <>
+          {
+            <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+              {childrenArray.map((child, index) => {
+                if (index === 0)
+                  return (
+                    <React.Fragment key={index}>
+                      {frontMatterContent[0]}
+                      {child}
+                    </React.Fragment>
+                  );
+
+                if (
+                  React.isValidElement(child) &&
+                  typeof child.type === "function"
+                ) {
+                  if (child.type.name === "Dbkey") {
+                    return (
+                      <React.Fragment key={index}>
+                        <br />
+                        {frontMatterContent[1]}
+                        {child}
+                      </React.Fragment>
+                    );
+                  }
+                  return <React.Fragment key={index}>{child}</React.Fragment>;
+                }
+              })}
+            </div>
+          }
+        </>
+      );
+
+    case "MANUAL":
+      return (
+        <>
+          {
+            <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
+              {childrenArray.map((child, index) => {
+                if (index === 0)
+                  return (
+                    <React.Fragment key={index}>
+                      {frontMatterContent[0]}
+                      {child}
+                    </React.Fragment>
+                  );
+
+                if (React.isValidElement(child)) {
+                  if (child.type === "br") {
+                    return (
+                      <React.Fragment key={index}>
+                        <br />
+                        {frontMatterContent[1]}
+                      </React.Fragment>
+                    );
+                  } else
+                    return <React.Fragment key={index}>{child}</React.Fragment>;
+                }
+              })}
+            </div>
+          }
+        </>
+      );
+      break;
+    default:
+      break;
+  }
 };
 
 export const TerminalResponse = ({
@@ -695,6 +1089,18 @@ export const Args = ({ text }) => {
   return <span className={styles.args}>{text} </span>;
 };
 
+export const Dbkey = ({ text }) => {
+  return <span className={styles.dbkey}>{text} </span>;
+};
+
+export const Dbvalue = ({ text }) => {
+  return <span className={styles.dbvalue}>{text} </span>;
+};
+
+export const Dbfunction = ({ text }) => {
+  return <span className={styles.dbfunction}>{text}</span>;
+};
+
 export const TerminalRoot = ({ children, title }) => {
   return (
     <div className={styles.card} aria-hidden="true">
@@ -768,11 +1174,17 @@ export const TerminalRoot = ({ children, title }) => {
   color: rgb(234, 74, 170);
   line-height: 1.5rem;
   font-weight: 700;
+  user-select: none;
 }
 
 .main .userNamePath {
   color: rgb(102, 231, 119);
   font-weight: 700;
+}
+
+.main .mysql {
+  color: gray;
+  white-space: pre;
 }
 
 .main .env {
@@ -815,6 +1227,21 @@ export const TerminalRoot = ({ children, title }) => {
   white-space: pre;
 }
 
+.main .dbkey {
+  color: rgb(0, 127, 191);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.main .dbvalue {
+  color: rgb(238, 145, 0);
+}
+
+.main .dbfunction {
+  color: gray;
+  text-transform: uppercase;
+}
+
 .main .fontBold {
   font-weight: 700;
 }
@@ -822,6 +1249,37 @@ export const TerminalRoot = ({ children, title }) => {
 .main a {
   color: inherit;
   text-decoration: none;
+}
+
+.main .blinkCursor {
+  font-weight: 700;
+  position: relative;
+  transition-duration: 0.2s;
+  color: rgb(55, 65, 81);
+}
+
+.main .blinkCursor::after {
+  content: "▌";
+  font-style: normal;
+  font-size: 1em;
+  animation: cursor 0.75s infinite;
+  margin-top: auto;
+  margin-bottom: auto;
+  top: -0.2em;
+  right: -1.5em;
+  bottom: 0;
+  position: absolute;
+}
+
+@keyframes cursor {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 ```
 
