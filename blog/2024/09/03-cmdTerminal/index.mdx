@@ -23,6 +23,7 @@ import {
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import Terminal from "./components/Terminal";
+import TerminalOld from "./components/TerminalOld";
 
 一个在 React 中模拟命令行终端的小组件，用于向读者演示/教学时使用，目前支持以下功能：
 
@@ -606,6 +607,24 @@ import React from "react";
   </TerminalLine>
 </TerminalRoot>
 
+### 智能选择
+
+现在，Terminal 组件中，前缀内容将不可选中，读者可以直接复制多行命令进行使用。如下，读者可以测试一下
+
+<Tabs>
+<TabItem value="old" label="旧版">
+
+<TerminalOld />
+
+</TabItem>
+
+<TabItem value="new" label="新版">
+
+<Terminal />
+
+</TabItem>
+</Tabs>
+
 ## Mysql 模式 <span class="badge badge--primary">New !</span>
 
 Mysql 模式即模仿一个 Mysql 交互命令行，同样包括输入和输出，效果如下:输入时，第一行开头固定为 `mysql>`，后续换行会自动补全 `    ->`
@@ -1180,22 +1199,26 @@ export const TerminalRoot = ({ children, title }) => {
 .main .userNamePath {
   color: rgb(102, 231, 119);
   font-weight: 700;
+  user-select: none;
 }
 
 .main .mysql {
   color: gray;
   white-space: pre;
+  user-select: none;
 }
 
 .main .env {
   color: rgb(160, 147, 147);
   font-weight: 700;
+  user-select: none;
 }
 
 .main .dolar {
   font-weight: 700;
   color: rgb(55, 65, 81);
   transition-duration: 0.2s;
+  user-select: none;
 }
 
 .main .command {
