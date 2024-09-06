@@ -5,9 +5,20 @@ authors: [Castamere]
 tags: [MySQL]
 ---
 
+import {
+  Args,
+  Cmd,
+  Dbkey,
+  Line,
+  MysqlLine,
+  TerminalLine,
+  TerminalResponse,
+  TerminalRoot,
+} from "@site/src/components/CommandLine";
+
 在本地端的某个 **MySQL** 数据库上新增了多个表，在客户设备上需要进行同步
 
-<!--truncate-->
+{/* truncate */}
 
 ## 缘起
 
@@ -134,6 +145,33 @@ eg:
 mysql -u root -p B < A.sql
 # 将 A.sql 在 B 数据库中执行(用户要有 B 的写权限)
 ```
+
+也可以先进入 mysql 命令行，然后使用 source 命令，此方法适用于数据库还没创建的情况：
+
+<TerminalRoot title="source">
+  <TerminalLine>
+    <Cmd text="mysql" />
+    <Args text="-uroot -p" />
+  </TerminalLine>
+  <MysqlLine>
+    <Dbkey text="create database" />
+    <Line text="B;" />
+  </MysqlLine>
+  <MysqlLine>
+    <Dbkey text="use" />
+    <Line text="B;" />
+  </MysqlLine>
+  <MysqlLine>
+    <Dbkey text="source" />
+    <Line text="/root/A.sql;" />
+  </MysqlLine>
+  <TerminalResponse response_style="NEWLINE">
+    <Line text="Query OK, 0 rows affected (0.00 sec)" />
+    <Line text="Query OK, 11 rows affected (0.00 sec)" />
+    <Line text="Records: 11  Duplicates: 0  Warnings: 0" />
+    <Line text="..." />
+  </TerminalResponse>
+</TerminalRoot>
 
 ## 后记
 
