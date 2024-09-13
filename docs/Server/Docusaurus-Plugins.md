@@ -7,7 +7,6 @@ keywords:
   - Image-zoom
   - RoughNotation
   - Mermaid
-sidebar_position: 7
 last_update:
   date: 10 SEP 2024 GMT
   author: Casta-mere

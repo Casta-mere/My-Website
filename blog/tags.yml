@@ -24,6 +24,11 @@ Conda:
   label: Conda
   permalink: /Conda
 
+Docusaurus:
+  description: Docusaurus
+  label: Docusaurus
+  permalink: /Docusaurus
+
 Git:
   description: Git
   label: Git
