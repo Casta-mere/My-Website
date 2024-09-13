@@ -93,10 +93,6 @@ const config = {
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'Castamere',
-        logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
-        },
         items: [
           {
             type: 'docSidebar',
@@ -124,15 +120,15 @@ const config = {
             items: [
               {
                 label: 'LaTeX',
-                to: '/docs/category/latex',
+                to: '/docs/Latex',
               },
               {
                 label: 'Next.js',
-                to: '/docs/category/nextjs',
+                to: '/docs/React/Next',
               },
               {
                 label: '服务器搭建',
-                to: '/docs/category/server',
+                to: '/docs/Server',
               },
             ],
           },
