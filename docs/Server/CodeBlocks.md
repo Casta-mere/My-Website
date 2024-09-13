@@ -3,7 +3,6 @@ tags: [Code Highlight]
 title: 美化 Code Blocks
 keywords:
   - docusaurus Code blocks
-sidebar_position: 2
 last_update:
   date: 20 JAN 2024 GMT
   author: Casta-mere

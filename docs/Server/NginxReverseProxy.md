@@ -4,7 +4,6 @@ title: Nginx 反代理
 keywords:
   - Nginx
   - Revese proxy
-sidebar_position: 1
 last_update:
   date: 2 NOV 2023 GMT
   author: Casta-mere
