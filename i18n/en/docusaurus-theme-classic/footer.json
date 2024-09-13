@@ -1,0 +1,50 @@
+{
+  "link.title.Docs": {
+    "message": "Docs",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Community": {
+    "message": "Community",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.More": {
+    "message": "More",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.LaTeX": {
+    "message": "LaTeX",
+    "description": "The label of footer link with label=LaTeX linking to /docs/category/latex"
+  },
+  "link.item.label.Next.js": {
+    "message": "Next.js",
+    "description": "The label of footer link with label=Next.js linking to /docs/category/nextjs"
+  },
+  "link.item.label.服务器搭建": {
+    "message": "服务器搭建",
+    "description": "The label of footer link with label=服务器搭建 linking to /docs/category/server"
+  },
+  "link.item.label.Github": {
+    "message": "Github",
+    "description": "The label of footer link with label=Github linking to https://github.com/Casta-mere"
+  },
+  "link.item.label.Meta": {
+    "message": "Meta",
+    "description": "The label of footer link with label=Meta linking to https://www.facebook.com/profile.php?id=100064520177692"
+  },
+  "link.item.label.Mind-Scout": {
+    "message": "Mind-Scout",
+    "description": "The label of footer link with label=Mind-Scout linking to http://mindscout.castamerego.com"
+  },
+  "link.item.label.Read-Book": {
+    "message": "Read-Book",
+    "description": "The label of footer link with label=Read-Book linking to http://readbook.castamerego.com"
+  },
+  "link.item.label.今天也想rua红崽": {
+    "message": "今天也想rua红崽",
+    "description": "The label of footer link with label=今天也想rua红崽 linking to http://todayred.castamerego.com"
+  },
+  "copyright": {
+    "message": "Copyright © 2022-2024 Castamere <Br/>",
+    "description": "The footer copyright"
+  }
+}
