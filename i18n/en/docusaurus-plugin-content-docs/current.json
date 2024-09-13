@@ -1,0 +1,34 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.React": {
+    "message": "React",
+    "description": "The label for category React in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Next.js": {
+    "message": "Next.js",
+    "description": "The label for category Next.js in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Issue Tracker": {
+    "message": "Issue Tracker",
+    "description": "The label for category Issue Tracker in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Server": {
+    "message": "Server",
+    "description": "The label for category Server in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Latex": {
+    "message": "Latex",
+    "description": "The label for category Latex in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Plans": {
+    "message": "Plans",
+    "description": "The label for category Plans in sidebar tutorialSidebar"
+  },
+  "sidebar.snippetsSidebar.category.小组件": {
+    "message": "小组件",
+    "description": "The label for category 小组件 in sidebar snippetsSidebar"
+  }
+}
