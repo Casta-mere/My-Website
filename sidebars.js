@@ -4,6 +4,24 @@ const sidebars = {
     "Intro",
     {
       type: "category",
+      label: "Server",
+      link: {
+        type: "doc",
+        id: "Server/README",
+      },
+      items: [
+        "Server/Server101",
+        "Server/SSL",
+        "Server/NginxReverseProxy",
+        "Server/Screen",
+        "Server/CodeBlocks",
+        "Server/Docusaurus-Plugins",
+        "Server/Docusaurus-Algolia",
+        "Server/Docusaurus-Gisus",
+      ],
+    },
+    {
+      type: "category",
       label: "Latex",
       link: {
         type: "doc",

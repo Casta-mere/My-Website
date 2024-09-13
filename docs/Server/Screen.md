@@ -5,7 +5,6 @@ keywords:
   - Screen
   - Linux
   - Terminal
-sidebar_position: 3
 last_update:
   date: 1 DEC 2023 GMT
   author: Casta-mere
