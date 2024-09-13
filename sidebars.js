@@ -108,7 +108,10 @@ const sidebars = {
         type: "doc",
         id: "Snippets/Components/README",
       },
-      items: ["Snippets/Components/TypeWriter"],
+      items: [
+        "Snippets/Components/TypeWriter",
+        "Snippets/Components/cmdTerminal",
+      ],
     },
   ],
 };
