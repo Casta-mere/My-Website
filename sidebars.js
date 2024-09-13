@@ -9,7 +9,31 @@ const sidebars = {
         type: "doc",
         id: "React/README",
       },
-      items: ["React/React", "React/Rendering"],
+      items: [
+        "React/React",
+        "React/Rendering",
+        {
+          type: "category",
+          label: "Next.js",
+          link: {
+            type: "doc",
+            id: "React/Next/README",
+          },
+          items: [
+            "React/Next/Preface",
+            "React/Next/Fundamentals",
+            "React/Next/Styling",
+            "React/Next/Routing",
+            "React/Next/BuildAPI",
+            "React/Next/Database",
+            "React/Next/Uploading",
+            "React/Next/Authentication",
+            "React/Next/Email",
+            "React/Next/Optimization",
+            "React/Next/Deploy",
+          ],
+        },
+      ],
     },
     {
       type: "category",
