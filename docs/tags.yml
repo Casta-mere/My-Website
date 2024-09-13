@@ -29,6 +29,11 @@ Docusaurus:
   label: Docusaurus
   permalink: /Docusaurus
 
+Gisus:
+  description: Gisus
+  label: Gisus
+  permalink: /Gisus
+
 Issue Tracker:
   description: Issue Tracker
   label: Issue Tracker
@@ -63,6 +68,11 @@ Nginx:
   description: Nginx
   label: Nginx
   permalink: /Nginx
+
+Plugins:
+  description: Plugins
+  label: Plugins
+  permalink: /Plugins
 
 Prisma:
   description: Prisma
@@ -109,6 +119,11 @@ Server:
   label: Server
   permalink: /Server
 
+Snippet:
+  description: Snippet
+  label: Snippet
+  permalink: /Snippet
+
 Tailwind CSS:
   description: Tailwind CSS
   label: Tailwind CSS
@@ -128,8 +143,3 @@ Zod:
   description: Zod
   label: Zod
   permalink: /Zod
-
-Gisus:
-  description: Gisus
-  label: Gisus
-  permalink: /Gisus
