@@ -33,6 +33,26 @@ const sidebars = {
             "React/Next/Deploy",
           ],
         },
+        {
+          type: "category",
+          label: "Issue Tracker",
+          link: {
+            type: "doc",
+            id: "React/Issue/README",
+          },
+          items: [
+            "React/Issue/Preface",
+            "React/Issue/Setup",
+            "React/Issue/Create",
+            "React/Issue/View",
+            "React/Issue/Update",
+            "React/Issue/Delete",
+            "React/Issue/Authentication",
+            "React/Issue/Assign",
+            "React/Issue/Filtering",
+            "React/Issue/Dashboard",
+          ],
+        },
       ],
     },
     {
