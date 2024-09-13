@@ -99,6 +99,18 @@ const sidebars = {
     "Rules",
     "Resume",
   ],
+  snippetsSidebar: [
+    "Snippets/Intro",
+    {
+      type: "category",
+      label: "小组件",
+      link: {
+        type: "doc",
+        id: "Snippets/Components/README",
+      },
+      items: ["Snippets/Components/TypeWriter"],
+    },
+  ],
 };
 
 module.exports = sidebars;
