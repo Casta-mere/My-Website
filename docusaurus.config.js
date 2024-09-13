@@ -36,9 +36,7 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
-    // locales: ['zh-Hans', 'en'],
-    // TODO add English
+    locales: ['zh-Hans', 'en'],
   },
   markdown: {
     mermaid: true,
@@ -98,12 +96,22 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Docs',
+            label: '系列文章',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'snippetsSidebar',
+            position: 'left',
+            label: '代码片段',
           },
           {
             to: '/blog',
-            label: 'Blog',
+            label: '博文',
             position: 'left'
+          },
+          {
+            type: "localeDropdown",
+            position: "right",
           },
           {
             href: 'https://github.com/Casta-mere/My-Website',
