@@ -5,7 +5,6 @@ keywords:
   - 阿里云服务器
   - ssh
   - zsh
-sidebar_position: 0
 last_update:
   date: 2 SEP 2024 GMT
   author: Casta-mere
