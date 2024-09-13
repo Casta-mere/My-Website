@@ -1,0 +1,31 @@
+---
+tags: [React, Snippet]
+title: 终端模拟器
+keywords:
+  - React
+  - Terminal
+  - Mysql
+  - Conda
+  - Linux
+  - Snippet
+last_update:
+  date: 13 SEP 2024 GMT
+  author: Casta-mere
+---
+
+import Terminal from "./components/Terminal";
+
+一个在 React 中模拟命令行终端的小组件，用于向读者演示/教学时使用，目前支持以下功能：
+
+- [x] 支持修改终端的 title
+- [x] 支持修改用户、路径、conda 环境(同一终端能多次修改，便于演示修改的命令)
+- [x] 支持两种输出模式：换行顶格显示、前缀空格，对齐显示
+- [x] 新增支持 mysql 模式 <span class="badge badge--primary">New !</span>
+
+## 效果演示
+
+<Terminal />
+
+:::info
+可参考 [cmdTerminal](/blog/cmdTerminal) 一文，详细介绍了该组件是如何实现的
+:::
