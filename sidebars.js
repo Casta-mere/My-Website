@@ -4,6 +4,15 @@ const sidebars = {
     "Intro",
     {
       type: "category",
+      label: "React",
+      link: {
+        type: "doc",
+        id: "React/README",
+      },
+      items: ["React/React", "React/Rendering"],
+    },
+    {
+      type: "category",
       label: "Server",
       link: {
         type: "doc",
