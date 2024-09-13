@@ -16,6 +16,15 @@ const sidebars = {
         "Latex/Style",
       ],
     },
+    {
+      type: "category",
+      label: "Plans",
+      link: {
+        type: "doc",
+        id: "Plans/README",
+      },
+      items: ["Plans/2023", "Plans/2024"],
+    },
     "Rules",
     "Resume",
   ],
