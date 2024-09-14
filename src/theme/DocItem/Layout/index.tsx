@@ -13,7 +13,7 @@ import DocVersionBanner from '@theme/DocVersionBanner';
 import clsx from 'clsx';
 import React from 'react';
 
-import Comment from '../../Comment';
+import Comment from '@site/src/components/Comment/Comment';
 import styles from './styles.module.css';
 
 /**
