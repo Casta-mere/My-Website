@@ -1,8 +1,7 @@
 ---
-sidebar_label: 'Rules'
-sidebar_position: 5
+sidebar_label: "Rules"
 last_update:
-  date: 18 Feb 2024 GMT
+  date: 14 SEP 2024 GMT
   author: Casta-mere
 ---
 
@@ -14,21 +13,21 @@ last_update:
 
 所有单词均首字母大写，用连字符连接前两个单词。或者全部用连字符连接，如:
 
-+ LaTeX-GraduationTemplate
-+ My-Website
+- LaTeX-GraduationTemplate
+- My-Website
 
 部分合成词可以不使用连字符，如:
 
-+ Safehome
+- Safehome
 
 ### 项目命名规范
 
 所有图片文件夹均命名为`image`
 
-项目根目录下包含 
+项目根目录下包含
 
-+ `CODE` 文件夹，放全部代码文件
-+ `record` 记录版本信息，数据库表设计，过程中遇到的问题等
+- `CODE` 文件夹，放全部代码文件
+- `record` 记录版本信息，数据库表设计，过程中遇到的问题等
 
 ## My-Website 规范
 
@@ -56,7 +55,7 @@ tags: [,]
 ```
 ---
 sidebar_label: ''
-sidebar_position: 
+sidebar_position:
 last_update:
   date: 01 Jan 2024 GMT
   author: Casta-mere
@@ -73,9 +72,15 @@ blog-manage: manage content
 blog-modify: filepath/filename modify content
 blog-add: filepath/filename
 system-modify: modify content
+i18n: docId
 ```
 
 `modify content`和`manage content` 应为一句话或者版本，首字母大写。下面是一些例子
+
+i18n 分为两种情况：
+
+- 首次添加翻译应为 `i18n: docId`
+- 修改翻译应与 `docs-modify` 同步，合并到提交中，如 `docs-modify: 生命的意义 V1.0 (with i18n)`
 
 ```
 docs-modify: Latex/01-reference V1.1
@@ -84,6 +89,7 @@ docs-modify: Plans/2024 Add feburary
 docs-add: Plans/2024
 blog-modify: 生命的意义 V1.0
 blog-add: 生命的意义
+i18n: 生命的意义
 system-modify: Add Katex
 system-modify: Add Link to Latex
 ```
