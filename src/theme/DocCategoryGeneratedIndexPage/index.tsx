@@ -12,7 +12,7 @@ import React from 'react';
 
 import styles from './styles.module.css';
 
-import Comment from '../Comment';
+import Comment from '@site/src/components/Comment/Comment';
 function DocCategoryGeneratedIndexPageMetadata({
   categoryGeneratedIndex,
 }: Props): JSX.Element {

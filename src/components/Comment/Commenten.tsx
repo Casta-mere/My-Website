@@ -10,11 +10,11 @@ const defaultConfig: Partial<GiscusProps> = {
   emitMetadata: '0',
   inputPosition: 'top',
   loading: 'lazy',
-  strict: '1',
-  lang: 'zh-CN',
+  strict: '0',
+  lang: 'en',
 }
 
-export default function Comment(): JSX.Element {
+export default function Commenten(): JSX.Element {
   const themeConfig = useThemeConfig()
 
   // merge default config

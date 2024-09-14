@@ -1,0 +1,31 @@
+---
+tags: [React, Snippet]
+title: Terminal Simulator
+keywords:
+  - React
+  - Terminal
+  - Mysql
+  - Conda
+  - Linux
+  - Snippet
+last_update:
+  date: 13 SEP 2024 GMT
+  author: Casta-mere
+---
+
+import Terminal from "./components/Terminal";
+
+A simple terminal simulator component in React, used to demonstrate or teach commands to readers. Currently supports the following features:
+
+- [x] Support modifying the terminal title
+- [x] Support modifying the user, path, and conda environment (the terminal can be modified multiple times, which is convenient for demonstration of commands like `conda activate`, `su`, `cd`, `z`, etc.)
+- [x] Support two output modes: newline and indent, aligned display
+- [x] Added support for mysql mode <span class="badge badge--primary">New !</span>
+
+## Demonstration
+
+<Terminal />
+
+:::info
+You can also refer to [cmdTerminal](/blog/cmdTerminal) for more detailed information on how this component is implemented.
+:::

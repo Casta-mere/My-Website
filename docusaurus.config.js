@@ -36,9 +36,7 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
-    // locales: ['zh-Hans', 'en'],
-    // TODO add English
+    locales: ['zh-Hans', 'en'],
   },
   markdown: {
     mermaid: true,
@@ -93,21 +91,27 @@ const config = {
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'Castamere',
-        logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
-        },
         items: [
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Docs',
+            label: '系列文章',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'snippetsSidebar',
+            position: 'left',
+            label: '代码片段',
           },
           {
             to: '/blog',
-            label: 'Blog',
+            label: '博文',
             position: 'left'
+          },
+          {
+            type: "localeDropdown",
+            position: "right",
           },
           {
             href: 'https://github.com/Casta-mere/My-Website',
@@ -124,15 +128,15 @@ const config = {
             items: [
               {
                 label: 'LaTeX',
-                to: '/docs/category/latex',
+                to: '/docs/Latex',
               },
               {
                 label: 'Next.js',
-                to: '/docs/category/nextjs',
+                to: '/docs/React/Next',
               },
               {
                 label: '服务器搭建',
-                to: '/docs/category/server',
+                to: '/docs/Server',
               },
             ],
           },
