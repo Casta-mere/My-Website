@@ -28,7 +28,7 @@
     "description": "The label for category Plans in sidebar tutorialSidebar"
   },
   "sidebar.snippetsSidebar.category.小组件": {
-    "message": "小组件",
+    "message": "Components",
     "description": "The label for category 小组件 in sidebar snippetsSidebar"
   }
 }
