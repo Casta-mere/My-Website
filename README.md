@@ -4,8 +4,9 @@
 
 ## Plugin / Features
 
-- [x] 💬 gitsus
+- [x] 💬 gisus (with i18n)
 - [x] 🔍 algolia search
 - [x] 🖼️ Image-zoom
-- [x] 🧜‍♀️ Mermaid
+- [x] 📊 Mermaid
 - [x] 📜 Rough-Notation
+- [x] 🌏 i18n for zh-hans, en
