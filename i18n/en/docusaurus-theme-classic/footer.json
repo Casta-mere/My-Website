@@ -20,7 +20,7 @@
     "description": "The label of footer link with label=Next.js linking to /docs/category/nextjs"
   },
   "link.item.label.服务器搭建": {
-    "message": "服务器搭建",
+    "message": "Server",
     "description": "The label of footer link with label=服务器搭建 linking to /docs/category/server"
   },
   "link.item.label.Github": {
@@ -40,7 +40,7 @@
     "description": "The label of footer link with label=Read-Book linking to http://readbook.castamerego.com"
   },
   "link.item.label.今天也想rua红崽": {
-    "message": "今天也想rua红崽",
+    "message": "Today_Red",
     "description": "The label of footer link with label=今天也想rua红崽 linking to http://todayred.castamerego.com"
   },
   "copyright": {
