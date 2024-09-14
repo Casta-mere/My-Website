@@ -15,7 +15,7 @@ import TOC from '@theme/TOC';
 import clsx from 'clsx';
 import React, { type ReactNode } from 'react';
 
-import Comment from '../Comment';
+import Comment from '@site/src/components/Comment/Comment';
 function BlogPostPageContent({
   sidebar,
   children,

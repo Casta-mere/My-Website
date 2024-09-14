@@ -1,0 +1,26 @@
+{
+  "title": {
+    "message": "Castamere",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "My Site Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.系列文章": {
+    "message": "Archieve",
+    "description": "Navbar item with label 系列文章"
+  },
+  "item.label.代码片段": {
+    "message": "Snippets",
+    "description": "Navbar item with label 代码片段"
+  },
+  "item.label.博文": {
+    "message": "Blogs",
+    "description": "Navbar item with label 博文"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}
