@@ -68,6 +68,7 @@ const sidebars = {
         "Server/NginxReverseProxy",
         "Server/Screen",
         "Server/CodeBlocks",
+        "Server/Docusaurus-Theme",
         "Server/Docusaurus-Plugins",
         "Server/Docusaurus-Algolia",
         "Server/Docusaurus-Gisus",
