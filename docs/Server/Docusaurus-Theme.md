@@ -15,6 +15,7 @@ last_update:
 
 import TailWindDemo from "./components/Theme/TW"
 import Icons from "./components/Theme/Icons"
+import ClassNames from "./components/Theme/ClassNames"
 
 # Docusaurus Themes
 
@@ -125,6 +126,25 @@ module.exports = {
 <Icons />
 
 ## classNames
+
+`npm i classnames`
+
+效果如下，添加一个 hover 的效果
+
+<ClassNames />
+
+```tsx
+<span
+  className={classNames({
+    "inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset select-none":
+      true,
+    "bg-red-50 text-red-700 ring-red-600/10": true,
+    "hover:bg-green-50 hover:text-green-700 hover:ring-green-600/20": true,
+  })}
+>
+  badge
+</span>
+```
 
 ## Radix UI
 
