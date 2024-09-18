@@ -42,7 +42,23 @@ const config = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-live-codeblock','@docusaurus/theme-mermaid'],
-  plugins: [require.resolve("docusaurus-plugin-image-zoom")],
+  plugins: [
+    require.resolve("docusaurus-plugin-image-zoom"),
+    function myPlugin(context, options) {
+      return {
+        name: "postcss-tailwindcss-loader",
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins.push(
+            require("postcss-import"),
+            require("tailwindcss"),
+            require("postcss-nested"),
+            require("autoprefixer")
+          );
+          return postcssOptions;
+        },
+      };
+    },
+  ],
   presets: [
     [
       'classic',

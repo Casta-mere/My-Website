@@ -134,6 +134,11 @@ Terminal:
   label: Terminal
   permalink: /Terminal
 
+Theme:
+  description: Theme
+  label: Theme
+  permalink: /Theme
+
 TypeScript:
   description: TypeScript
   label: TypeScript
