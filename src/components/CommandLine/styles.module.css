@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "MesloLGS NF Regular";
+  src: url("@site/src/fonts/MesloLGS NF Font/MesloLGS NF Regular.ttf")
+    format("truetype");
+}
+
 .card {
   width: 100%;
   font-size: 0.875rem;
@@ -12,7 +18,7 @@
     text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 0.15s;
-  font-family: MesloLGS NF Regular;
+  font-family: "MesloLGS NF Regular", monospace;
   src: url("@site/src/fonts/MesloLGS NF Font/MesloLGS NF Regular.ttf");
   margin-bottom: 20px;
 }
