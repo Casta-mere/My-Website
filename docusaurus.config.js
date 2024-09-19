@@ -174,16 +174,16 @@ const config = {
             title: 'More',
             items: [
               {
+                label: '友链',
+                href: '/friends',
+              },
+              {
                 label: 'Mind-Scout',
                 href: 'http://mindscout.castamerego.com',
               },
               {
                 label: 'Read-Book',
                 href: 'http://readbook.castamerego.com',
-              },
-              {
-                label: '今天也想rua红崽',
-                href: 'http://todayred.castamerego.com',
               },
             ],
           },
