@@ -1,8 +1,6 @@
-import React from "react";
-
 import friendList, { FriendItem } from "@site/src/data/friends/friends";
 import classNames from "classnames";
-import { useState } from "react";
+import React, { useState } from "react";
 import { RoughNotation } from "react-rough-notation";
 
 const SkillBadge = ({ skill }: { skill: string }) => {
@@ -12,6 +10,21 @@ const SkillBadge = ({ skill }: { skill: string }) => {
     </span>
   );
 };
+
+const colors = [
+  "#FFA500",
+  "#4169E1",
+  "#DC143C",
+  "#FF6347",
+  "#FFD700",
+  "#FFC0CB",
+  "#FFBF00",
+  "#87CEEB",
+  "#C0C0C0",
+];
+
+const getRandom = (arr: string[]) =>
+  arr[Math.floor(Math.random() * arr.length)];
 
 const FriendCard = ({ friend }: { friend: FriendItem }) => {
   const [hovered, setHovered] = useState(false);
@@ -46,7 +59,7 @@ const FriendCard = ({ friend }: { friend: FriendItem }) => {
           <div>
             <RoughNotation
               type="underline"
-              color="#FFA500"
+              color={getRandom(colors)}
               strokeWidth={4}
               show={hovered}
               animationDuration={650}
