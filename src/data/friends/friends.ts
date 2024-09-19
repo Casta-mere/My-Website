@@ -21,6 +21,13 @@ const friendList: FriendItem[] = [
     description: "此刻想举重若轻，之前必要负重前行",
     tags: ["前端开发"],
   },
+  {
+    title: "Mozuta",
+    avatar: "https://github.com/Mozuta.png",
+    url: "http://hex.mozuta.com/",
+    description: "HEX",
+    tags: ["Dreamer", "Reader"],
+  },
 ];
 
 export default friendList;
