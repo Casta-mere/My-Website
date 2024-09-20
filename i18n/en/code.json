@@ -444,5 +444,8 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "请作者喝可乐🥤:": {
+    "message": "Buy me a coffee ☕:"
   }
 }

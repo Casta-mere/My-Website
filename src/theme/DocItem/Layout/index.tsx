@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 import Comment from '@site/src/components/Comment/Comment';
+import Donate from '@site/src/components/Donate';
 import styles from './styles.module.css';
 
 /**
@@ -55,6 +56,7 @@ export default function DocItemLayout({children}: Props): JSX.Element {
             {docTOC.mobile}
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
+            <Donate />
           </article>
           <DocItemPaginator />
         </div>
