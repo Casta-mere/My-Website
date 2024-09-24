@@ -7,12 +7,16 @@ tags: [Snippet]
 
 import Link from "@site/src/components/Link/Link";
 import Link2 from "./components/Link2";
+import Link3 from "./components/Link3";
+import Link4 from "./components/Link4";
+import Link5 from "./components/Link5";
+import Link6 from "./components/Link6";
 
 一个超链接小组件
 
 <div className="tailwind">
   <div className="text-2xl">
-    <Link title="这是一个超链接" url="/blog/Link" />
+    <Link title="这是一个超链接" url="/blog/Link" open="sameTab" />
   </div>
 </div>
 
@@ -172,8 +176,216 @@ const Link = ({
 export default Link;
 ```
 
-### 样式
+## 样式
 
-#### 颜色
+:::important
+若想在你的 docusaurus 网站中使用下面的样式，请先参考[这里](/docs/Server/Docusaurus-Theme)，配置好如下内容
 
-#### 动态下划线
+- tailwindcss
+- classNames
+
+:::
+
+:::note
+由于只演示样式，笔者在下面都关闭了链接(即设置为`onSameUrl="disable"`)
+:::
+
+### 颜色
+
+笔者使用了 [tailwindcss](https://tailwindcss.com/docs/customizing-colors) 的颜色来进行演示。这里使用了 useColorMode 钩子来获取当前主题颜色，然后通过 `classNames` 来动态设置颜色，效果如下。会随着主题颜色的变化而变化，并且会在 hover 时改变颜色
+
+<div className="tailwind">
+  <div className="text-2xl mb-4">
+    <Link3
+      title="超链接小组件 Hover Me!"
+      url="/blog/Link"
+      onSameUrl="disable"
+    />
+  </div>
+</div>
+
+```tsx showLineNumbers title="颜色"
+  import { useLocation } from "@docusaurus/router";
+  // git-add-start
++ import { useColorMode } from "@docusaurus/theme-common";
++ import classNames from "classnames";
+  // git-add-end
+  import React from "react";
+
+  interface Props {
+    title: string;
+    url: string;
+    open?: "newTab" | "sameTab";
+    onSameUrl?: "open" | "refresh" | "disable";
+  }
+  // git-add-start
++ const colors = [
++   {
++     main: "text-blue-500",
++     hover: "hover:text-blue-600",
++   },
++   {
++     main: "text-gray-500",
++     hover: "hover:text-gray-400",
++   },
++ ];
+  // git-add-end
+
+  const Link = ({
+    title,
+    url,
+    open = "newTab",
+    onSameUrl = "refresh",
+  }: Props) => {
+    // git-add-next-line
++   const color = colors[useColorMode().colorMode === "dark" ? 1 : 0];
+    const isSameUrl = useLocation().pathname === url;
+
+    return (
+      <a
+        // git-add-start
++       className={classNames({
++         "relative inline-block transition-all duration-300 ": true,
++         [color.main]: true,
++         [color.hover]: true,
++       })}
+        // git-add-end
+        href={isSameUrl ? (onSameUrl === "disable" ? undefined : url) : url}
+        target={
+          open === "newTab"
+            ? isSameUrl
+              ? onSameUrl === "open"
+                ? "_blank"
+                : undefined
+              : "_blank"
+            : undefined
+        }
+        rel="noopener noreferrer"
+      >
+        {title}
+      </a>
+    );
+  };
+
+  export default Link;
+```
+
+### 动态下划线
+
+接下来是实现一个动态下划线的效果，效果如下。其特点为，当鼠标进入时，下划线会从左向右画出，而当鼠标离开时，下划线会从右向左擦除
+
+![link4](./image/link4.gif)
+
+接下来就来一步步讲如何实现
+
+#### 1. 添加一个下划线
+
+<div className="tailwind">
+  <div className="text-2xl">
+    <Link5 title="这是一个超链接" url="/blog/Link" onSameUrl="disable" />
+  </div>
+</div>
+
+这一步其实还算比较简单，在之前的组件中，显示 title 的下方加一个 span，添加如下样式即可
+
+```tsx showLineNumbers title="下划线"
+  ...
+  const colors = [
+    {
+      main: "text-blue-500",
+      hover: "hover:text-blue-700",
+      // git-add-next-line
++     underScore: "bg-blue-400",
+    },
+    {
+      main: "text-gray-500",
+      hover: "hover:text-gray-400",
+      // git-add-next-line
++     underScore: "bg-gray-300",
+    },
+  ];
+
+  const Link = ({
+    ...
+  }: Props) => {
+    ...
+
+    return (
+      <a
+        ...
+      >
+        {title}
+        //  git-add-start
++       <span
++         className={classNames({
++           "absolute left-0 bottom-0 h-0.5": true,
++           "w-full": true,
++           [color.underScore]: true,
++         })}
++       />
+        //  git-add-end
+      </a>
+    );
+  };
+```
+
+:::info
+在这里就体现出了使用 `classNames` 这个库的好处，可以更条例的写样式，并且可以很方便的条件渲染样式，在接下来的步骤更会体现出他的优点
+:::
+
+#### 2. 添加 hover 动画
+
+接下来就是添加在 hover 时的动画效果
+
+<div className="tailwind">
+  <div className="text-2xl mb-6">
+    <Link6
+      title="这是一个超链接 Hover Me!"
+      url="/blog/Link"
+      onSameUrl="disable"
+    />
+  </div>
+</div>
+
+我们首先添加一个 `hover` 的状态，当鼠标进入时，将 `hover` 设置为 `true`，当鼠标离开时，将 `hover` 设置为 `false`
+
+然后根据 `hover` 的值来决定下划线的宽度，当 `hover` 为 `true` 时，下划线的宽度为 100%，当 `hover` 为 `false` 时，下划线的宽度为 0，再添加一个 `transition-all` 的过渡动画，就可以实现 hover 动画了
+
+```tsx showLineNumbers title="hover 动画"
+  ...
+  const Link = ({
+    ...
+  }: Props) => {
+    // git-add-next-line
++   const [hover, setHover] = useState(false);
+    const color = colors[useColorMode().colorMode === "dark" ? 1 : 0];
+    const isSameUrl = useLocation().pathname === url;
+
+    return (
+      <a
+        ...
+        // git-add-start
++       onMouseEnter={() => setHover(true)}
++       onMouseLeave={() => setHover(false)}
+        // git-add-end
+      >
+        {title}
+        <span
+          className={classNames({
+            // git-remove-next-line
+-           "absolute left-0 bottom-0 h-0.5": true,
+            // git-add-next-line
++           "absolute left-0 bottom-0 h-0.5 transition-all duration-500": true,
+            // git-remove-next-line
+-           "w-full": true,
+            // git-add-next-line
++           "w-full": hover,
+            // git-add-next-line
++           "w-0": !hover,
+            [color.underScore]: true,
+          })}
+        />
+      </a>
+    );
+  };
+```
