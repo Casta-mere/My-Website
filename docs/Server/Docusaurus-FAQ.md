@@ -8,6 +8,9 @@ keywords:
   - Docusaurus Typescript
 ---
 
+import Theme from "./components/FAQ/Theme";
+import Location from "./components/FAQ/Location";
+
 # Docusaurus FAQ
 
 99% 的 Docusaurus 问题都可以通过官方文档解决，但无奈官方文档实在是太多了，这里记录一些笔者路上遇到的问题
@@ -80,7 +83,7 @@ import BrowserWindow from "@site/src/components/BrowserWindow";
 
 ## 亮/暗模式钩子
 
-在 [Docusaurus useColorMode] 中，介绍了一个 `useColorMode` 钩子，可以用来获取当前主题模式
+在 [Docusaurus useColorMode] 一章中，介绍了一个 `useColorMode` 钩子，可以用来获取/修改当前主题模式
 
 ```tsx
 import React from "react";
@@ -91,10 +94,32 @@ const Example = () => {
   // highlight-next-line
   const { colorMode, setColorMode } = useColorMode();
 
-  return <h1>Dark mode is now {colorMode === "dark" ? "on" : "off"}</h1>;
+  return <h3>Dark mode is now {colorMode === "dark" ? "on" : "off"}</h3>;
 };
 ```
+
+<Theme />
+
+## 获取当前 url
+
+在 [Docusaurus useLocation] 一章中，介绍了一个 `useLocation` 钩子，可以用来获取当前的 url
+
+```tsx
+import React from "react";
+// highlight-next-line
+import { useLocation } from "@docusaurus/router";
+
+const Example = () => {
+  // highlight-next-line
+  const location = useLocation();
+
+  return <h3>Current URL is {location.pathname}</h3>;
+};
+```
+
+<Location />
 
 [Docusaurus Typescript]: https://docusaurus.io/zh-CN/docs/typescript-support
 [Docusaurus Import]: https://docusaurus.io/zh-CN/docs/next/markdown-features/react#importing-components
 [Docusaurus useColorMode]: https://docusaurus.io/zh-CN/docs/api/themes/configuration#use-color-mode
+[Docusaurus useLocation]: https://docusaurus.io/zh-CN/docs/advanced/routing#generating-and-accessing-routes
