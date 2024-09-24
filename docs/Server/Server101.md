@@ -138,8 +138,6 @@ n install 18.18.2
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-
-
 ```
 
 安装完成应该有如下输出，表示安装成功。此时重启终端，或者使用 `source ~/.zshrc` 来在当前终端刷新配置。使用 `command -v nvm` 来查看是否能正常运行，若输出 `nvm` 则没什么问题
@@ -168,5 +166,59 @@ export NVM_DIR="$HOME/.nvm"
 :::
 
 安装好 `nvm` 之后，使用 `nvm install node` 即可
+
+## 配置 Mysql
+
+### 安装
+
+```bash
+apt install mysql-server
+```
+
+### 修改密码
+
+使用 `mysql` 命令进入交互界面，使用如下命令修改密码
+
+```sql
+-- 下面的 'xxxx' 换成你的密码
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'xxxx';
+```
+
+### 查看初始默认密码
+
+```bash
+cat /etc/mysql/debian.cnf
+```
+
+### 设置让外部(宿主机/外网)可以访问容器数据库
+
+1. 修改配置文件
+
+```bash
+sudo vi /etc/mysql/my.cnf
+```
+
+添加如下内容
+
+```
+[mysqld]
+
+skip-host-cache
+skip-name-resolve
+bind-address = 0.0.0.0
+```
+
+2. 重启服务
+
+```bash
+service mysql restart
+```
+
+3. 进入 mysql 修改权限
+
+```sql
+CREATE USER 'root'@'%' IDENTIFIED BY 'xxxx'; -- 这里的 'xxxx' 换成你的密码
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+```
 
 [配置 Linux 终端 (zsh)]: /blog/LinuxTerminal
