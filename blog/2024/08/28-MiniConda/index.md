@@ -6,6 +6,9 @@ tags: [MiniConda, Conda, Ubuntu, Zsh, Windows]
 draft: true
 ---
 
+import Terminal1 from './components/Terminal1'
+import Terminal2 from './components/Terminal2'
+
 <!-- truncate -->
 
 ## 缘起
@@ -60,7 +63,73 @@ Windows Terminal 自带快捷键，图上也能看到，可以直接使用 `ctrl
 
 点击 [miniconda - linux] 下载即可(链接为 latest, 不必担心过期问题)
 
+下载好后，使用 scp 命令传输到 Ubuntu 下
+
+```bash
+scp ./Miniconda3-latest-Linux-x86_64.sh root@ip:/root
+```
+
+然后修改权限并安装
+
+```bash
+chmod 777 Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+```
+
+根据提示安装即可，安装中会提示是否要自动初始化 conda 环境，默认是 `no`，但笔者建议这里选择 `yes`，原因在下面会提到
+
+![Linux Step 1](./image/linuxstep1.png)
+
+#### 常见问题
+
+如果上一步选择了 `yes` 这里会自动进行 `conda init` 并且把相关初始化内容写入到 `~/.zshrc` 中，这样就可以直接运行 `conda` 命令
+
+如果上一步选择了 `no`，则需要手动执行 `conda init` ，而且大概率会写到 `~/.bashrc` 中，这时候就需要手动把 `conda` 命令添加到 `~/.zshrc` 中
+
+而且，大概率会提示 `zsh: command not found: conda`，解决方法如下，首先找到 `conda` 的安装路径。然后 `conda` 的可执行路径为 `安装路径/miniconda3/bin/conda`，比如我这里就是 `/root/miniconda3/bin/conda`
+
+<Terminal1 />
+
+然后就可以使用 `/root/miniconda3/bin/conda init` 来初始化
+
+<Terminal2 />
+
+可以看到，修改的是 `~/.bashrc` 文件，所以需要手动添加到 `~/.zshrc` 中，可以用如下命令快速添加
+
+```bash
+tail -n 15 ~/.bashrc >> ~/.zshrc
+```
+
+其实就是将如下内容添加到了 `~/.zshrc` 中，然后执行 `source ~/.zshrc` 即可
+
+```bash title="conda init" showLineNumbers
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/root/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/root/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/root/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/root/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+```
+
+再运行 `conda -V` 就可以看到 conda 已经安装好了
+
 ## 使用
+
+### 创建环境
+
+```bash
+conda create -n <env_name> python=<version>
+```
+
+## 一些设置
 
 ### Conda install VS Pip install
 
