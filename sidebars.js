@@ -72,6 +72,7 @@ const sidebars = {
         "Server/Docusaurus-Plugins",
         "Server/Docusaurus-Algolia",
         "Server/Docusaurus-Gisus",
+        "Server/Docusaurus-FAQ",
       ],
     },
     {
