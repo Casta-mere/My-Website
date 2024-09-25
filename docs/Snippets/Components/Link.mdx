@@ -1,0 +1,31 @@
+---
+tags: [React, Snippet]
+title: 超链接
+keywords:
+  - React
+  - Link
+  - Docusaurus
+---
+
+import Link from "@site/src/components/Link/Link";
+
+一个在 Docusaurus 中的超链接小组件，目前支持以下功能
+
+- [x] 动态下划线效果
+- [x] Docusaurus 下亮暗主题切换
+
+## 效果演示
+
+<div className="tailwind">
+  <div className="text-2xl mb-4">
+    <Link
+      title="这是一个超链接"
+      url="/docs/Snippets/Components/Link"
+      onSameUrl="refresh"
+    />
+  </div>
+</div>
+
+:::info
+可参考 [Link](/blog/Link) 一文，详细介绍了该组件是如何实现的
+:::

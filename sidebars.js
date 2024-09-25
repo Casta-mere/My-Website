@@ -113,6 +113,7 @@ const sidebars = {
       items: [
         "Snippets/Components/TypeWriter",
         "Snippets/Components/cmdTerminal",
+        "Snippets/Components/Link",
       ],
     },
   ],
