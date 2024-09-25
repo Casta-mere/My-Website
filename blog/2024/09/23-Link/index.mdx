@@ -7,6 +7,7 @@ draft: true
 ---
 
 import Link from "@site/src/components/Link/Link";
+import Link1 from "./components/Link1";
 import Link10 from "./components/Link10";
 import Link2 from "./components/Link2";
 import Link3 from "./components/Link3";
@@ -21,7 +22,7 @@ import Link9 from "./components/Link9";
 
 <div className="tailwind">
   <div className="text-2xl">
-    <Link title="这是一个超链接" url="/blog/Link" open="sameTab" />
+    <Link1 title="这是一个超链接" url="/blog/Link" open="sameTab" />
   </div>
 </div>
 
@@ -477,25 +478,25 @@ export default Link;
 
 <div className="tailwind">
   <div className="mb-4">
-    <Link
+    <Link1
       title="这是一个超链接 Hover Me!"
       url="/blog/Link"
       onSameUrl="disable"
     />
     <br />
-    <Link
+    <Link1
       title="这是一个超链接 Hover Me!"
       url="/blog/Link"
       onSameUrl="disable"
     />
     <br />
-    <Link
+    <Link1
       title="这是一个超链接 Hover Me!"
       url="/blog/Link"
       onSameUrl="disable"
     />
     <br />
-    <Link
+    <Link1
       title="这是一个超链接 Hover Me!"
       url="/blog/Link"
       onSameUrl="disable"
@@ -576,7 +577,7 @@ export default Link;
     />
   </div>
   <div className="text-2xl mb-4">
-    <Link
+    <Link1
       title="这是一个超链接 Hover Me!"
       url="/blog/Link"
       onSameUrl="disable"
@@ -739,3 +740,40 @@ export default Link;
     })}
   />
 ```
+
+## 其他
+
+### 距离
+
+当字号 > 3xl 时，应该让下划线和文字之间有一定的距离，效果如下，手动添加了一个 `size` 的参数
+
+<div className="tailwind">
+  <div className="text-4xl mb-2">
+    <Link
+      title="这是一个 4xl 超链接"
+      url="/blog/Link"
+      open="sameTab"
+      size="lg"
+    />
+  </div>
+  <div className="text-3xl mb-2">
+    <Link
+      title="这是一个 3xl 超链接"
+      url="/blog/Link"
+      open="sameTab"
+      size="lg"
+    />
+  </div>
+  <div className="text-2xl mb-2">
+    <Link title="这是一个 2xl 超链接" url="/blog/Link" open="sameTab" />
+  </div>
+  <div className="text-xl mb-2">
+    <Link title="这是一个 xl 超链接" url="/blog/Link" open="sameTab" />
+  </div>
+  <div className="text-lg mb-2">
+    <Link title="这是一个 lg 超链接" url="/blog/Link" open="sameTab" />
+  </div>
+  <div className="text-sm mb-2">
+    <Link title="这是一个 sm 超链接" url="/blog/Link" open="sameTab" />
+  </div>
+</div>
