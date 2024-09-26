@@ -175,7 +175,6 @@ oh-my-zsh 内置了 git 插件，该插件用于显示当前 git 仓库的状态
 想要设置根据 tab 会补全哪些命令来提示你，可以执行如下命令，然后再 `source ~/.zshrc` 即可
 
 ```bash
-
 echo "ZSH_AUTOSUGGEST_STRATEGY=(history completion)" >> /root/.oh-my-zsh/custom/my_patch.zsh
 ```
 
