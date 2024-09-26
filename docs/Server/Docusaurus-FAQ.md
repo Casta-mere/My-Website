@@ -10,6 +10,7 @@ keywords:
 
 import Theme from "./components/FAQ/Theme";
 import Location from "./components/FAQ/Location";
+import Locale from "./components/FAQ/Locale";
 
 # Docusaurus FAQ
 
@@ -62,7 +63,7 @@ import BrowserWindow from "@site/src/components/BrowserWindow";
 
 修改 `tsconfig.json` 文件，如下即可解决上述两个问题：
 
-```json
+```json showLineNumbers
 {
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
@@ -85,7 +86,7 @@ import BrowserWindow from "@site/src/components/BrowserWindow";
 
 在 [Docusaurus useColorMode] 一章中，介绍了一个 `useColorMode` 钩子，可以用来获取/修改当前主题模式
 
-```tsx
+```tsx showLineNumbers
 import React from "react";
 // highlight-next-line
 import { useColorMode } from "@docusaurus/theme-common";
@@ -104,7 +105,7 @@ const Example = () => {
 
 在 [Docusaurus useLocation] 一章中，介绍了一个 `useLocation` 钩子，可以用来获取当前的 url
 
-```tsx
+```tsx showLineNumbers
 import React from "react";
 // highlight-next-line
 import { useLocation } from "@docusaurus/router";
@@ -118,6 +119,23 @@ const Example = () => {
 ```
 
 <Location />
+
+## 获取当前语言
+
+```tsx showLineNumbers
+// highlight-next-line
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import React from "react";
+
+const Locale = () => {
+  const { i18n } = useDocusaurusContext();
+  const { currentLocale } = i18n;
+
+  return <h3>Current Language is {currentLocale}</h3>;
+};
+```
+
+<Locale />
 
 [Docusaurus Typescript]: https://docusaurus.io/zh-CN/docs/typescript-support
 [Docusaurus Import]: https://docusaurus.io/zh-CN/docs/next/markdown-features/react#importing-components
