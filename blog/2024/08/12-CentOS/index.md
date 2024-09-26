@@ -5,6 +5,12 @@ authors: [Castamere]
 tags: [CentOS, Linux]
 ---
 
+遇到的一些 CentOS 问题，目前有
+
+- [配置 IPv4 地址](/blog/CentOS#如何配置-ipv4-地址)
+- [查看所有服务](/blog/CentOS#如何查看所有的服务)
+- [yum](/blog/CentOS#yum)
+
 <!--truncate-->
 
 ## 如何配置 IPv4 地址
@@ -27,4 +33,12 @@ nmcli device reapply ethx
 
 ```bash
 systemctl list-unit-files --type=service
+```
+
+## yum
+
+### yum 安装本地 rpm 文件
+
+```bash
+yum install xxx.rpm --disablerepo=*
 ```
