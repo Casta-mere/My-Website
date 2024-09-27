@@ -84,6 +84,8 @@ const config = {
           blogSidebarCount: 10,
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
           editUrl:
             'https://github.com/Casta-mere/My-Website/tree/master/',
         },
