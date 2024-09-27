@@ -183,6 +183,10 @@ const config = {
                 href: '/friends',
               },
               {
+                label: '数据统计',
+                href: 'https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com',
+              },
+              {
                 label: 'Mind-Scout',
                 href: 'http://mindscout.castamerego.com',
               },
