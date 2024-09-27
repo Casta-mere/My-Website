@@ -58,6 +58,7 @@ const config = {
         },
       };
     },
+    "./src/plugins/plugin-umami"
   ],
   presets: [
     [
