@@ -1,8 +1,11 @@
 async function umamiPlugin() {
+  const isDevelopment = 'development' ===  process.env.NODE_ENV 
+
   return {
     name: "docusaurus-umami-plugin",
 
     injectHtmlTags() {
+      if(isDevelopment) return
       return {
         headTags: [
           {
