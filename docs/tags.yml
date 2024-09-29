@@ -144,6 +144,11 @@ TypeScript:
   label: TypeScript
   permalink: /TypeScript
 
+Umami:
+  description: Umami
+  label: Umami
+  permalink: /Umami
+
 Zod:
   description: Zod
   label: Zod
