@@ -4,13 +4,13 @@ import Layout from "@theme/Layout";
 import React from "react";
 
 const waitingForLove = [
+  "Guess I won't be coming to church on Sunday",
   "Monday left me broken",
   "Tuesday, I was through with hoping",
   "Wednesday, my empty arms are open",
   "Thursday, waiting for love, waiting for love",
   "Thank the stars, it's Friday",
   "I'm burning like a fire gone wild on Saturday",
-  "Guess I won't be coming to church on Sunday",
 ];
 
 const intro = ["Full Stack Developer", "EDG! 2024 Valorant World Champion!"];
@@ -20,7 +20,7 @@ function HomepageHeader() {
   const weekday = new Date().getDay();
 
   const lines =
-    waitingForLove[weekday - 1] + ";" + intro.map((line) => line).join(";");
+    waitingForLove[weekday] + ";" + intro.map((line) => line).join(";");
   return (
     <header>
       <div className="container">
