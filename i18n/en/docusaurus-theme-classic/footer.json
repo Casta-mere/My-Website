@@ -46,5 +46,9 @@
   "link.item.label.友链": {
     "message": "Friends",
     "description": "The label of footer link with label=友链 linking to /friends"
+  },
+  "link.item.label.数据统计": {
+    "message": "Stastics",
+    "description": "The label of footer link with label=数据统计 linking to https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com"
   }
 }

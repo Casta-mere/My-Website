@@ -58,6 +58,7 @@ const config = {
         },
       };
     },
+    "./src/plugins/plugin-umami"
   ],
   presets: [
     [
@@ -180,6 +181,10 @@ const config = {
               {
                 label: '友链',
                 href: '/friends',
+              },
+              {
+                label: '数据统计',
+                href: 'https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com',
               },
               {
                 label: 'Mind-Scout',
