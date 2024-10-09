@@ -24,6 +24,11 @@ Conda:
   label: Conda
   permalink: /Conda
 
+Crontab:
+  description: Crontab
+  label: Crontab
+  permalink: /Crontab
+
 Docusaurus:
   description: Docusaurus
   label: Docusaurus
