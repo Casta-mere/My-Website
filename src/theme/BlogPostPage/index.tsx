@@ -17,6 +17,8 @@ import React, { type ReactNode } from 'react';
 
 import Comment from '@site/src/components/Comment/Comment';
 import Donate from '@site/src/components/Donate';
+import License from '@site/src/components/License';
+
 function BlogPostPageContent({
   sidebar,
   children,
@@ -48,7 +50,8 @@ function BlogPostPageContent({
       <BlogPostItem>{children}</BlogPostItem>
       
       <Donate />
-
+      <License />
+      
       {(nextItem || prevItem) && (
         <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
       )}
