@@ -3,15 +3,17 @@ slug: MiniConda
 title: MiniConda 的安装与使用
 authors: [Castamere]
 tags: [MiniConda, Conda, Ubuntu, Zsh, Windows]
-draft: true
 ---
 
 import Terminal1 from './components/Terminal1'
 import Terminal2 from './components/Terminal2'
+import Terminal3 from './components/Terminal3'
+import Terminal4 from './components/Terminal4'
+import Terminal5 from './components/Terminal5'
 
 <!-- truncate -->
 
-## 缘起
+<!-- ## 缘起 -->
 
 ## 安装
 
@@ -27,7 +29,7 @@ import Terminal2 from './components/Terminal2'
 想直接加到环境变量里的话，将 `安装路径\miniconda\condabin` 加到 Path 里即可，记得把安装路径换成 miniconda 的安装路径
 :::
 
-接下来将如何在 Windows Terminal 下配置 Conda 环境。如下图，打开 Windows Terminal，进入到设置(直接 `ctrl` + `,` 也可以)
+接下来讲如何在 Windows Terminal 下配置 Conda 环境。如下图，打开 Windows Terminal，进入到设置(直接 `ctrl` + `,` 也可以)
 
 ![Windows Step 1](./image/winstep1.png)
 
@@ -123,17 +125,34 @@ unset __conda_setup
 
 ## 使用
 
+### 列出现有环境
+
+```bash
+conda env list
+```
+
+<Terminal3 />
+
 ### 创建环境
 
 ```bash
 conda create -n <env_name> python=<version>
 ```
 
+<Terminal4 />
+
+### 激活/退出环境
+
+```bash
+conda activate <env_name>
+conda deactivate
+```
+
+<Terminal5 />
+
 ## 一些设置
 
-### Conda install VS Pip install
-
-### Conda Python 解释器
+<!-- ### Conda Python 解释器 -->
 
 ### 自动进入 Conda
 
@@ -144,7 +163,9 @@ conda config --set auto_activate_base false
 conda config --set auto_activate_base true
 ```
 
-## 后记
+<!-- ## Conda install VS Pip install
+
+## 后记 -->
 
 [miniconda - windows]: https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
 [miniconda - linux]: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
