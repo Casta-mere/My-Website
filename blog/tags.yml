@@ -9,6 +9,11 @@ Awk:
   label: Awk
   permalink: /Awk
 
+BugFix:
+  description: BugFix
+  label: BugFix
+  permalink: /BugFix
+
 CentOS:
   description: CentOS
   label: CentOS
@@ -83,6 +88,11 @@ Open Stack:
   description: Open Stack
   label: Open Stack
   permalink: /Open-Stack
+
+Python:
+  description: Python
+  label: Python
+  permalink: /Python
 
 React:
   description: React
