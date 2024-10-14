@@ -22,5 +22,5 @@ last_update:
 
 [Code With Mosh]: https://codewithmosh.com/
 [The Ultimate Next.js Series]: https://codewithmosh.com/p/ultimate-nextjs-series
-[这里]: https://www.bilibili.com/video/BV1te411d7uT?p=1&vd_source=9c8a1b3a81bc87f07899a226f847de88
+[这里]: https://www.bilibili.com/video/BV1te411d7uT?p=1
 [github 库]: https://github.com/Casta-mere/Dash-Board
