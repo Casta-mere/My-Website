@@ -3,12 +3,13 @@ slug: Crontab
 title: Linux 定时任务 (Crontab)
 authors: [Castamere]
 tags: [Linux, Crontab]
-draft: true
 ---
 
 <!-- truncate -->
 
 ## 缘起
+
+最近一个任务是，设备上会记录日志到 `server.log`，日积月累这文件大的一，现在给他每晚 0 点，重命名为一个新的文件，也就是把每天的日志放到一个单独的文件里
 
 ## Crontab
 
@@ -77,4 +78,15 @@ Crontab 是一个定时任务工具，用于在指定的时间执行指定的命
 
 # 系统重启后执行初始化脚本
 @reboot /path/to/init.sh
+```
+
+## 每天 0 点重命名日志
+
+```bash title="renamelog.sh"
+date | awk '{print "mv /var/log/server.log /var/log/server-"$6"-"$2"-"$3".log"}' | bash
+date | awk '{print "mv /var/log/agent.log /var/log/agent-"$6"-"$2"-"$3".log"}' | bash
+```
+
+```bash title="crontab"
+0 0 * * * ~/renamelog.s
 ```
