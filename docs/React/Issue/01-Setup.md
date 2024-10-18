@@ -218,11 +218,11 @@ import classNames from "classnames";
 
 ### 其他优化点
 
-最后，我们的代码应该尽量应用 原则，将部分内容抽象出来封装为函数，以提高代码可读性，可维护性
+最后，我们的代码应该尽量应用 oop 的原则，将部分内容抽象出来封装为函数，以提高代码可读性，可维护性
 
 最终代码如下：
 
-```tsx title="NavBar.tsx showLineNumbers
+```tsx title="NavBar.tsx" showLineNumbers
 "use client";
 import classNames from "classnames";
 import Link from "next/link";
