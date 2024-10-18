@@ -121,7 +121,7 @@ export default IssueSummary;
 
 效果如下
 
-[Issue Summary](09-Dashboard.md)
+![Issue Summary](./image/09-Dashboard/latestIssue.png)
 
 ## Issue Charts
 
