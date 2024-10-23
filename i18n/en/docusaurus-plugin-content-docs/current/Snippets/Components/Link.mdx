@@ -1,0 +1,31 @@
+---
+tags: [React, Snippet]
+title: HyperLink
+keywords:
+  - React
+  - Link
+  - Docusaurus
+---
+
+import Link from "@site/src/components/Link/Link";
+
+A hyperlink component in Docusaurus, currently supports the following features
+
+- [x] Dynamic underline effect
+- [x] Docusaurus light/dark theme switch
+
+## 效果演示
+
+<div className="tailwind">
+  <div className="text-2xl mb-4">
+    <Link
+      title="This is a link"
+      url="/docs/Snippets/Components/Link"
+      onSameUrl="refresh"
+    />
+  </div>
+</div>
+
+:::info
+You can also refer to [Link](/blog/Link) for detailed introduction to how this component is implemented
+:::
