@@ -16,6 +16,7 @@ import React from 'react';
 import Comment from '@site/src/components/Comment/Comment';
 import Donate from '@site/src/components/Donate';
 import License from '@site/src/components/License';
+import Reference from '@site/src/components/Reference';
 import styles from './styles.module.css';
 
 /**
@@ -45,6 +46,7 @@ function useDocTOC() {
 export default function DocItemLayout({children}: Props): JSX.Element {
   const docTOC = useDocTOC();
   const {metadata} = useDoc();
+  const {frontMatter} = metadata;
   return (
     <div className="row">
       <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
@@ -59,6 +61,7 @@ export default function DocItemLayout({children}: Props): JSX.Element {
             <DocItemFooter />
             <Donate />
             <License />
+            {frontMatter.references && <Reference references={frontMatter.references} />}
           </article>
           <DocItemPaginator />
         </div>
