@@ -18,6 +18,7 @@ import React, { type ReactNode } from 'react';
 import Comment from '@site/src/components/Comment/Comment';
 import Donate from '@site/src/components/Donate';
 import License from '@site/src/components/License';
+import Reference from '@site/src/components/Reference';
 
 function BlogPostPageContent({
   sidebar,
@@ -51,7 +52,9 @@ function BlogPostPageContent({
       
       <Donate />
       <License />
-      
+
+      {frontMatter.references && <Reference references={frontMatter.references} />}
+
       {(nextItem || prevItem) && (
         <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
       )}
