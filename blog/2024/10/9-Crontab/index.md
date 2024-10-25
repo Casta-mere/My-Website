@@ -3,6 +3,11 @@ slug: Crontab
 title: Linux 定时任务 (Crontab)
 authors: [Castamere]
 tags: [Linux, Crontab]
+references:
+  - author: StandByMe.
+    title: Linux中Crontab（定时任务）命令详解及使用教程
+    time: 2022
+    url: https://blog.csdn.net/qq_51514930/article/details/124269555
 ---
 
 <!-- truncate -->
@@ -34,7 +39,7 @@ Crontab 是一个定时任务工具，用于在指定的时间执行指定的命
 +------------- 分钟 (0 - 59)
 ```
 
-每个都可以是以下的一种
+command 前的五个值，每个都可以是以下的一种
 
 - 一个具体的值，例如 `0`、`1`、`2` 等
 - 一个 `*` 号，表示任意值
@@ -43,6 +48,8 @@ Crontab 是一个定时任务工具，用于在指定的时间执行指定的命
 - 一个斜杠分隔的值和步长，例如 `*/2`
 
 ## Crontab Macro
+
+Crontab 提供了一些预定义的时间表达式，可以简化定时任务的编写
 
 ```bash
 @yearly: 0 0 1 1 *
