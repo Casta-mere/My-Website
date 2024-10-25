@@ -3,6 +3,11 @@ slug: Pyinstaller
 title: Python 脚本打包为 exe
 authors: [Castamere]
 tags: [Python]
+references:
+  - title: Python脚本打包成exe，看这一篇就够了！
+    author: 利白
+    time: 2024
+    url: https://libaineu2004.blog.csdn.net/article/details/112612421
 ---
 
 经典问题之 Python 脚本打包为 exe/bin
