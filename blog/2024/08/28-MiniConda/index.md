@@ -3,6 +3,13 @@ slug: MiniConda
 title: MiniConda 的安装与使用
 authors: [Castamere]
 tags: [MiniConda, Conda, Ubuntu, Zsh, Windows]
+references:
+  - author: 过过过呀Glik
+    title: Ubuntu系统上快速安装Miniconda的步骤
+    time: 2024
+    url: https://blog.csdn.net/qq_39071254/article/details/138255755
+  - title: Miniconda
+    url: https://docs.anaconda.com/miniconda/
 ---
 
 import Terminal1 from './components/Terminal1'
