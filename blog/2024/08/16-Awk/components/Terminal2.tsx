@@ -9,7 +9,7 @@ import {
 } from "@site/src/components/CommandLine";
 import React from "react";
 
-export default function Terminal1({}) {
+export default function Terminal2({}) {
   return (
     <TerminalRoot title={""}>
       <TerminalLine dir="">
