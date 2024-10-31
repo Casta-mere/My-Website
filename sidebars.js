@@ -117,6 +117,15 @@ const sidebars = {
         "Snippets/Components/Link",
       ],
     },
+    {
+      type: "category",
+      label: "Python 代码段",
+      link: {
+        type: "doc",
+        id: "Snippets/Python/README",
+      },
+      items: ["Snippets/Python/Timer"],
+    },
   ],
 };
 

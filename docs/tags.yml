@@ -79,6 +79,11 @@ Prisma:
   label: Prisma
   permalink: /Prisma
 
+Python:
+  description: Python
+  label: Python
+  permalink: /Python
+
 Radix-UI:
   description: Radix-UI
   label: Radix-UI
