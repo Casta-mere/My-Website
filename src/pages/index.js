@@ -25,9 +25,9 @@ function HomepageHeader() {
     <header>
       <div className="container">
         <h1 className="hero__title  padding-top--lg">{siteConfig.title}</h1>
-        <p className="hero__subtitle">
+        <div className="hero__subtitle">
           <Typewriter text={lines} delinterval={5000} />
-        </p>
+        </div>
       </div>
     </header>
   );

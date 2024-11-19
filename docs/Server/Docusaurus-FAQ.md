@@ -11,6 +11,8 @@ keywords:
 import Theme from "./components/FAQ/Theme";
 import Location from "./components/FAQ/Location";
 import Locale from "./components/FAQ/Locale";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 # Docusaurus FAQ
 
@@ -38,7 +40,21 @@ npm install --save-dev typescript @docusaurus/module-type-aliases @docusaurus/ts
 
 然后在项目根目录下添加 `tsconfig.json` 文件，内容如下：
 
-```json
+<Tabs>
+
+<TabItem value=">= V3.6" label="script">
+```json title="V3.6"
+{
+  "extends": "@docusaurus/tsconfig/tsconfig.json"",
+  "compilerOptions": {
+    "baseUrl": "."
+  }
+}
+```
+</TabItem>
+
+<TabItem value="< V3.6" label="script">
+```json title="V3.5"
 {
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
@@ -46,6 +62,9 @@ npm install --save-dev typescript @docusaurus/module-type-aliases @docusaurus/ts
   }
 }
 ```
+</TabItem>
+
+</Tabs>
 
 :::tip
 弄好如果还报错，就 reload window 一下，应该就好了
@@ -65,7 +84,7 @@ import BrowserWindow from "@site/src/components/BrowserWindow";
 
 ```json showLineNumbers
 {
-  "extends": "@docusaurus/tsconfig",
+  "extends": "@docusaurus/tsconfig/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
