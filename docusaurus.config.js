@@ -80,7 +80,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           onInlineTags: "throw",
-          blogSidebarCount: 10,
+          blogSidebarCount: 100,
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           remarkPlugins: [remarkMath],
