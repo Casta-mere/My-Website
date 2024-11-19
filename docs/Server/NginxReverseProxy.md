@@ -4,9 +4,6 @@ title: Nginx 反代理
 keywords:
   - Nginx
   - Revese proxy
-last_update:
-  date: 2 NOV 2023 GMT
-  author: Casta-mere
 ---
 
 # Nginx 反代理
@@ -100,5 +97,9 @@ sudo systemctl reload nginx
 ## 后记
 
 去试试两个域名能否顺利打开对应的网站，域名解析可能会有一些延迟。完美解决之前提到的两个问题，实现单个服务器部署多个项目
+
+:::important
+如果需要配置 https 可以参考[这篇](/docs/Server/SSL)
+:::
 
 [阿里云解析记录类型]: https://help.aliyun.com/document_detail/29725.html?spm=a2c1d.8251892.0.0.456d5b76vPKwlR#h2-url-6
