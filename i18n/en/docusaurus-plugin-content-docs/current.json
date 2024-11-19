@@ -30,5 +30,17 @@
   "sidebar.snippetsSidebar.category.小组件": {
     "message": "Components",
     "description": "The label for category 小组件 in sidebar snippetsSidebar"
+  },
+  "sidebar.tutorialSidebar.category.服务器搭建": {
+    "message": "Server",
+    "description": "The label for category 服务器搭建 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.总结与计划": {
+    "message": "Plans",
+    "description": "The label for category 总结与计划 in sidebar tutorialSidebar"
+  },
+  "sidebar.snippetsSidebar.category.Python 代码段": {
+    "message": "Python Snippets",
+    "description": "The label for category Python 代码段 in sidebar snippetsSidebar"
   }
 }

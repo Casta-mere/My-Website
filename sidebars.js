@@ -57,7 +57,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Server",
+      label: "服务器搭建",
       link: {
         type: "doc",
         id: "Server/README",
@@ -92,7 +92,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Plans",
+      label: "总结与计划",
       link: {
         type: "doc",
         id: "Plans/README",
