@@ -447,5 +447,12 @@
   },
   "请作者喝可乐🥤:": {
     "message": "Buy me a coffee ☕:"
+  },
+  "参考文献": {
+    "message": "References"
+  },
+  "theme.blog.author.noPosts": {
+    "message": "This author has not written any posts yet.",
+    "description": "The text for authors with 0 blog post"
   }
 }
