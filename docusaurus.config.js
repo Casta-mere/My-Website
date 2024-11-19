@@ -45,8 +45,19 @@ const config = {
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
     "./src/plugins/plugin-tailwind",
-    "./src/plugins/plugin-umami"
+    "./src/plugins/plugin-umami",
+    process.env.RSDOCTOR === 'true' && 'rsdoctor'
   ],
+  future: {
+    experimental_faster: {
+      swcJsLoader: true,
+      swcJsMinimizer: true,
+      swcHtmlMinimizer: true,
+      lightningCssMinimizer: true,
+      rspackBundler: true,
+      mdxCrossCompilerCache: true,
+    },
+  },
   presets: [
     [
       'classic',
