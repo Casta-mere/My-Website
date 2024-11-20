@@ -3,9 +3,6 @@ tags: [Code Highlight]
 title: 美化 Code Blocks
 keywords:
   - docusaurus Code blocks
-last_update:
-  date: 20 JAN 2024 GMT
-  author: Casta-mere
 ---
 
 # 美化 Code Blocks
@@ -14,10 +11,24 @@ last_update:
 
 ## 如何设置
 
-路径
+进入到如下路径，将当前使用的主题替换 or 添加新的主题
 
-```bash showLineNumbers
+```bash showLineNumbers title="文件路径"
 node_modules/prism-react-render/dist/index.js
+```
+
+```js showLineNumbers title="docusautus.config.js"
+// 在此查看 or 设置主题
+prism: {
+  // highlight-next-line
+  theme: prismThemes.vsDark,
+  // highlight-next-line
+  darkTheme: prismThemes.vsDark,
+  additionalLanguages: ['bash', 'latex', 'json', 'markdown', 'python'],
+  magicComments: [
+    ...
+  ],
+},
 ```
 
 ## 常见语言高亮
