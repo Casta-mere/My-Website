@@ -6,9 +6,11 @@ keywords:
   - Bibtex
   - Latex 引用
   - Latex 参考文献
-last_update:
-  date: 22 JAN 2024 GMT
-  author: Casta-mere
+references:
+  - author: 百度百科
+    title: 逆波兰表示法
+    time: 2024
+    url: https://baike.baidu.com/item/逆波兰表示法/7227226
 ---
 
 # 参考文献
@@ -262,7 +264,7 @@ XeLaTeX 原生支持 Unicode，并默认其输入文件为 UTF-8 编码。可以
 <details>
   <summary>latex-workshop配置</summary>
 
-```json showLineNumbers
+```json showLineNumbers title="latex-workshop配置" icon="vscode"
 {
   "latex-workshop.latex.tools": [
     {
