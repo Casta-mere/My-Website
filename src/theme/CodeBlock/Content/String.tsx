@@ -6,6 +6,7 @@ import {
   parseLines,
   useCodeWordWrap,
 } from "@docusaurus/theme-common/internal";
+import { Icon, parseIcon } from "@site/src/components/Icon";
 import Container from "@theme/CodeBlock/Container";
 import type { Props } from "@theme/CodeBlock/Content/String";
 import CopyButton from "@theme/CodeBlock/CopyButton";
@@ -46,6 +47,7 @@ export default function CodeBlockString({
   // future. Note that MDX doesn't strip quotes when parsing metastring:
   // "title=\"xyz\"" => title: "\"xyz\""
   const title = parseCodeBlockTitle(metastring) || titleProp;
+  const icon = parseIcon(metastring);
 
   const { lineClassNames, code } = parseLines(children, {
     metastring,
@@ -65,7 +67,23 @@ export default function CodeBlockString({
           `language-${language}`
       )}
     >
-      {title && <div className={styles.codeBlockTitle}>{title}</div>}
+      {title && (
+        <div className="tailwind">
+          <div className={styles.codeBlockTitle}>
+            <div className="flex justify-between items-center">
+              <div className="flex gap-2 items-center p-3">
+                {icon}
+                {title}
+              </div>
+              {language && (
+                <div className="mr-3">
+                  <Icon icon={language} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       <div className={styles.codeBlockContent}>
         <Highlight
           theme={prismTheme}
