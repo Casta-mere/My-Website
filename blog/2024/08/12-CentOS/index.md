@@ -10,6 +10,7 @@ tags: [CentOS, Linux]
 - [配置 IPv4 地址](/blog/CentOS#如何配置-ipv4-地址)
 - [查看所有服务](/blog/CentOS#如何查看所有的服务)
 - [yum](/blog/CentOS#yum)
+- [同步时间](/blog/CentOS#同步时间)
 
 <!--truncate-->
 
@@ -41,4 +42,10 @@ systemctl list-unit-files --type=service
 
 ```bash
 yum install xxx.rpm --disablerepo=*
+```
+
+## 同步时间
+
+```bash title="使用 ntpdate 同步时间"
+sudo ntpdate time.nist.gov
 ```
