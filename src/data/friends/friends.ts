@@ -28,6 +28,13 @@ const friendList: FriendItem[] = [
     description: "HEX",
     tags: ["Dreamer", "Reader"],
   },
+  {
+    title: "Electrical Killer",
+    avatar: "https://github.com/electrical-killer.png",
+    url: "https://eksnotebook.com/",
+    description: "Slow walker",
+    tags: ["IoT"],
+  },
 ];
 
 export default friendList;
