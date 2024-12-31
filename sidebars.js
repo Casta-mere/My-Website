@@ -97,7 +97,7 @@ const sidebars = {
         type: "doc",
         id: "Plans/README",
       },
-      items: ["Plans/2023", "Plans/2024"],
+      items: ["Plans/2023", "Plans/2024", "Plans/2025"],
     },
     "Rules",
     "Resume",
