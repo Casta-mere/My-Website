@@ -13,6 +13,10 @@ tags: [VS code, Tip]
 
 <!--truncate-->
 
+## 安装 VS code
+
+前往 [VS code 官网] 下载安装即可
+
 ## 列(框)选择
 
 按住 `shift` + `alt`(或按住鼠标中键), 拖动鼠标, 即可框选, 效果如下, 在选取 Mark:arrow_down: 表格中的内容, 或者在选取多个句中的变量, 想要上下移动, 尤为方便
@@ -34,3 +38,9 @@ tags: [VS code, Tip]
 :::tip
 如果只是要给某个变量重命名, 选中后按下 `F2` 即可, 上述方法更适合批量修改(不只是变量名)
 :::
+
+## 搜索文件名
+
+在文件栏中使用 `Ctrl` + `Alt` + `F` 搜索文件名
+
+[VS code 官网]: https://code.visualstudio.com/
