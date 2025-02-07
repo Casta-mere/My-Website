@@ -41,6 +41,7 @@ export default function Commentcn(): JSX.Element {
 
   return (
     <div className='margin-top--lg'>
+      <div id="comment-anchor" />
       <Giscus {...giscus} />
     </div>
   )
