@@ -9,6 +9,8 @@ tags: [Vim, Tip]
 
 - [查找替换](/blog/VimTip#查找替换)
 - [显示行号](/blog/VimTip#显示行号)
+- [跳转](/blog/VimTip#跳转)
+- [多行插入 Tab](/blog/VimTip#多行插入-tab)
 
 <!--truncate-->
 
@@ -23,4 +25,19 @@ tags: [Vim, Tip]
 
 ```bash
 :set number
+```
+
+## 跳转
+
+```bash
+:0 # 跳转到文件开头
+:100 # 跳转到第100行
+G # 跳转到文件结尾
+```
+
+## 多行插入 Tab
+
+```bash
+:1,10 > # 将第1行到第10行的缩进增加一个 Tab
+:1,10 < # 将第1行到第10行的缩进减少一个 Tab
 ```
