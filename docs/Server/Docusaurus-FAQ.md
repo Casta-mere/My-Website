@@ -42,7 +42,7 @@ npm install --save-dev typescript @docusaurus/module-type-aliases @docusaurus/ts
 
 <Tabs>
 
-<TabItem value=">= V3.6" label="script">
+<TabItem value=">= V3.6" label=">= V3.6">
 ```json title="V3.6"
 {
   "extends": "@docusaurus/tsconfig/tsconfig.json"",
@@ -53,7 +53,7 @@ npm install --save-dev typescript @docusaurus/module-type-aliases @docusaurus/ts
 ```
 </TabItem>
 
-<TabItem value="< V3.6" label="script">
+<TabItem value="< V3.6" label="< V3.6">
 ```json title="V3.5"
 {
   "extends": "@docusaurus/tsconfig",
