@@ -7,10 +7,9 @@ keywords:
   - Image-zoom
   - RoughNotation
   - Mermaid
-last_update:
-  date: 10 SEP 2024 GMT
-  author: Casta-mere
 ---
+
+import { RoughNotation } from "react-rough-notation";
 
 # Docusaurus Plugins
 
@@ -54,3 +53,27 @@ const config = {
 ```
 
 配置完成后，重新启动 Docusaurus 即可生效
+
+## Rough Notation
+
+使用 [Rough Notation] 给文字添加
+<RoughNotation
+    type="underline"
+    show={true}
+    color="#32CD32"
+    strokeWidth={3}
+    animationDelay={2500}
+    >各种标记</RoughNotation>
+
+### 安装与配置
+
+使用如下命令安装
+
+```bash title="react-rough-notation" icon="npm"
+npm install --save react-rough-notation
+```
+
+用法参考 [React Rough Notation]
+
+[Rough Notation]: https://roughnotation.com/
+[React Rough Notation]: https://www.npmjs.com/package/react-rough-notation
