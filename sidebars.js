@@ -124,7 +124,7 @@ const sidebars = {
         type: "doc",
         id: "Snippets/Python/README",
       },
-      items: ["Snippets/Python/Timer"],
+      items: ["Snippets/Python/Timer", "Snippets/Python/Flatten"],
     },
   ],
 };
