@@ -8,7 +8,7 @@ keywords:
 
 # 计时器
 
-```python showLineNumbers
+```python showLineNumbers title="timer"
 from functools import wraps
 import time
 
@@ -22,7 +22,7 @@ def timer(func):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        print(func.__name__, "time:", end-start)
+        print(f"FUNCTION: {func.__name__}\ncost time: {end-start}")
         return result
 
     return wrapper
