@@ -126,6 +126,7 @@ const sidebars = {
       },
       items: [
         "Snippets/Python/Timer",
+        "Snippets/Python/TraceMalloc",
         "Snippets/Python/Flatten",
         "Snippets/Python/IterToList",
       ],
