@@ -139,7 +139,15 @@ const Example = () => {
 
 <Location />
 
-## 获取当前语言
+## i18n
+
+### 生成翻译
+
+```npm title="生成翻译"
+npm run write-translations -- --locale en
+```
+
+### 获取当前语言
 
 ```tsx showLineNumbers
 // highlight-next-line
