@@ -39,10 +39,6 @@
     "message": "Read-Book",
     "description": "The label of footer link with label=Read-Book linking to http://readbook.castamerego.com"
   },
-  "copyright": {
-    "message": "Copyright © 2022-2024 Castamere <Br/>",
-    "description": "The footer copyright"
-  },
   "link.item.label.友链": {
     "message": "Friends",
     "description": "The label of footer link with label=友链 linking to /friends"
@@ -50,5 +46,9 @@
   "link.item.label.数据统计": {
     "message": "Stastics",
     "description": "The label of footer link with label=数据统计 linking to https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com"
+  },
+  "copyright": {
+    "message": "Copyright © 2022-2025 Castamere <Br/>",
+    "description": "The footer copyright"
   }
 }
