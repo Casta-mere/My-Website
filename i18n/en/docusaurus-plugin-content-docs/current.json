@@ -15,32 +15,24 @@
     "message": "Issue Tracker",
     "description": "The label for category Issue Tracker in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.Server": {
-    "message": "Server",
-    "description": "The label for category Server in sidebar tutorialSidebar"
-  },
   "sidebar.tutorialSidebar.category.Latex": {
     "message": "Latex",
     "description": "The label for category Latex in sidebar tutorialSidebar"
-  },
-  "sidebar.tutorialSidebar.category.Plans": {
-    "message": "Plans",
-    "description": "The label for category Plans in sidebar tutorialSidebar"
   },
   "sidebar.snippetsSidebar.category.小组件": {
     "message": "Components",
     "description": "The label for category 小组件 in sidebar snippetsSidebar"
   },
-  "sidebar.tutorialSidebar.category.服务器搭建": {
-    "message": "Server",
-    "description": "The label for category 服务器搭建 in sidebar tutorialSidebar"
-  },
-  "sidebar.tutorialSidebar.category.总结与计划": {
-    "message": "Plans",
-    "description": "The label for category 总结与计划 in sidebar tutorialSidebar"
-  },
   "sidebar.snippetsSidebar.category.Python 代码段": {
     "message": "Python Snippets",
     "description": "The label for category Python 代码段 in sidebar snippetsSidebar"
+  },
+  "sidebar.tutorialSidebar.category.服务器搭建": {
+    "message": "服务器搭建",
+    "description": "The label for category 服务器搭建 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.总结与计划": {
+    "message": "总结与计划",
+    "description": "The label for category 总结与计划 in sidebar tutorialSidebar"
   }
 }
