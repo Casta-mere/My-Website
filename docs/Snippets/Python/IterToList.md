@@ -8,6 +8,8 @@ keywords:
 
 # 多个迭代器生成序列
 
+将多个迭代器合并为列表
+
 ```python showLineNumbers title="Iters to List"
 def ItersToList(ItersArray, function = lambda x: x):
     """
