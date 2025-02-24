@@ -8,6 +8,8 @@ keywords:
 
 # 统计内存占用
 
+用于统计函数内存占用的装饰器
+
 ```python showLineNumbers title="memory"
 from functools import wraps
 import tracemalloc
