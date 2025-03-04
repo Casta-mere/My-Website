@@ -49,3 +49,10 @@ yum install xxx.rpm --disablerepo=*
 ```bash title="使用 ntpdate 同步时间"
 sudo ntpdate time.nist.gov
 ```
+
+## 修改时间
+
+```bash title="修改时间"
+sudo date "+%Y%m%d %H:%M:%S" # 从其他设备获取时间
+sudo date -s "xxxxxxxx xx:xx:xx" # 手动修改时间
+```
