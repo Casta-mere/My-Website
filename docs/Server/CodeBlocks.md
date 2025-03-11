@@ -5,11 +5,47 @@ keywords:
   - docusaurus Code blocks
 ---
 
+import { Icon } from "@site/src/components/Icon";
+
 # 美化 Code Blocks
 
-**自定义代码块的各种颜色**
+- **自定义代码块高亮颜色**
+- **为语言添加图标**
+- **添加自定义图标**
 
-## 如何设置
+## 添加图标
+
+使用 [iconify] 添加图标
+
+```bash title="IconifyIcon" icon="npm"
+npm install --save-dev @iconify/react
+```
+
+目前预设的一些图标
+
+<div className="tailwind">
+  <div className="flex gap-2 items-center">
+    <Icon icon="bash" />
+    <Icon icon="c" />
+    <Icon icon="cpp" />
+    <Icon icon="css" />
+    <Icon icon="docusaurus" />
+    <Icon icon="js" />
+    <Icon icon="json" />
+    <Icon icon="latex" />
+    <Icon icon="markdown" />
+    <Icon icon="npm" />
+    <Icon icon="prisma" />
+    <Icon icon="python" />
+    <Icon icon="ts" />
+    <Icon icon="tsx" />
+    <Icon icon="vscode" />
+  </div>
+</div>
+
+Icon 组件可以在[这里](https://github.com/Casta-mere/My-Website/blob/master/src/components/Icon/index.tsx)查看
+
+## 如何设置 Prisma 高亮颜色
 
 进入到如下路径，将当前使用的主题替换 or 添加新的主题
 
@@ -17,7 +53,7 @@ keywords:
 node_modules/prism-react-render/dist/index.js
 ```
 
-```js showLineNumbers title="docusautus.config.js"
+```js showLineNumbers title="docusautus.config.js" icon ="docusaurus"
 // 在此查看 or 设置主题
 prism: {
   // highlight-next-line
@@ -35,7 +71,7 @@ prism: {
 
 ### JS
 
-```js showLineNumbers
+```js showLineNumbers title="JavaScript"
 // 计算阶乘的函数
 function factorial(n) {
   if (n === 0 || n === 1) return 1;
@@ -48,7 +84,7 @@ console.log(`The factorial of ${NUMBER} is ${result}.`);
 
 ### Json
 
-```json showLineNumbers
+```json showLineNumbers title="JSON"
 {
   "name": "John Doe",
   "age": 30,
@@ -68,7 +104,7 @@ console.log(`The factorial of ${NUMBER} is ${result}.`);
 
 ### Python
 
-```python showLineNumbers
+```python showLineNumbers title="Python"
 class Calculator:
     """Simple calculator class."""
     def __init__(self):
@@ -85,7 +121,7 @@ print(f"The result is {result}")  # 输出结果
 
 ### Bash
 
-```bash showLineNumbers
+```bash showLineNumbers title="Bash"
 #!/bin/bash
 # 输出传入参数
 echo "You entered: $1"
@@ -101,7 +137,7 @@ fi
 
 ### Latex
 
-```latex showLineNumbers
+```latex showLineNumbers title="Latex"
 % 在 LaTeX 中定义一个简单的命令
 \documentclass{article}
 \usepackage{amsmath}
@@ -118,7 +154,7 @@ Hello, world! This is a simple LaTeX example with an equation.
 
 ### Markdown
 
-```markdown showLineNumbers
+```markdown showLineNumbers title="Markdown"
 # Markdown Example
 
 This is a **Markdown** document.
@@ -136,7 +172,7 @@ This is a **Markdown** document.
 
 ### C
 
-```c showLineNumbers
+```c showLineNumbers title="C"
 #include <stdio.h>
 #define MAX 10 // 预处理器常量
 
@@ -154,7 +190,7 @@ int main() {
 
 ### C++
 
-```cpp showLineNumbers
+```cpp showLineNumbers title="C++"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -339,3 +375,5 @@ var CastamereTheme = {
 };
 var vsDark_default = CastamereTheme;
 ```
+
+[iconify]: https://icon-sets.iconify.design/
