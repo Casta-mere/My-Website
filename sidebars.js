@@ -78,6 +78,15 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Python",
+      link: {
+        type: "doc",
+        id: "Python/README",
+      },
+      items: ["Python/Basic"],
+    },
+    {
+      type: "category",
       label: "Latex",
       link: {
         type: "doc",
