@@ -55,4 +55,32 @@ error in setup command: Error parsing .../xxx/setup.cfg: Exception: Versioning f
 
 首先在解压好的目录下使用 `python setup.py sdist`，这样会生成一个 `/dist` 文件夹，其中会有一个压缩包。这个压缩包就和前面 PyPI 下载下来的基本一样了: 解压、进入目录、`python setup.py install` 即可
 
+## pip
+
+### pip 换源
+
+首先根据不同的系统创建配置文件，在配置中添加如下内容即可
+
+```conf title="pip.ini/pip.conf"
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+trusted-host = pypi.tuna.tsinghua.edu.cn
+```
+
+使用 `pip config list` 来查看修改是否成功
+
+#### Linux
+
+```bash title="Linux"
+mkdir -p ~/.pip
+nano ~/.pip/pip.conf
+```
+
+#### Windows
+
+```bash title="Windows"
+mkdir %USERPROFILE%\pip
+notepad %USERPROFILE%\pip\pip.ini
+```
+
 [PyPI]: https://pypi.org/
