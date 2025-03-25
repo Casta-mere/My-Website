@@ -3,7 +3,6 @@ slug: Pycurl
 title: pycurl libcurl 链接与编译 ssl 后端不同
 authors: [Castamere]
 tags: [Python]
-draft: true
 references:
   - author: 彭世瑜
     title: ImportError：pycurl：libcurl link-time ssl backend
@@ -29,7 +28,7 @@ is different from compile-time ssl backend (none/other)
 
 ## 解决方式
 
-在爆错中会显示 link-time 的 ssl 后端是什么，比如 openssl。记住这个，然后用如下命令重新安装即可
+在报错中会显示 link-time 的 ssl 后端是什么，比如 openssl。记住这个，然后用如下命令重新安装即可
 
 ```bash 
 pip uninstall pycurl
@@ -41,3 +40,7 @@ pip install pycurl
 ```
 
 不使用 pip，用 `python setup.py install` 也同理
+
+:::tip title="P.S."
+删除使用 `python setup.py install` 安装的 package，参考[这里](/docs/Python/Basic#targz)
+:::
