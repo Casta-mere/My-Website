@@ -221,4 +221,8 @@ CREATE USER 'root'@'%' IDENTIFIED BY 'xxxx'; -- 这里的 'xxxx' 换成你的密
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 ```
 
+:::tip
+生成随机密码 `openssl rand -base64 10`
+:::
+
 [配置 Linux 终端 (zsh)]: /blog/LinuxTerminal
