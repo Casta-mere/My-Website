@@ -83,7 +83,7 @@ const sidebars = {
         type: "doc",
         id: "Docker/README",
       },
-      items: ["Docker/Basic"],
+      items: ["Docker/Basic", "Docker/Command"],
     },
     {
       type: "category",
