@@ -3,7 +3,6 @@ tags: [Docker]
 title: Docker 基础
 keywords:
   - Docker
-  - pip
 references:
   - title: Docker — 从入门到实践
     url: https://docker-practice.github.io/zh-cn
@@ -31,18 +30,20 @@ sudo systemctl enable docker
 sudo systemctl start docker
 ```
 
-使用 `docker run hello-world` 来验证是否安装成功。如果拉取镜像超时/缓慢，参考 [Docker 换源](/docs/Docker/Basic#docker-换源)
+使用 `docker run hello-world` 来验证是否安装成功。如果拉取镜像超时/缓慢，参考 [Docker 换源]
 
 ### Windows
 
-点击 [链接](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) 下载 Docker Desktop for Windows
+点击 [链接] 下载 Docker Desktop for Windows
 
 下载好之后双击 Docker Desktop Installer.exe 开始安装
 
 ## Docker 换源
 
+Docker 换源，在对应配置文件添加如下内容即可
+
+
 ```bash
-vi /etc/docker/daemon.json
 # 添加如下内容
 {
     "registry-mirrors": [
@@ -57,8 +58,20 @@ vi /etc/docker/daemon.json
 }
 ```
 
+### Windows
+
+![Windows 换源](./image/Basic/1743648776916.jpg)
+
+### Linux
+
+```bash
+vi /etc/docker/daemon.json
+```
+
 重启 docker 服务
 
 ```bash
 systemctl daemon-reload && systemctl restart docker
 ```
+[Docker 换源]: /docs/Docker/Basic#docker-换源
+[链接]: https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe
