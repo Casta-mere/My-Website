@@ -136,6 +136,7 @@ const config = {
             href: 'https://github.com/Casta-mere/My-Website',
             label: 'GitHub',
             position: 'right',
+            'data-umami-event': 'Github',
           },
         ],
         hideOnScroll: true,
@@ -166,6 +167,7 @@ const config = {
               {
                 label: 'Github',
                 href: 'https://github.com/Casta-mere',
+                'data-umami-event': 'Github',
               },
               {
                 label: 'Meta',
@@ -179,18 +181,22 @@ const config = {
               {
                 label: '友链',
                 href: '/friends',
+                'data-umami-event': 'friends',
               },
               {
                 label: '数据统计',
                 href: 'https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com',
+                'data-umami-event': 'data-analytics',
               },
               {
                 label: 'Mind-Scout',
                 href: 'http://mindscout.castamerego.com',
+                'data-umami-event': 'Mind-Scout',
               },
               {
                 label: 'Read-Book',
                 href: 'http://readbook.castamerego.com',
+                'data-umami-event': 'Read-Book',
               },
             ],
           },
