@@ -39,6 +39,11 @@ Docusaurus:
   label: Docusaurus
   permalink: /Docusaurus
 
+ESXI:
+  description: ESXI
+  label: ESXI
+  permalink: /ESXI
+
 Git:
   description: Git
   label: Git
@@ -128,6 +133,16 @@ Ubuntu:
   description: Ubuntu
   label: Ubuntu
   permalink: /Ubuntu
+
+VM:
+  description: VM
+  label: VM
+  permalink: /VM
+
+VMware:
+  description: VMware
+  label: VMware
+  permalink: /VMware
 
 VPN:
   description: VPN
