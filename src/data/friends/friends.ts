@@ -35,6 +35,13 @@ const friendList: FriendItem[] = [
     description: "Slow walker",
     tags: ["IoT"],
   },
+  {
+    title: "taf.fyi",
+    avatar: "https://taf.fyi/assets/friends/fuuzen_128.jpg",
+    url: "https://taf.fyi",
+    description: "关注永雏塔菲喵谢谢喵",
+    tags: ["全栈开发"],
+  },
 ];
 
 export default friendList;
