@@ -139,9 +139,9 @@ else:
 }
 ```
 
-## Docusaurus
+## 制作组件
 
-笔者在本博客中实现的 UmamiPageViewCounter 组组件，有以下功能
+笔者在本博客中实现的 UmamiPageViewCounter 组件，有以下功能
 
 - 显示文章阅读量
 - 合并中/英文数据显示
@@ -241,6 +241,141 @@ export default function UmamiPageViewCounter() {
 
 </details>
 
-### 集成到 Docusaurus
+## 集成到 Docusaurus
+
+首先要把组件添加到你的项目中，将上面[最终版本](/blog/PageViewCounter#最终版本)的代码复制到 `src/components/PageViewCounter/UmamiPageViewCounter.tsx` 中。并修改两处为你自己的数据
+
+接下来在命令行使用如下命令(在你运行项目的路径下)，在弹出的提示框选择 `typescript`, `eject`
+
+```bash
+npm run swizzle @docusaurus/theme-classic BlogPostItem/Header/Info
+```
+
+对于不熟悉 swizzle 的读者，这条命令的作用是将一些系统组件的代码复制到你的项目中，方便你进行修改。具体这条命令会生成 `src/theme/BlogPostItem/Header/Info/index.tsx` 文件
+
+在生成的文件中，我们先将刚刚的组件导入，然后再最下面的 `return` 语句中添加组件的调用，如下
+
+```typescript title="src/theme/BlogPostItem/Header/Info/index.tsx"
+...
+import { useDateTimeFormat } from "@docusaurus/theme-common/internal";
+// highlight-next-line
+import UmamiPageViewCounter from "@site/src/components/PageViewCounter/UmamiPageViewCounter";
+
+...
+
+export default function BlogPostItemHeaderInfo({
+  className,
+}: Props): JSX.Element {
+  ....
+
+  return (
+    <div className={clsx(styles.container, "margin-vert--md", className)}>
+      <DateTime date={date} formattedDate={formatDate(date)} />
+      {typeof readingTime !== "undefined" && (
+        <>
+          <Spacer />
+          <ReadingTime readingTime={readingTime} />
+          // 添加这两行即可
+          // highlight-next-line
+          <Spacer />
+          // highlight-next-line
+          <UmamiPageViewCounter />
+        </>
+      )}
+    </div>
+  );
+}
+
+```
+
+实在找不到可以把下面的代码直接贴进去
+
+<details>
+<summary>完整代码</summary>
+
+```typescript title="src/theme/BlogPostItem/Header/Info/index.tsx"
+import { translate } from "@docusaurus/Translate";
+import { useBlogPost } from "@docusaurus/plugin-content-blog/client";
+import { usePluralForm } from "@docusaurus/theme-common";
+import { useDateTimeFormat } from "@docusaurus/theme-common/internal";
+import UmamiPageViewCounter from "@site/src/components/PageViewCounter/UmamiPageViewCounter";
+import type { Props } from "@theme/BlogPostItem/Header/Info";
+import clsx from "clsx";
+import React from "react";
+
+import styles from "./styles.module.css";
+
+// Very simple pluralization: probably good enough for now
+function useReadingTimePlural() {
+  const { selectMessage } = usePluralForm();
+  return (readingTimeFloat: number) => {
+    const readingTime = Math.ceil(readingTimeFloat);
+    return selectMessage(
+      readingTime,
+      translate(
+        {
+          id: "theme.blog.post.readingTime.plurals",
+          description:
+            'Pluralized label for "{readingTime} min read". Use as much plural forms (separated by "|") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)',
+          message: "One min read|{readingTime} min read",
+        },
+        { readingTime }
+      )
+    );
+  };
+}
+
+function ReadingTime({ readingTime }: { readingTime: number }) {
+  const readingTimePlural = useReadingTimePlural();
+  return <>{readingTimePlural(readingTime)}</>;
+}
+
+function DateTime({
+  date,
+  formattedDate,
+}: {
+  date: string;
+  formattedDate: string;
+}) {
+  return <time dateTime={date}>{formattedDate}</time>;
+}
+
+function Spacer() {
+  return <>{" · "}</>;
+}
+
+export default function BlogPostItemHeaderInfo({
+  className,
+}: Props): JSX.Element {
+  const { metadata } = useBlogPost();
+  const { date, readingTime } = metadata;
+
+  const dateTimeFormat = useDateTimeFormat({
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+
+  const formatDate = (blogDate: string) =>
+    dateTimeFormat.format(new Date(blogDate));
+
+  return (
+    <div className={clsx(styles.container, "margin-vert--md", className)}>
+      <DateTime date={date} formattedDate={formatDate(date)} />
+      {typeof readingTime !== "undefined" && (
+        <>
+          <Spacer />
+          <ReadingTime readingTime={readingTime} />
+          <Spacer />
+          <UmamiPageViewCounter />
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+</details>
 
 [Docusaurus Umami]: /docs/Server/Docusaurus-Umami
