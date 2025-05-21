@@ -134,6 +134,11 @@ Ubuntu:
   label: Ubuntu
   permalink: /Ubuntu
 
+Umami:
+  description: Umami
+  label: Umami
+  permalink: /Umami
+
 VM:
   description: VM
   label: VM
