@@ -34,10 +34,6 @@ function ReadingTime({ readingTime }: { readingTime: number }) {
   return <>{readingTimePlural(readingTime)}</>;
 }
 
-function ReadTimes({ readTimes }: { readTimes: number }) {
-  return <>{readTimes}</>;
-}
-
 function DateTime({
   date,
   formattedDate,
