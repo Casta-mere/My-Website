@@ -17,6 +17,7 @@ import Comment from '@site/src/components/Comment/Comment';
 import Donate from '@site/src/components/Donate';
 import License from '@site/src/components/License';
 import Reference from '@site/src/components/Reference';
+import UmamiDocViewCounter from "@site/src/components/PageViewCounter/UmamiDocViewCounter";
 import styles from './styles.module.css';
 
 /**
@@ -59,6 +60,7 @@ export default function DocItemLayout({children}: Props): JSX.Element {
             {docTOC.mobile}
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
+            <UmamiDocViewCounter />
             <Donate />
             <License />
             {frontMatter.references && <Reference references={frontMatter.references} />}
