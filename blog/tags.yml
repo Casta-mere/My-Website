@@ -24,6 +24,11 @@ Computer Networks:
   label: Computer Networks
   permalink: /Computer-Networks
 
+Clash:
+  description: Clash
+  label: Clash
+  permalink: /Clash
+
 Conda:
   description: Conda
   label: Conda
