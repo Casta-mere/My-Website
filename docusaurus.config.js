@@ -8,7 +8,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 
-const ICP = '<a href="https://beian.miit.gov.cn/"  style="color:white" target="_blank">浙ICP备2022034316号-1</a>';
+const ICP = '<a href="https://beian.miit.gov.cn/"  style="color:gray" target="_blank">浙ICP备2022034316号-1</a>';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -18,7 +18,7 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'http://dino.castamerego.com',
+  url: 'http://www.castamerego.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -173,6 +173,10 @@ const config = {
                 label: 'Meta',
                 href: 'https://www.facebook.com/profile.php?id=100064520177692',
               },
+              {
+                label: 'Blogs.cn',
+                href: 'https://blogscn.fun',
+              },
             ],
           },
           {
@@ -201,7 +205,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © 2022-${new Date().getFullYear()} Castamere <Br/>`,
+        copyright: `Copyright © 2022-${new Date().getFullYear()} Castamere <Br/> ${ICP}`
       },
       prism: {
         theme: prismThemes.vsDark,
