@@ -42,6 +42,13 @@ const friendList: FriendItem[] = [
     description: "关注永雏塔菲喵谢谢喵",
     tags: ["全栈开发"],
   },
+  {
+    title: "Keyle's Blog",
+    avatar: "https://vrast.cn/favicon.ico",
+    url: "https://vrast.cn/",
+    description: "在这里记录一些偶尔冒出来转眼就会忘的灵感",
+    tags: [],
+  },
 ];
 
 export default friendList;
