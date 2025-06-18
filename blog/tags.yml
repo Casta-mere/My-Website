@@ -19,15 +19,15 @@ CentOS:
   label: CentOS
   permalink: /CentOS
 
-Computer Networks:
-  description: Computer Networks
-  label: Computer Networks
-  permalink: /Computer-Networks
-
 Clash:
   description: Clash
   label: Clash
   permalink: /Clash
+
+Computer Networks:
+  description: Computer Networks
+  label: Computer Networks
+  permalink: /Computer-Networks
 
 Conda:
   description: Conda
@@ -113,6 +113,11 @@ React:
   description: React
   label: React
   permalink: /React
+
+SSH:
+  description: SSJ
+  label: SSH
+  permalink: SSH
 
 SVN:
   description: SVN
