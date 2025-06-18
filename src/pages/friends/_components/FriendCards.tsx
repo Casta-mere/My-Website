@@ -29,7 +29,7 @@ const getRandom = (arr: string[]) =>
 const FriendCard = ({ friend }: { friend: FriendItem }) => {
   const [hovered, setHovered] = useState(false);
   const card = {
-    "card cursor-pointer min-h-28r overflow-hidden rounded-card bg-card px-4 py-1  border-2 border-zinc-400 border-opacity-20":
+    "card cursor-pointer min-h-28r overflow-hidden rounded-card bg-card px-4 py-1 border-2 border-zinc-400 border-opacity-20":
       true,
     "justify-center": true,
     "transition-all hover:translate-y-[-5px] hover:scale-[1.01] hover:bg-[rgba(229,231,235,0.3)] hover:shadow-[0_3px_10px_0_rgba(164,190,217,0.3)]":
@@ -46,7 +46,7 @@ const FriendCard = ({ friend }: { friend: FriendItem }) => {
       onMouseLeave={() => setHovered(false)}
     >
       <div className="flex gap-4 items-center m-2">
-        <div className="avatar min-w-14 h-14 relative">
+        <div className="avatar w-14 h-14 relative">
           <img
             className="avatar__photo object-cover w-full h-full"
             src={friend.avatar}
