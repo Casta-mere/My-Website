@@ -1,6 +1,6 @@
 ## My - Website
 
-基于 Docusaurus 的[个人网站](https://dino.castamerego.com)
+基于 Docusaurus 的[个人网站](https://www.castamerego.com)
 
 ## Plugin / Features
 

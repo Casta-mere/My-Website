@@ -3,6 +3,8 @@
 
 # Production
 /build
+build.tar.gz
+deploy.zsh
 
 # Generated files
 .docusaurus
