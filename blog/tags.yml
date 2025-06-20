@@ -129,10 +129,20 @@ SVN:
   label: SVN
   permalink: /SVN
 
+Screen:
+  description: Screen
+  label: Screen
+  permalink: /Screen
+
 Snippet:
   description: Snippet
   label: Snippet
   permalink: /Snippet
+
+TTY:
+  description: TTY
+  label: TTY
+  permalink: /TTY
 
 Terminal:
   description: Terminal
