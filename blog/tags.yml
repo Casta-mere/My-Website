@@ -49,6 +49,11 @@ ESXI:
   label: ESXI
   permalink: /ESXI
 
+FZF:
+  description: FZF
+  label: FZF
+  permalink: /FZF
+
 Git:
   description: Git
   label: Git
