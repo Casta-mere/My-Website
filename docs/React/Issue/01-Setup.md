@@ -1,12 +1,12 @@
 ---
-tags: [React, Next.js, TypeScript, Issue Tracker, React-icon]
+tags: [React, Next.js, TypeScript, Issue Tracker, React-icons]
 title: 创建项目
 keywords:
   - React
   - Next.js
   - TypeScript
   - NavBar
-  - react-icon
+  - react-icons
 last_update:
   date: 22 AUG 2024 GMT
   author: Casta-mere
@@ -73,17 +73,17 @@ const NavBar = () => {
 export default NavBar;
 ```
 
-### react-icon
+### react-icons
 
-然后我们使用 [react-icon] 来添加图标
+然后我们使用 [react-icons] 来添加图标
 
 ```bash
-npm i react-icon
+npm i react-icons
 ```
 
-在 [react-icon] 官网中找到想要的图标之后，可以直接 copy 代码使用
+在 [react-icons] 官网中找到想要的图标之后，可以直接 copy 代码使用
 
-![react-icon](image/01-Setup/react-icon.png)
+![react-icons](image/01-Setup/react-icon.png)
 
 ```tsx title="NavBar.tsx" showLineNumbers
   import Link from "next/link";
@@ -268,4 +268,4 @@ const NavLinks = () => {
 };
 ```
 
-[react-icon]: https://react-icons.github.io/react-icons/
+[react-icons]: https://react-icons.github.io/react-icons/

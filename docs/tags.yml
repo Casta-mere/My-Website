@@ -104,10 +104,10 @@ React-Query:
   label: React-Query
   permalink: /React-Query
 
-React-icon:
-  description: React-icon
-  label: React-icon
-  permalink: /React-icon
+React-icons:
+  description: React-icons
+  label: React-icons
+  permalink: /React-icons
 
 Rechart:
   description: Rechart

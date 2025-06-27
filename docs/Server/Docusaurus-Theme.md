@@ -6,11 +6,8 @@ keywords:
   - Docusaurus Themes
   - Tailwindcss
   - Radix UI
-  - react-icon
+  - react-icons
   - classNames
-last_update:
-  date: 18 SEP 2024 GMT
-  author: Casta-mere
 ---
 
 import TailWindDemo from "./components/Theme/TW"
@@ -119,7 +116,7 @@ module.exports = {
 </div>
 ```
 
-## react-icon
+## react-icons
 
 `npm i react-icons --save`
 
