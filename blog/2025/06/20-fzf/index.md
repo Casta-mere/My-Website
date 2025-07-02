@@ -28,7 +28,7 @@ import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
 
-:::important
+:::important 重要
 笔者使用的 `fzf` 的版本为 `0.62.0 (d226d841)`，不同的版本可能有所差异
 :::
 
@@ -97,7 +97,7 @@ stateDiagram
 
 这里的"输入"，就是被搜索的内容。我们一般通过管道来输入到 `fzf`，比如这里我们演示，从所有进程中进行搜索
 
-:::important
+:::important 重要
 为了方便演示，笔者这里就只用最简单的命令，避免输出过长影响效果
 :::
 
@@ -227,7 +227,7 @@ PREVIEW WINDOW
                             but for preview window
 ```
 
-:::important
+:::important 重要
 使用 `fzf --help` 查看更多参数
 :::
 
@@ -275,6 +275,325 @@ docker ps | fzf \
 
 ## Docker
 
+目前 Docker 实现了如下功能
+
+:::important 重要
+可以跳转到[一键配置](/blog/fzf#一键配置)进行安装，下面内容只做演示，不需要一个一个复制
+:::
+
+### 从所有容器中选择
+
+从所有容器中选择，并可以预览最后 100 行日志，输出为容器 ID
+
+![Container All](./image/ContainerAll.gif)
+
+<details>
+  <summary>完整代码</summary>
+
+```bash showLineNumbers title="从所有容器中选择"
+ContainerAll () {
+    # choose from all containers
+    local header=$'NAME\tCONTAINER ID\tIMAGE\tSTATUS'
+    local data combined selected preview_lines
+    data=$(docker ps -a --format '{{.Names}}|{{.ID}}|{{.Image}}|{{.Status}}' | \
+        awk -F'|' '{
+            name = length($1) > 20 ? substr($1, 1, 17) "..." : $1;
+            printf "%-20s\t%s\t%s\t%s\n", name, $2, $3, $4
+        }')
+    combined="$header"$'\n'"$data"
+    formatted=$(echo "$combined" | column -t -s $'\t')
+
+    preview_lines=100
+
+    selected=$(echo "$formatted"| fzf \
+        --reverse \
+        --height 80% \
+        --header-lines="1" \
+        --preview-label="🐳 Preview" \
+        --preview="docker logs -n $preview_lines {1}" \
+        --preview-window=follow\
+        --accept-nth=2 
+    )
+
+    echo $selected 
+}
+```
+
+</details>
+
+### 从所有运行容器中选择
+
+从所有运行容器中选择，并可以预览最后 100 行日志，输出为容器 ID，可以用于衔接进入容器，或 `inspect` 容器
+
+![Container UP](./image/ContainerUP.gif)
+
+<details>
+  <summary>完整代码</summary>
+
+```bash showLineNumbers title="从所有运行容器中选择"
+ContainerUP () {
+    # choose from all up containers
+    local header=$'NAME\tCONTAINER ID\tIMAGE\tSTATUS'
+    local data exited running combined selected
+    data=$(docker ps -a --format '{{.Names}}|{{.ID}}|{{.Image}}|{{.Status}}' | \
+        awk -F'|' '{
+            name = length($1) > 20 ? substr($1, 1, 17) "..." : $1;
+            printf "%-20s\t%s\t%s\t%s\n", name, $2, $3, $4
+        }')
+    exited=$(echo "$data" | awk -F'\t' '$4 ~ /^Exited/ { print }')
+    running=$(echo "$data" | awk -F'\t' '$4 !~ /^Exited/ { print }')
+    combined="$header"$'\n'"$exited"$'\n'"$running"
+    formatted=$(echo "$combined" | column -t -s $'\t')
+
+    preview_lines=100
+    exited_count=$(echo "$exited" | grep -c '^')
+
+    selected=$(echo "$formatted"| fzf \
+        --reverse \
+        --height 80% \
+        --header-lines=$((1 + exited_count)) \
+        --preview-label="🐳 Preview" \
+        --preview="docker logs -n $preview_lines {1}" \
+        --preview-window=follow\
+        --accept-nth=2 
+    )
+
+    echo $selected
+}
+```
+
+</details>
+
+### 从所有停止容器中选择
+
+从所有停止容器中选择，并可以预览最后 100 行日志，输出为容器 ID，可以用于删除容器等
+
+![Container UP](./image/ContainerDown.gif)
+
+<details>
+  <summary>完整代码</summary>
+
+```bash showLineNumbers title="从所有停止容器中选择"
+ContainerDown () {
+    # choose from all down containers
+    local header=$'NAME\tCONTAINER ID\tIMAGE\tSTATUS'
+    local data exited running combined selected
+    data=$(docker ps -a --format '{{.Names}}|{{.ID}}|{{.Image}}|{{.Status}}' | \
+        awk -F'|' '{
+            name = length($1) > 20 ? substr($1, 1, 17) "..." : $1;
+            printf "%-20s\t%s\t%s\t%s\n", name, $2, $3, $4
+        }')
+    exited=$(echo "$data" | awk -F'\t' '$4 ~ /^Exited/ { print }')
+    running=$(echo "$data" | awk -F'\t' '$4 !~ /^Exited/ { print }')
+    combined="$header"$'\n'"$running"$'\n'"$exited"
+    formatted=$(echo "$combined" | column -t -s $'\t')
+
+    preview_lines=100
+    running_count=$(echo "$running" | grep -c '^')
+
+    selected=$(echo "$formatted"| fzf \
+        --reverse \
+        --height 80% \
+        --header-lines=$((1 + running_count)) \
+        --preview-label="🐳 Preview" \
+        --preview="docker logs -n $preview_lines {1}" \
+        --preview-window=follow\
+        --accept-nth=2 
+    )
+
+    echo $selected
+}
+```
+
+</details>
+
+### 选择并进入容器
+
+效果如下，搭配了前面的 ContainerUP。使用 `docker exec -it [CONTAINERID] bash` 连接容器
+
+![Docker Enter](./image/docker_enter.gif)
+
+```bash showLineNumbers title="选择并进入容器"
+enter() {
+  local selected=$(ContainerUP)
+  if [ -z "$selected" ]; then
+    echo "Canceled"
+    return 1
+  fi
+  docker exec -it $selected bash
+}
+```
+
+### 选择并删除容器
+
+删除就不演示了，搭配了前面的 ContainerDown
+
+```bash showLineNumbers title="选择并删除容器"
+ddel() {
+  local selected=$(ContainerDown)
+  if [ -z "$selected" ]; then
+    echo "Canceled"
+    return 1
+  fi
+  docker rm $selected
+}
+
+# 强制删除(可以删运行中的)
+dfdel() {
+  local selected=$(ContainerAll)
+  if [ -z "$selected" ]; then
+    echo "Canceled"
+    return 1
+  fi
+  docker rm -f $selected
+}
+```
+
 ## grep
 
+:::important 重要
+可以跳转到[一键配置](/blog/fzf#一键配置)进行安装，下面内容只做演示，不需要一个一个复制
+:::
+
+效果如下，右边的窗口可以进行预览，并会直接跳转到对应的行数附近
+
+:::warning
+需要安装 `batcat` 实现高亮
+:::
+
+![ffgrep](./image/ffgrep.gif)
+
+<details>
+  <summary>完整代码</summary>
+
+```bash showLineNumbers title="grep 并预览结果"
+ffgrep() {
+  local query="$*"
+  local ans
+  local cmd_height=$(awk "BEGIN { printf \"%d\", $(tput lines) * 0.8 - 6 }") 
+  local offset=$(awk "BEGIN { printf \"%d\", $cmd_height * 0.5 }")
+
+  ans=$(grep -rnI --color=always -E "$query" . 2>/dev/null | \
+    fzf --ansi \
+        --delimiter ':' \
+        --height=80% --reverse \
+        --preview='batcat --color=always --paging=never {1} --highlight-line={2} --wrap=character' \
+        --preview-window=right:60%,wrap,+{2}-$offset \
+    )
+    
+    if [[ -n "$ans" ]]; then
+      echo $ans | head -n1 | awk -F: '{print $1":"$2}'
+    fi
+}
+```
+
+</details>
+
 ## 进程
+
+:::important 重要
+可以跳转到[一键配置](/blog/fzf#一键配置)进行安装，下面内容只做演示，不需要一个一个复制
+:::
+
+```bash showLineNumbers title="查找并杀死进程"
+fkill() {
+  local pid
+  pid=$(ps aux | fzf --accept-nth 2)
+  if [ -n "$pid" ]; then
+    kill -9 "$pid"
+  fi 
+}
+```
+
+## Conda
+
+:::important 重要
+可以跳转到[一键配置](/blog/fzf#一键配置)进行安装，下面内容只做演示，不需要一个一个复制
+:::
+
+### 进入 Conda 环境
+
+效果如下，在选择环境时，可以预览该环境有哪些 `pip` 包
+
+![Conda activate](./image/conda_activate.gif)
+
+<details>
+  <summary>完整代码</summary>
+
+```bash showLineNumbers title="进入 Conda 环境"
+conda_activate() {
+    local env envs
+    envs=$(conda env list | awk 'NF && $0 !~ /^#/')
+    env=$(echo "$envs" | fzf \
+        --preview='
+            pippath={-1}/bin/pip
+            "$pippath" list
+        ' \
+        --prompt="Activate Conda Env > " \
+        --height=80% \
+        --reverse \
+        --accept-nth 1 \
+    )
+
+    if [[ -n "$env" ]]; then
+        echo "🔄 Activating Conda environment: $env"
+        conda activate $env
+    else
+        echo "❌ Cancelled."
+    fi
+}
+```
+
+</details>
+
+### 搜索 Conda 环境
+
+效果如下，在所有 Conda 环境中搜索 pip 包，并预览 `pip show`。在 Conda 环境多起来之后，十分好用
+
+![Conda search](./image/conda_search.gif)
+
+<details>
+  <summary>完整代码</summary>
+
+```bash showLineNumbers title="搜索 Conda 环境"
+conda_search() {
+    local rows=""
+    local envs
+    envs=$(conda env list | awk 'NF && $0 !~ /^#/' | awk '{print $1}')
+
+    while read -r env; do
+        while IFS=$'\t' read -r name version; do
+            [[ -n "$name" ]] && rows+="$env\t$name\t$version"$'\n'
+        done < <(conda run -n "$env" pip list --format=columns 2>/dev/null | awk 'NR > 2 {print $1 "\t" $2}')
+    done <<< "$envs"
+
+    if [[ -z "$rows" ]]; then
+        echo "⚠️ Nothing Here"
+        return 1
+    fi
+
+    {
+        echo -e "ENV\tPACKAGE\tVERSION"
+        echo -e "$rows"
+    } | column -t -s $'\t' | \
+    fzf \
+        --prompt="🔎 Search pip packages > " \
+        --header-lines=1 \
+        --reverse \
+        --nth 2 \
+        --accept-nth 2 \
+        --color nth:regular,fg:dim \
+        --height=90% \
+        --preview='
+            env=$(echo {} | awk "{print \$1}")
+            pkg=$(echo {} | awk "{print \$2}")
+            conda run -n $env pip show $pkg 2>/dev/null || echo "📦 Nothing Here"
+        '
+}
+```
+
+</details>
+
+## 一键配置
+
+## 后记
