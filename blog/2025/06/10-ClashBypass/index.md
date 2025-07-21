@@ -43,6 +43,15 @@ bypass:
   - "*.zhihu.com"
   - baidu.com
   - "*.baidu.com"
-  - bilibili.com
-  - "*.bilibili.com"
+  - "*.bdstatic.com"
+  - aliyun.com
+  - "*.aliyun.com"
+  - csdn.net
+  - "*.csdn.net"
+  - "*.ug.link"
+  - "*.castamerego.com"
+  - "*.jd.com"
+  - "*.taobao.com"
+  - "*.tmall.com"
+  - "*.cn"
 ```
