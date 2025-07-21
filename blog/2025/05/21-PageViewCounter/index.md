@@ -7,7 +7,7 @@ tags: [Docusaurus, Umami]
 
 # Page View Counter
 
-在 [Docusaurus Umami] 一章中，笔者讲解了如何在 Docusaurus 中集成 Umami 进行文章阅读量统计。但他仅仅是有一个额外的数据统计页面，在本篇，笔者将介绍如何在文章中显示阅读次数
+在 [Docusaurus Umami](/docs/Server/Docusaurus-Umami) 一章中，笔者讲解了如何在 Docusaurus 中集成 Umami 进行文章阅读量统计。但他仅仅是有一个额外的数据统计页面，在本篇，笔者将介绍如何在文章中显示阅读次数
 
 在上方应该可以看到成品的效果
 
@@ -20,7 +20,7 @@ tags: [Docusaurus, Umami]
 ![Umami Data](./image/umami.png)
 
 :::tip
-如果还没安装 Umami，可以参考 [Docusaurus Umami]
+如果还没安装 Umami，可以参考 [Docusaurus Umami](/docs/Server/Docusaurus-Umami)
 :::
 
 ## Umami 获取数据
@@ -485,7 +485,7 @@ npm run swizzle @docusaurus/theme-classic  DocItem/Layout
 
 这条命令会生成 `src/theme/DocItem/Layout/index.tsx` 文件，将我们的组件导入，添加到如下位置即可
 
-```typescript title="src/theme/BlogPostItem/Header/Info/index.tsx"
+```typescript title="src/theme/DocItem/Layout/index.tsx"
 ...
 import UmamiDocViewCounter from "@site/src/components/PageViewCounter/UmamiDocViewCounter";
 ...
@@ -519,5 +519,3 @@ export default function DocItemLayout({children}: Props): JSX.Element {
 - 将目录和文章分开，显示不同内容
 
 代码相似度很高，就不细说了
-
-[Docusaurus Umami]: /docs/Server/Docusaurus-Umami
