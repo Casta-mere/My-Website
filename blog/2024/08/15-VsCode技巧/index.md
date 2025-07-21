@@ -10,6 +10,8 @@ tags: [VS code, Tip]
 - [列(框)选择](/blog/VScodeTip#列框选择)
 - [运行(部分) Python 代码](/blog/VScodeTip#运行部分-python-代码)
 - [选中所有匹配项](/blog/VScodeTip#选中所有匹配项)
+- [搜索文件名](/blog/VScodeTip#搜索文件名)
+- [打开最近工作区](/blog/VScodeTip#选中所有匹配项)
 
 <!--truncate-->
 
@@ -44,3 +46,9 @@ tags: [VS code, Tip]
 在文件栏中使用 `Ctrl` + `Alt` + `F` 搜索文件名
 
 [VS code 官网]: https://code.visualstudio.com/
+
+## 打开最近工作区  
+
+```cmd
+ctrl + r
+```
