@@ -3,7 +3,6 @@ slug: fzf
 title: fzf
 authors: [Castamere]
 tags: [FZF, Linux, Zsh]
-draft: true
 references:
   - author: Junegunn. Choi
     title: fzf
@@ -18,11 +17,18 @@ fzf (fuzzy finder) 是一个**命令行模糊查找工具**。这是一个很强
 
 目前搞定了以下有趣的功能:
 
-- [选择并进入 Docker 容器](/blog/fzf#docker)
+- [选择并进入 Docker 容器](/blog/fzf#选择并进入容器)
+- [选择并删除 Docker 容器](/blog/fzf#选择并删除容器)
 - [grep 并预览结果](/blog/fzf#grep)
 - [查看并杀死进程](/blog/fzf#进程)
+- [进入 Conda 环境](/blog/fzf#进入-conda-环境)
+- [搜索 Conda 环境](/blog/fzf#搜索-conda-环境)
 
 <!--truncate-->
+
+:::tip
+若有新功能建议，欢迎在 [GitHub](https://github.com/Casta-mere/fzf_scripts/issues) 提交 issue
+:::
 
 import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
@@ -34,7 +40,11 @@ import Terminal3 from "./components/Terminal3";
 
 ## 缘起
 
-## 安装
+起因是在冲浪时看到了这样一个可视化命令行的轻量软件，当时还没意识到 `fzf` 有多么强大，包含了可视化、高效搜索、预览等功能。一边看发行说明，一边觉得可以有好多有趣的应用，遂研究
+
+读者可以全篇读一遍，再去[一键配置](/blog/fzf#一键配置)进行安装
+
+## 安装 fzf
 
 建议直接去 github 下载安装，点击[链接](https://github.com/junegunn/fzf/releases)直达 release
 
@@ -596,4 +606,29 @@ conda_search() {
 
 ## 一键配置
 
+脚本本身需要 fzf 以及一些其他依赖, 请确保在使用这些脚本前安装了这些依赖
+
+本项目在 GitHub 上开源，地址为 [Casta-mere/fzf_scripts](https://github.com/Casta-mere/fzf_scripts/)，可访问并下载
+
+这里提供两种安装方法
+
+### 命令安装
+
+该方式需要设备能连接到 github, 若无法连接或下载超时请使用[手动安装](/blog/fzf#手动安装)
+
+```bash
+curl -fsSL https://github.com/Casta-mere/fzf_scripts/releases/download/V0.1.0/install.sh -o ./install.sh
+chmod +x ./install.sh
+./install.sh --install
+```
+
+### 手动安装
+
+1. 点击 [fzf_scripts](https://github.com/Casta-mere/fzf_scripts/releases/tag/latest) 下载 **install_pack.tar.gz**
+2. 上传文件到设备并切换到该目录
+3. 使用 `tar -xzvf install_pack.tar.gz` 解压
+4. 使用 `chmod +x ./install.sh && ./install.sh --install` 安装
+
 ## 后记
+
+fzf 确实是一个很好玩的工具，笔者也是根据自己的实际需求写了以上小工具，读者若有新功能建议，欢迎提交 issue 到 [GitHub](https://github.com/Casta-mere/fzf_scripts/issues)
