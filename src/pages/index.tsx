@@ -1,7 +1,7 @@
 import React from "react";
 import HomepageHeader from "./components/HomepageHeader";
 import ProjectShowcase from "./components/ProjectShowcase";
-import SiteNavGation from "./components/SiteNavGation";
+import SiteNavGation from "./components/SiteNavgation";
 
 export default function Home() {
   return (
