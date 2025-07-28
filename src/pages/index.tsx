@@ -1,5 +1,6 @@
 import React from "react";
 import HomepageHeader from "./components/HomepageHeader";
+import ProjectShowcase from "./components/ProjectShowcase";
 import SiteNavGation from "./components/SiteNavGation";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
         <div className="flex flex-col mt-10 gap-4">
           <HomepageHeader />
           <SiteNavGation />
+          <ProjectShowcase />
         </div>
       </div>
     </div>
