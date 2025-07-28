@@ -2,7 +2,13 @@ import React from "react";
 import { FaBlog, FaBook, FaCode, FaGithub } from "react-icons/fa6";
 
 export default function SiteNavGation() {
-  function NavButton({ href, icon, label, external = false }) {
+  function NavButton({
+    href,
+    icon,
+    label,
+    external = false,
+    iconColor = "#3b82f6",
+  }) {
     if (
       typeof document !== "undefined" &&
       !document.getElementById("nav-btn-icon-rotate")
@@ -13,9 +19,13 @@ export default function SiteNavGation() {
         .nav-btn-icon {
           transform-origin: bottom center;
           display: inline-block;
+          transition: color 0.2s;
         }
         .nav-btn-icon-animate {
           animation: icon-rotate-swing 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        .nav-btn:hover .nav-btn-icon {
+          color: var(--nav-btn-icon-hover-color, #3b82f6);
         }
         @keyframes icon-rotate-swing {
           0% { transform: rotate(0deg); }
@@ -56,7 +66,12 @@ export default function SiteNavGation() {
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
         className="nav-btn px-4 py-1 rounded-full border border-white/20 shadow-lg backdrop-blur-md bg-slate-800/40 transition-colors duration-200 cursor-pointer text-white text-sm relative overflow-hidden hover:bg-slate-600/40"
-        style={{ textDecoration: "none" }}
+        style={
+          {
+            textDecoration: "none",
+            ["--nav-btn-icon-hover-color" as any]: iconColor,
+          } as React.CSSProperties
+        }
         onMouseEnter={handleMouseEnter}
       >
         <span className="nav-btn-dot"></span>
@@ -78,21 +93,25 @@ export default function SiteNavGation() {
       icon: <FaGithub />,
       label: "GitHub",
       external: true,
+      iconColor: "#3b82f6",
     },
     {
       href: "/blog",
       icon: <FaBlog />,
       label: "Blog",
+      iconColor: "#f59e42",
     },
     {
       href: "/docs/Intro",
       icon: <FaBook />,
       label: "系列文章",
+      iconColor: "#f472b6",
     },
     {
       href: "/docs/Snippets/Intro",
       icon: <FaCode />,
       label: "代码片段",
+      iconColor: "#a259e6",
     },
   ];
   return (
