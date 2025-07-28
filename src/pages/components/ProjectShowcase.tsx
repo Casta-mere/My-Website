@@ -1,8 +1,10 @@
 import React from "react";
 import { FaBook, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import { ProjectItem, projectList } from "../../data/projects/projects";
 
-// 项目卡片组件
 function ProjectCard({ proj }: { proj: ProjectItem }) {
   const mainLink = proj.url || proj.github || undefined;
   return (
@@ -15,14 +17,17 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
       tabIndex={0}
       role="button"
       style={{ outline: "none" }}
+      {...(proj.umami && { "data-umami-event": proj.umami })}
     >
       <div className="absolute inset-0 pointer-events-none z-0 project-card-glass"></div>
       {proj.img && (
-        <img
-          src={proj.img}
-          alt={proj.title}
-          className="w-full h-32 object-cover rounded-lg mb-3"
-        />
+        <div className="w-full h-32 rounded-lg overflow-hidden flex items-center justify-center mb-3">
+          <img
+            src={proj.img}
+            alt={proj.title}
+            className="w-full h-full object-contain rounded-lg"
+          />
+        </div>
       )}
       <h3 className="text-lg font-semibold mb-2 relative z-10">{proj.title}</h3>
       <p className="text-sm mb-2 relative z-10 opacity-80 transition-opacity duration-300">
@@ -32,29 +37,32 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
         {proj.tags?.map((tag) => (
           <span
             key={tag}
-            className="px-2 py-0.5 bg-purple-600/40 rounded text-xs text-purple-100"
+            className="px-2 py-0.5 bg-blue-600/40 rounded text-xs text-purple-100"
           >
             {tag}
           </span>
         ))}
       </div>
-      {/* 悬浮时展开链接区 */}
       <div className="absolute left-0 right-0 bottom-0 px-6 py-2 flex gap-4 items-center bg-slate-900/80 rounded-b-xl z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         {proj.url && (
           <a
             href={proj.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-green-400 hover:underline"
+            className="flex items-center text-sm gap-1 text-green-400 hover:underline"
+            {...(proj.umami && { "data-umami-event": proj.umami })}
+            onClick={(e) => e.stopPropagation()}
           >
-            <FaExternalLinkAlt /> Demo
+            <FaExternalLinkAlt /> 网页
           </a>
         )}
         <a
           href={proj.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1 text-blue-400 hover:underline"
+          className="flex items-center text-sm gap-1 text-blue-400 hover:underline"
+          {...(proj.umami && { "data-umami-event": proj.umami })}
+          onClick={(e) => e.stopPropagation()}
         >
           <FaGithub /> GitHub
         </a>
@@ -63,9 +71,11 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
             href={proj.blog}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-pink-400 hover:underline"
+            className="flex items-center text-sm gap-1 text-pink-400 hover:underline"
+            {...(proj.umami && { "data-umami-event": proj.umami })}
+            onClick={(e) => e.stopPropagation()}
           >
-            <FaBook /> Blog
+            <FaBook /> 相关博客
           </a>
         )}
       </div>
@@ -73,15 +83,49 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
   );
 }
 
-// 展示区主组件
 export default function ProjectShowcase() {
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    arrows: true,
+    prevArrow: <div className="slick-prev" />,
+    nextArrow: <div className="slick-next" />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
+  };
+
   return (
-    <section className="mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-white">Projects</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projectList.map((proj) => (
-          <ProjectCard key={proj.github} proj={proj} />
-        ))}
+    <section className="mt-4 mb-16">
+      <h2 className="text-2xl font-bold text-white">项目</h2>
+      <div className="">
+        <Slider {...sliderSettings}>
+          {projectList.map((proj) => (
+            <div key={proj.github} className="px-3">
+              <ProjectCard proj={proj} />
+            </div>
+          ))}
+        </Slider>
       </div>
       {/* 注入高级悬浮动效样式 */}
       <style>{`
@@ -104,6 +148,64 @@ export default function ProjectShowcase() {
         }
         .project-card:hover p {
           opacity: 1;
+        }
+        
+        /* Carousel */
+        .slick-dots {
+          bottom: -50px;
+        }
+        .slick-dots li button:before {
+          color: #a259e6;
+          font-size: 12px;
+        }
+        .slick-dots li.slick-active button:before {
+          color: #f472b6;
+        }
+        .slick-prev, .slick-next {
+          z-index: 10;
+          width: 40px;
+          height: 40px;
+          top: 50%;
+          transform: translateY(-50%);
+          position: absolute;
+        }
+        .slick-prev {
+          left: -50px;
+        }
+        .slick-next {
+          right: -50px;
+        }
+        .slick-prev:before, .slick-next:before {
+          font-size: 20px;
+          color: #a259e6;
+          line-height: 1;
+        }
+        .slick-prev:hover:before, .slick-next:hover:before {
+          color: #f472b6;
+        }
+        @media (max-width: 768px) {
+          .slick-prev, .slick-next {
+            display: none !important;
+          }
+          .slick-slider {
+            margin: 0 !important;
+          }
+        }
+        .slick-slider {
+          position: relative;
+          margin: 0 60px;
+          padding-top: 10px;
+        }
+        @media (max-width: 768px) {
+          .slick-slider {
+            margin: 0;
+          }
+        }
+        .slick-track {
+          padding-top: 10px;
+        }
+        .slick-list {
+          padding-top: 10px !important;
         }
       `}</style>
     </section>
