@@ -1,7 +1,7 @@
 import React from "react";
 import { FaBlog, FaBook, FaCode, FaGithub } from "react-icons/fa6";
 
-export default function SiteNavGation() {
+export default function SiteNavgation() {
   function NavButton({
     href,
     icon,
