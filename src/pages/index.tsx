@@ -1,8 +1,10 @@
+import {
+  Articles,
+  HomepageHeader,
+  ProjectShowcase,
+  SiteNavgation,
+} from "@site/src/components/Homepage";
 import React from "react";
-import Articles from "./components/Articles";
-import HomepageHeader from "./components/HomepageHeader";
-import ProjectShowcase from "./components/ProjectShowcase";
-import SiteNavgation from "./components/SiteNavgation";
 
 export default function Home() {
   return (

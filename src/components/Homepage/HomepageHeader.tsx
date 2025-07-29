@@ -35,7 +35,7 @@ export default function HomepageHeader() {
       >
         {siteConfig.title}
       </h1>
-      <div className="text-xl select-none">
+      <div className="text-xl text-white select-none">
         <Typewriter text={lines} delinterval={5000} />
       </div>
     </div>
