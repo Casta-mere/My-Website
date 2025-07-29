@@ -5,19 +5,37 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ProjectItem, projectList } from "../../data/projects/projects";
 
+declare global {
+  interface Window {
+    umami?: {
+      track: (event: string, data?: any, callback?: () => void) => void;
+    };
+  }
+}
+
 function ProjectCard({ proj }: { proj: ProjectItem }) {
   const mainLink = proj.url || proj.github || undefined;
   return (
     <div
       key={proj.github}
       className="project-card bg-slate-800/60 rounded-xl p-6 shadow-lg text-white relative overflow-hidden transition-all duration-300 cursor-pointer group"
-      onClick={() => {
-        if (mainLink) window.open(mainLink, "_blank");
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("a")) return;
+
+        if (mainLink) {
+          if (proj.umami && window.umami) {
+            window.umami.track(proj.umami);
+            setTimeout(() => {
+              window.open(mainLink, "_blank");
+            }, 150);
+          } else {
+            window.open(mainLink, "_blank");
+          }
+        }
       }}
       tabIndex={0}
       role="button"
       style={{ outline: "none" }}
-      {...(proj.umami && { "data-umami-event": proj.umami })}
     >
       <div className="absolute inset-0 pointer-events-none z-0 project-card-glass"></div>
       {proj.img && (
