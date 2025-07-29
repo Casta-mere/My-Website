@@ -115,9 +115,12 @@ export default function SiteNavGation() {
     },
   ];
   return (
-    <nav className="flex gap-4">
-      {navs.map((nav) => (
-        <NavButton key={nav.href} {...nav} />
+    <nav className="flex flex-wrap gap-x-4 gap-y-2 md:flex-nowrap md:gap-4">
+      {navs.map((nav, index) => (
+        <React.Fragment key={nav.href}>
+          <NavButton {...nav} />
+          {index === 1 && <div className="w-full md:w-auto md:hidden"></div>}
+        </React.Fragment>
       ))}
     </nav>
   );
