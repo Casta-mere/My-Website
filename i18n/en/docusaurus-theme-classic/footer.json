@@ -50,5 +50,13 @@
   "copyright": {
     "message": "Copyright © 2022-2025 Castamere <Br/>",
     "description": "The footer copyright"
+  },
+  "link.item.label.Blogs.cn": {
+    "message": "Blogs.cn",
+    "description": "The label of footer link with label=Blogs.cn linking to https://blogscn.fun"
+  },
+  "link.item.label.CSDN": {
+    "message": "CSDN",
+    "description": "The label of footer link with label=CSDN linking to https://blog.csdn.net/qq_54869075"
   }
 }
