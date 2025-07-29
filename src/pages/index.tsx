@@ -1,7 +1,8 @@
 import React from "react";
+import Articles from "./components/Articles";
 import HomepageHeader from "./components/HomepageHeader";
 import ProjectShowcase from "./components/ProjectShowcase";
-import SiteNavGation from "./components/SiteNavgation";
+import SiteNavgation from "./components/SiteNavgation";
 
 export default function Home() {
   return (
@@ -15,7 +16,8 @@ export default function Home() {
       <div className="container tailwind">
         <div className="flex flex-col mt-10 gap-4">
           <HomepageHeader />
-          <SiteNavGation />
+          <SiteNavgation />
+          <Articles />
           <ProjectShowcase />
         </div>
       </div>
