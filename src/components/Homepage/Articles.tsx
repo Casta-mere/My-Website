@@ -1,3 +1,5 @@
+import Translate from "@docusaurus/Translate";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import Link from "@site/src/components/Link/Link";
 import React from "react";
@@ -10,6 +12,7 @@ interface Article {
 }
 
 function Articles() {
+  const { i18n } = useDocusaurusContext();
   // const globalData = useGlobalData();
   // console.log("全局数据:", globalData);
   const docsData = usePluginData("docs-enhance") as any;
@@ -56,6 +59,19 @@ function Articles() {
     .slice(0, 5)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  const date = (dateString: string) => {
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return dateString;
+    if (i18n.currentLocale === "en") {
+      return d.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+  };
+
   const ArticleTable = ({ Articles }: { Articles: Article[] }) => {
     return (
       <table className="table-auto w-full">
@@ -73,13 +89,7 @@ function Articles() {
                 />
               </td>
               <td className="whitespace-nowrap px-2 py-1 text-sm text-right align-middle text-gray-400 bg-transparent">
-                {(() => {
-                  const d = new Date(Article.date);
-                  if (isNaN(d.getTime())) return Article.date;
-                  return `${d.getFullYear()}年${
-                    d.getMonth() + 1
-                  }月${d.getDate()}日`;
-                })()}
+                {date(Article.date)}
               </td>
             </tr>
           ))}
@@ -90,15 +100,21 @@ function Articles() {
 
   return (
     <section className="mt-4">
-      <h2 className="text-2xl font-bold text-white mb-6">文章</h2>
+      <h2 className="text-2xl font-bold text-white mb-6">
+        <Translate>文章</Translate>
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <h3 className="text-xl font-semibold text-white mb-4">推荐阅读</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">
+            <Translate>推荐阅读</Translate>
+          </h3>
           <ArticleTable Articles={recommendedArticles} />
         </div>
         <div className="w-full flex flex-col">
-          <h3 className="text-xl font-semibold text-white mb-4">最新博文</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">
+            <Translate>最新博文</Translate>
+          </h3>
           <ArticleTable Articles={latestAricles} />
         </div>
       </div>

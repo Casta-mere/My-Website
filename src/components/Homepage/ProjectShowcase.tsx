@@ -1,3 +1,5 @@
+import Translate from "@docusaurus/Translate";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
 import { FaBook, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import Slider from "react-slick";
@@ -14,6 +16,7 @@ declare global {
 }
 
 function ProjectCard({ proj }: { proj: ProjectItem }) {
+  const { i18n } = useDocusaurusContext();
   const mainLink = proj.url || proj.github || undefined;
   return (
     <div
@@ -49,7 +52,9 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
       )}
       <h3 className="text-lg font-semibold mb-2 relative z-10">{proj.title}</h3>
       <p className="text-sm mb-2 relative z-10 opacity-80 transition-opacity duration-300">
-        {proj.description}
+        {i18n.currentLocale === "zh-Hans"
+          ? proj.description
+          : proj.description_en}
       </p>
       <div className="flex flex-wrap gap-2 mb-2">
         {proj.tags?.map((tag) => (
@@ -71,7 +76,7 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
             {...(proj.umami && { "data-umami-event": proj.umami })}
             onClick={(e) => e.stopPropagation()}
           >
-            <FaExternalLinkAlt /> 网页
+            <FaExternalLinkAlt /> <Translate>网页</Translate>
           </a>
         )}
         <a
@@ -93,7 +98,7 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
             {...(proj.umami && { "data-umami-event": proj.umami })}
             onClick={(e) => e.stopPropagation()}
           >
-            <FaBook /> 相关博客
+            <FaBook /> <Translate>相关博客</Translate>
           </a>
         )}
       </div>
@@ -135,7 +140,9 @@ export default function ProjectShowcase() {
 
   return (
     <section className="mt-4 mb-16">
-      <h2 className="text-2xl font-bold text-white">项目</h2>
+      <h2 className="text-2xl font-bold text-white">
+        <Translate>项目</Translate>
+      </h2>
       <div className="">
         <Slider {...sliderSettings}>
           {projectList.map((proj) => (

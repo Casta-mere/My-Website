@@ -13,13 +13,19 @@ const waitingForLove = [
 ];
 
 const intro = ["全栈开发", "EDG! 我们是冠军!"];
+const intro_en = ["Full Stack Developer", "EDG! 2024 Valorant World Champion!"];
 
 export default function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
+  const { siteConfig, i18n } = useDocusaurusContext();
   const weekday = new Date().getDay();
 
-  const lines =
-    waitingForLove[weekday] + ";" + intro.map((line) => line).join(";");
+  let lines = waitingForLove[weekday];
+
+  if (i18n.currentLocale === "en") {
+    lines += ";" + intro_en.map((line) => line).join(";");
+  } else {
+    lines += ";" + intro.map((line) => line).join(";");
+  }
   return (
     <div className="flex flex-col gap-4">
       <h1

@@ -1,11 +1,16 @@
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
+import { FaLanguage } from "react-icons/fa";
 import { FaBlog, FaBook, FaCode, FaGithub } from "react-icons/fa6";
 
 export default function SiteNavgation() {
+  const { i18n } = useDocusaurusContext();
+
   function NavButton({
     href,
     icon,
     label,
+    labelen,
     external = false,
     iconColor = "#3b82f6",
   }) {
@@ -81,7 +86,84 @@ export default function SiteNavgation() {
               {icon}
             </span>
           )}
-          {label}
+          {i18n.currentLocale === "zh-Hans" ? label : labelen}
+        </div>
+      </a>
+    );
+  }
+
+  function I18nButton() {
+    const target = i18n.currentLocale === "zh-Hans" ? "/en" : "/";
+    if (
+      typeof document !== "undefined" &&
+      !document.getElementById("nav-btn-icon-rotate")
+    ) {
+      const style = document.createElement("style");
+      style.id = "nav-btn-icon-rotate";
+      style.innerHTML = `
+        .nav-btn-icon {
+          transform-origin: bottom center;
+          display: inline-block;
+          transition: color 0.2s;
+        }
+        .nav-btn-icon-animate {
+          animation: icon-rotate-swing 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        .nav-btn:hover .nav-btn-icon {
+          color: var(--nav-btn-icon-hover-color, #3b82f6);
+        }
+        @keyframes icon-rotate-swing {
+          0% { transform: rotate(0deg); }
+          20% { transform: rotate(-10deg); }
+          40% { transform: rotate(10deg); }
+          60% { transform: rotate(-8deg); }
+          80% { transform: rotate(8deg); }
+          100% { transform: rotate(0deg); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const iconRef = React.useRef(null);
+    const handleMouseEnter = () => {
+      const el = iconRef.current;
+      if (el) {
+        el.classList.remove("nav-btn-icon-animate");
+        void el.offsetWidth;
+        el.classList.add("nav-btn-icon-animate");
+      }
+    };
+    React.useEffect(() => {
+      const el = iconRef.current;
+      if (!el) return;
+      const handleAnimationEnd = () => {
+        el.classList.remove("nav-btn-icon-animate");
+      };
+      el.addEventListener("animationend", handleAnimationEnd);
+      return () => {
+        el.removeEventListener("animationend", handleAnimationEnd);
+      };
+    }, []);
+
+    return (
+      <a
+        href={target}
+        target=""
+        rel="noopener noreferrer"
+        className="nav-btn px-4 py-1 rounded-full border border-white/20 shadow-lg backdrop-blur-md bg-slate-800/40 transition-colors duration-200 cursor-pointer text-white text-sm relative overflow-hidden hover:bg-slate-600/40"
+        style={
+          {
+            textDecoration: "none",
+            ["--nav-btn-icon-hover-color" as any]: "#1eff0090",
+          } as React.CSSProperties
+        }
+        onMouseEnter={handleMouseEnter}
+      >
+        <span className="nav-btn-dot"></span>
+        <div className="flex items-center gap-2 relative z-10 h-full">
+          <span className="nav-btn-icon h-full flex items-center" ref={iconRef}>
+            <FaLanguage className="w-auto h-full" />
+          </span>
         </div>
       </a>
     );
@@ -92,6 +174,7 @@ export default function SiteNavgation() {
       href: "https://github.com/Casta-mere",
       icon: <FaGithub />,
       label: "GitHub",
+      labelen: "GitHub",
       external: true,
       iconColor: "#3b82f6",
     },
@@ -99,18 +182,21 @@ export default function SiteNavgation() {
       href: "/blog",
       icon: <FaBlog />,
       label: "Blog",
+      labelen: "Blog",
       iconColor: "#f59e42",
     },
     {
       href: "/docs/Intro",
       icon: <FaBook />,
       label: "系列文章",
+      labelen: "Series Articles",
       iconColor: "#f472b6",
     },
     {
       href: "/docs/Snippets/Intro",
       icon: <FaCode />,
       label: "代码片段",
+      labelen: "Code Snippets",
       iconColor: "#a259e6",
     },
   ];
@@ -122,6 +208,7 @@ export default function SiteNavgation() {
           {index === 1 && <div className="w-full md:w-auto md:hidden"></div>}
         </React.Fragment>
       ))}
+      <I18nButton />
     </nav>
   );
 }
