@@ -5,6 +5,7 @@ description: 使用 Umami 为 Docusaurus 搭建数据展示功能
 keywords:
   - Docusaurus
   - Docusaurus Umami
+recommended: true
 ---
 
 import Tabs from "@theme/Tabs";

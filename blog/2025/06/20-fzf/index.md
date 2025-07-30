@@ -8,6 +8,7 @@ references:
     title: fzf
     time: 2025
     url: https://junegunn.github.io/fzf/search-syntax/
+recommended: true
 ---
 # fzf
 

@@ -454,5 +454,23 @@
   "theme.blog.author.noPosts": {
     "message": "This author has not written any posts yet.",
     "description": "The text for authors with 0 blog post"
+  },
+  "文章": {
+    "message": "Articles"
+  },
+  "推荐阅读": {
+    "message": "Recommended"
+  },
+  "最新博文": {
+    "message": "Latest Blogs"
+  },
+  "网页": {
+    "message": "Website"
+  },
+  "相关博客": {
+    "message": "Related Blog"
+  },
+  "项目": {
+    "message": "Projects"
   }
 }

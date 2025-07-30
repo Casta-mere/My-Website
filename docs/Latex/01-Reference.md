@@ -11,6 +11,7 @@ references:
     title: 逆波兰表示法
     time: 2024
     url: https://baike.baidu.com/item/逆波兰表示法/7227226
+recommended: true
 ---
 
 # 参考文献
