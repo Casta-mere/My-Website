@@ -1,8 +1,6 @@
-import React from "react";
-
 import friendList, { FriendItem } from "@site/src/data/friends/friends";
 import classNames from "classnames";
-import { useState } from "react";
+import React, { useState } from "react";
 import { RoughNotation } from "react-rough-notation";
 
 const SkillBadge = ({ skill }: { skill: string }) => {
@@ -13,10 +11,25 @@ const SkillBadge = ({ skill }: { skill: string }) => {
   );
 };
 
+const colors = [
+  "#FFA500",
+  "#4169E1",
+  "#DC143C",
+  "#FF6347",
+  "#FFD700",
+  "#FFC0CB",
+  "#FFBF00",
+  "#87CEEB",
+  "#C0C0C0",
+];
+
+const getRandom = (arr: string[]) =>
+  arr[Math.floor(Math.random() * arr.length)];
+
 const FriendCard = ({ friend }: { friend: FriendItem }) => {
   const [hovered, setHovered] = useState(false);
   const card = {
-    "card cursor-pointer min-h-28r overflow-hidden rounded-card bg-card px-4 py-1  border-2 border-zinc-400 border-opacity-20":
+    "card cursor-pointer min-h-28r overflow-hidden rounded-card bg-card px-4 py-1 border-2 border-zinc-400 border-opacity-20":
       true,
     "justify-center": true,
     "transition-all hover:translate-y-[-5px] hover:scale-[1.01] hover:bg-[rgba(229,231,235,0.3)] hover:shadow-[0_3px_10px_0_rgba(164,190,217,0.3)]":
@@ -33,27 +46,27 @@ const FriendCard = ({ friend }: { friend: FriendItem }) => {
       onMouseLeave={() => setHovered(false)}
     >
       <div className="flex gap-4 items-center m-2">
-        <div className="avatar min-w-14 h-14 relative">
+        <div className="avatar w-14 h-14 relative flex-shrink-0">
           <img
-            className="avatar__photo object-cover w-full h-full"
+            className="avatar__photo object-cover w-full h-full rounded-full"
             src={friend.avatar}
           />
         </div>
-        <div className="flex-row">
-          <h3 className="font-bold text-lg dark:text-red-500 group-hover:text-2xl group-hover:font-extrabold transition-all">
+        <div className="flex-1 min-w-0 h-14 flex flex-col justify-center">
+          <h3 className="font-bold text-lg group-hover:scale-150 transition-transform duration-300 ease-in-out origin-left">
             {friend.title}
           </h3>
-          <div>
+          <div className="relative">
             <RoughNotation
               type="underline"
-              color="#FFA500"
+              color={getRandom(colors)}
               strokeWidth={4}
               show={hovered}
               animationDuration={650}
               multiline={true}
               iterations={1}
             >
-              {friend.description}
+              <span className="inline-block text-sm">{friend.description}</span>
             </RoughNotation>
           </div>
         </div>

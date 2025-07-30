@@ -1,9 +1,9 @@
 import Comment from "@site/src/components/Comment/Comment";
 import { JumpToComment } from "@site/src/components/Comment/GoToComment";
+import FriendCards from "@site/src/components/Friends/FriendCards";
 import Layout from "@theme/Layout";
 import React from "react";
 import { RoughNotation } from "react-rough-notation";
-import FriendCards from "./_components/FriendCards";
 
 export default function Friends() {
   return (

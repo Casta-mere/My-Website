@@ -1,16 +1,11 @@
 import Comment from "@site/src/components/Comment/Comment";
+import { JumpToComment } from "@site/src/components/Comment/GoToComment";
+import FriendCards from "@site/src/components/Friends/FriendCards";
 import Layout from "@theme/Layout";
 import React from "react";
 import { RoughNotation } from "react-rough-notation";
-import FriendCards from "./_components/FriendCards";
 
 export default function Friends() {
-  const onAddClick = () => {
-    const commentTarget = document.querySelector("#comment-anchor");
-    commentTarget.scrollIntoView({ behavior: "smooth" });
-    window.gtag?.("event", "add_friend_click");
-  };
-
   return (
     <Layout>
       <div className="container">
@@ -29,7 +24,10 @@ export default function Friends() {
                 Leave Ur site in the comment section below
               </RoughNotation>
             </p>
-            <button className="button button--secondary" onClick={onAddClick}>
+            <button
+              className="button button--secondary"
+              onClick={JumpToComment}
+            >
               🙏 Add your site
             </button>
             <FriendCards />
