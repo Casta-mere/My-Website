@@ -1,6 +1,6 @@
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
-import { FaLanguage } from "react-icons/fa";
+import { FaLanguage, FaRss } from "react-icons/fa";
 import { FaBlog, FaBook, FaCode, FaGithub } from "react-icons/fa6";
 
 const useNavButtonAnimation = () => {
@@ -165,16 +165,34 @@ export default function SiteNavigation() {
       labelen: "Code Snippets",
       iconColor: "#a259e6",
     },
+    {
+      href: "/blog/rss.xml",
+      icon: <FaRss />,
+      label: "RSS",
+      labelen: "RSS",
+      iconColor: "#ff0000da",
+    },
   ];
   return (
     <nav className="flex flex-wrap gap-x-4 gap-y-2 md:flex-nowrap md:gap-4">
-      {navs.map((nav, index) => (
-        <React.Fragment key={nav.href}>
-          <NavButton {...nav} />
-          {index === 1 && <div className="w-full md:w-auto md:hidden"></div>}
+      {[...navs, "i18n"].map((nav, idx) => (
+        <React.Fragment key={typeof nav === "string" ? nav : nav.href}>
+          {nav === "i18n" ? (
+            <I18nButton />
+          ) : (
+            <NavButton
+              {...(nav as {
+                href: string;
+                icon: React.ReactNode;
+                label: string;
+                labelen: string;
+                external?: boolean;
+                iconColor?: string;
+              })}
+            />
+          )}
         </React.Fragment>
       ))}
-      <I18nButton />
     </nav>
   );
 }

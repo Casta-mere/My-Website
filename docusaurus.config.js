@@ -203,6 +203,11 @@ const config = {
                 'data-umami-event': 'friends',
               },
               {
+                label: 'RSS',
+                href: '/blog/rss.xml',
+                'data-umami-event': 'rss',
+              },
+              {
                 label: '数据统计',
                 href: 'https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com',
                 'data-umami-event': 'data-analytics',
