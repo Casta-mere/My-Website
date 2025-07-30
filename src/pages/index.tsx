@@ -2,7 +2,7 @@ import {
   Articles,
   HomepageHeader,
   ProjectShowcase,
-  SiteNavgation,
+  SiteNavigation,
 } from "@site/src/components/Homepage";
 import React from "react";
 
@@ -18,7 +18,7 @@ export default function Home() {
       <div className="container tailwind">
         <div className="flex flex-col mt-10 gap-4">
           <HomepageHeader />
-          <SiteNavgation />
+          <SiteNavigation />
           <Articles />
           <ProjectShowcase />
         </div>
