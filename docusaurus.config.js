@@ -61,10 +61,12 @@ const config = {
         feedOptions: {
           type: 'all',
           copyright: `Copyright © 2022-${new Date().getFullYear()} Castamere`,
+          title: 'Castamere',
+          description: 'Castamere',
           createFeedItems: async (params) => {
             const { blogPosts, defaultCreateFeedItems, ...rest } = params;
             return defaultCreateFeedItems({
-              blogPosts: blogPosts.filter((item, index) => index < 10),
+              blogPosts: blogPosts,
               ...rest,
             });
           },
@@ -204,7 +206,7 @@ const config = {
               },
               {
                 label: 'RSS',
-                href: '/blog/rss.xml',
+                href: 'https://www.castamerego.com/blog/rss.xml',
                 'data-umami-event': 'rss',
               },
               {
