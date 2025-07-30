@@ -3,6 +3,7 @@ slug: LinuxTerminal
 title: 配置 Linux 终端 (zsh)
 authors: [Castamere]
 tags: [Zsh, Linux, Terminal]
+recommended: true
 ---
 
 如何**配置**一个高效、美观、有趣的终端

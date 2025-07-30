@@ -3,6 +3,7 @@ slug: DocusaurusSidebar
 title: Docusaurus 侧边栏详解
 authors: [Castamere]
 tags: [Docusaurus]
+recommended: true
 ---
 
 Docusaurus 侧边栏详解
