@@ -153,7 +153,6 @@ export default function SiteNavgation() {
     return (
       <a
         href={href}
-        target=""
         rel="noopener noreferrer"
         className="nav-btn px-4 py-1 rounded-full border border-white/20 shadow-lg backdrop-blur-md bg-slate-800/40 transition-colors duration-200 cursor-pointer text-white text-sm relative overflow-hidden hover:bg-slate-600/40"
         style={
