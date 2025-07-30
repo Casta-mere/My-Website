@@ -46,6 +46,32 @@ const config = {
     require.resolve("docusaurus-plugin-image-zoom"),
     "./src/plugins/plugin-tailwind",
     "./src/plugins/plugin-umami",
+    [
+      "./src/plugins/plugin-blog-enhance.js",
+      {
+        showReadingTime: true,
+        onInlineTags: "throw",
+        blogSidebarCount: 100,
+        showLastUpdateAuthor: true,
+        showLastUpdateTime: true,
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
+        editUrl: 'https://github.com/Casta-mere/My-Website/tree/master/',
+        postsPerPage: 10,
+        feedOptions: {
+          type: 'all',
+          copyright: `Copyright © 2022-${new Date().getFullYear()} Castamere`,
+          createFeedItems: async (params) => {
+            const { blogPosts, defaultCreateFeedItems, ...rest } = params;
+            return defaultCreateFeedItems({
+              blogPosts: blogPosts.filter((item, index) => index < 10),
+              ...rest,
+            });
+          },
+        }
+      }
+    ],
+    "./src/plugins/plugin-docs-enhance.js",
     process.env.RSDOCTOR === 'true' && 'rsdoctor'
   ],
   future: {
@@ -65,29 +91,14 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/Casta-mere/My-Website/tree/master/',
+          editUrl: 'https://github.com/Casta-mere/My-Website/tree/master/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
           onInlineTags: "throw",
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          onInlineTags: "throw",
-          blogSidebarCount: 100,
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatex],
-          editUrl:
-            'https://github.com/Casta-mere/My-Website/tree/master/',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -176,6 +187,10 @@ const config = {
               {
                 label: 'Blogs.cn',
                 href: 'https://blogscn.fun',
+              },
+              {
+                label: 'CSDN',
+                href: 'https://blog.csdn.net/qq_54869075',
               },
             ],
           },
