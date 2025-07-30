@@ -18,7 +18,7 @@ function Articles() {
   const docsData = usePluginData("docs-enhance") as any;
   const blogsData = usePluginData("docusaurus-plugin-content-blog") as any;
 
-  const latestAricles: Article[] = (blogsData?.latest || []).map((blog) => ({
+  const latestArticles: Article[] = (blogsData?.latest || []).map((blog) => ({
     id: blog.metadata.id,
     url: blog.metadata.permalink,
     title: blog.metadata.title,
@@ -115,7 +115,7 @@ function Articles() {
           <h3 className="text-xl font-semibold text-white mb-4">
             <Translate>最新博文</Translate>
           </h3>
-          <ArticleTable Articles={latestAricles} />
+          <ArticleTable Articles={latestArticles} />
         </div>
       </div>
     </section>
