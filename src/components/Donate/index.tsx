@@ -1,8 +1,11 @@
 import Translate from "@docusaurus/Translate";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
-import { FaAlipay, FaWeixin } from "react-icons/fa";
+import { FaAlipay, FaCoffee, FaWeixin } from "react-icons/fa";
+import { PiBeerBottleFill } from "react-icons/pi";
 
 const Donate = () => {
+  const { i18n } = useDocusaurusContext();
   return (
     <div className="tailwind">
       <div className="flex gap-5 justify-end items-center">
@@ -43,6 +46,44 @@ const Donate = () => {
             </li>
           </ul>
         </div>
+        {i18n.currentLocale === "en" && (
+          <div>
+            <a
+              href="https://ko-fi.com/casta_mere"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="button button--primary transition-all hover:translate-y-[-5px] hover:scale-[1.2]">
+                <br />
+                <FaCoffee
+                  color="#6f4e37"
+                  size="25"
+                  className="cursor-pointer"
+                />
+                <br />
+              </button>
+            </a>
+          </div>
+        )}
+        {i18n.currentLocale === "zh-Hans" && (
+          <div>
+            <a
+              href="https://ko-fi.com/casta_mere"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="button button--primary transition-all hover:translate-y-[-5px] hover:scale-[1.2]">
+                <br />
+                <PiBeerBottleFill
+                  color="#E61D2B"
+                  size="25"
+                  className="cursor-pointer"
+                />
+                <br />
+              </button>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
