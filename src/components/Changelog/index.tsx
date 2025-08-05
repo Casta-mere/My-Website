@@ -5,11 +5,31 @@ interface ChangelogEnhancerProps {
   children: React.ReactNode;
 }
 
-const SYSTEM_KEYWORDS = ["添加", "重构", "修复", "更新", "优化", "添加"];
-
-const DOCUSAURUS_KEYWORDS = ["建站", "更新 Docusaurus"];
-const CONTENT_KEYWORDS = ["添加 博客", "添加 系列文章"];
-const FRIEND_KEYWORD = "添加 友链";
+const SYSTEM_KEYWORDS = [
+  "添加",
+  "重构",
+  "修复",
+  "更新",
+  "优化",
+  "Add",
+  "Refactor",
+  "Fix",
+  "Update",
+  "Optimize",
+];
+const DOCUSAURUS_KEYWORDS = [
+  "建站",
+  "更新 Docusaurus",
+  "Launch Site",
+  "Update Docusaurus",
+];
+const CONTENT_KEYWORDS = [
+  "添加博客",
+  "添加 系列文章",
+  "Add blog",
+  "Add series articles",
+];
+const FRIEND_KEYWORD = ["添加友链", "Add friend"];
 
 function getItemType(
   text: string
@@ -20,8 +40,10 @@ function getItemType(
     }
   }
 
-  if (text.includes(FRIEND_KEYWORD)) {
-    return "friend";
+  for (const keyword of FRIEND_KEYWORD) {
+    if (text.includes(keyword)) {
+      return "friend";
+    }
   }
 
   for (const keyword of DOCUSAURUS_KEYWORDS) {

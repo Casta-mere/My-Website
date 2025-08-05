@@ -146,6 +146,22 @@ const config = {
             position: "right",
           },
           {
+            type: "dropdown",
+            position: "right",
+            label: "关于",
+            items: [
+              {
+                label: "友链",
+                to: "/friends",
+                'data-umami-event': 'friends',
+              },
+              {
+                label: "更新日志",
+                to: "/release",
+              }
+            ]
+          },
+          {
             href: 'https://github.com/Casta-mere/My-Website',
             label: 'GitHub',
             position: 'right',
