@@ -18,5 +18,25 @@
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
+  },
+  "item.label.关于": {
+    "message": "About",
+    "description": "Navbar item with label 关于"
+  },
+  "item.label.关于本站": {
+    "message": "About This Site",
+    "description": "Navbar item with label 关于本站"
+  },
+  "item.label.关于作者": {
+    "message": "About The Author",
+    "description": "Navbar item with label 关于作者"
+  },
+  "item.label.友链": {
+    "message": "Friends",
+    "description": "Navbar item with label 友链"
+  },
+  "item.label.更新日志": {
+    "message": "Update log",
+    "description": "Navbar item with label 更新日志"
   }
 }
