@@ -30,7 +30,6 @@ export default function UmamiTotalViewCounter() {
   }, []);
 
   const formatViews = (views: number | null) => {
-    console.log(views);
     if (views === undefined)
       return (
         <span className="tailwind flex items-center">
