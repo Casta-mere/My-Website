@@ -1,0 +1,102 @@
+---
+title: 关于本站
+---
+
+import Comment from "@site/src/components/Comment/Comment";
+import DaysCounter from "@site/src/components/DaysCounter";
+import UmamiTotalViewCounter from "@site/src/components/PageViewCounter/UmamiTotalViewCounter";
+import { RoughNotation } from "react-rough-notation";
+
+# 关于本站
+
+笔者早有搭建个人博客的念头
+
+虽文笔尚浅，却希望能在这方寸之地记录所学所感，于是便有了这个小站
+
+若其中的只言片语能为读者带来些许启发或帮助，那这个站点的存在便又多了一重意义
+
+小站已运行 <RoughNotation type="underline" show={true} color="#32CD32"  strokeWidth={2} animationDelay={2000} ><DaysCounter startDate="2023-09-21"/></RoughNotation> 天，累计获得了 <RoughNotation type="underline" show={true} color="#FFD700"  strokeWidth={2} animationDelay={3000} ><UmamiTotalViewCounter /></RoughNotation> 次访问
+
+## ⚙️ 技术栈
+
+本站基于 [Docusaurus](https://docusaurus.io/) 搭建, 本站 Docusaurus 版本为 [3.6.1](https://docusaurus.io/blog/releases/3.6), 目前最新版本为 [3.8.1](https://docusaurus.io/blog/releases/3.8)
+
+本站<RoughNotation type="highlight" show={true} color="rgba(255, 241, 118, 0.6)"  strokeWidth={2} animationDelay={5000} iterations={1} >整合了以下功能</RoughNotation>，关于如何在你的 Docusaurus 站点中使用这些功能，请参考 [Docusaurus Themes](/docs/Server/)
+
+- 💬 评论功能 [giscus](https://giscus.app/zh-CN)
+- 🔍 搜索功能 [algolia search](https://www.algolia.com/)
+- 📊 数据统计 [umami](https://umami.castamerego.com/share/EplxZVQRe6OkyBt3)
+- 🖼️ 图片缩放 [Image-zoom](https://www.npmjs.com/package/docusaurus-plugin-image-zoom)
+- 🏖️ [TailWind CSS](https://tailwindcss.com/)
+- 📈 [Mermaid](https://mermaid.js.org/) 图表
+- 📜 [Rough Notation](https://roughnotation.com/) 标注
+- 🌏 中文/English
+
+笔者<RoughNotation type="highlight" show={true} color="rgba(220, 20, 60, 0.6)"  strokeWidth={2} animationDelay={6000} iterations={1} >自制了以下组件/功能</RoughNotation>
+
+- ⌨️ [TypeWriter](/docs/Snippets/Components/TypeWriter) 打字机效果小组件
+- 🔗 [Link](/docs/Snippets/Components/Link) 超链接小组件
+- 🖥️ [CommandLine](/docs/Snippets/Components/cmdTerminal) 命令行终端小组件
+- 💳 捐赠小组件
+- 📖 参考文献小组件
+
+### 服务器
+
+本网站部署于阿里云服务器，目前是 99 RMB/年 的白嫖机，到期时间为 2026-9-2
+
+配置如下:
+
+- Ubuntu 22.04 64
+- 2 核 (vCPU) 2GiB
+- 华东 1 (杭州)
+
+### 域名
+
+本站域名 `castamerego.com`，购买于阿里云，90 RMB/年，目前充值到 2026-11-17
+
+备案号为[浙 ICP 备 2022034316 号-1](https://beian.miit.gov.cn/)
+
+拥有部分子域名
+
+- `www.castamerego.com` 本站
+- `umami.castamerego.com` umami 数据统计后台
+- `readbook.castamerego.com` Read-Book 项目
+- `mind-scout.castamerego.com` 智能知识侦查助手项目
+
+### 开发流
+
+笔者的开发流如下:
+
+Dev 版部署于家里的 nas，在公司用 Tailscale 连接；家里直连。每次更新后，本地先 `npm run build` 测试，没问题后直接把 build 好的内容 scp 到服务器上，服务器端直接运行 `npm run serve`。Github 仅用于版本管理，还未尝试 Github Pages 部署
+
+这样的好处如下：
+
+- 不论在哪里，Dev 版都是同一版，上下班无缝衔接
+- 服务器端不需要 build，对性能要求低(目前服务器已经 build 不动了)
+
+### SSL 证书
+
+使用阿里云的**个人测试证书**，虽然免费，但是最近开始每次只能续三个月，更新还是比较烦的
+
+## 📊 数据统计
+
+本站的数据统计使用 [Umami](https://umami.is) 搭建，数据展示于 [Umami Dashboard](https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com)
+
+统计包括以下数据:
+
+- 访问量 (Page Views)
+- 访客数 (Visitors)
+- 跳出率 (Bounce Rate)
+- 访问时长 (Duration)
+- 特定链接访问量
+- 等等
+
+一个好处是可以在站内通过 API 获取数据并展示，比如: 小站已运行 <DaysCounter startDate="2023-09-21"/> 天，累计获得了 <UmamiTotalViewCounter /> 次访问
+
+借此，笔者还在每个 blog 和 doc 页面显示了阅读量数据
+
+## ☀️ 互勉
+
+去[友链](/friends)留言和本站交换友链吧
+
+<Comment />
