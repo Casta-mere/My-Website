@@ -25,7 +25,7 @@ const DOCUSAURUS_KEYWORDS = [
 ];
 const CONTENT_KEYWORDS = [
   "添加博客",
-  "添加 系列文章",
+  "添加系列文章",
   "Add blog",
   "Add series articles",
 ];
