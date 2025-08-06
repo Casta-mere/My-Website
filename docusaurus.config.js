@@ -151,6 +151,10 @@ const config = {
             label: "关于",
             items: [
               {
+                label: "关于本站",
+                to: "/about", 
+              },
+              {
                 label: "友链",
                 to: "/friends",
                 'data-umami-event': 'friends',
