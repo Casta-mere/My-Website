@@ -49,6 +49,13 @@ const friendList: FriendItem[] = [
     description: "在这里记录一些偶尔冒出来转眼就会忘的灵感",
     tags: [],
   },
+  {
+    title: "星辰博客",
+    avatar: "https://blog.starchen.top/favicon.jpg",
+    url: "https://blog.starchen.top",
+    description: "以热爱之名，点亮技术探索者的漫长岁月！",
+    tags: ["技术博客"],
+  },
 ];
 
 export default friendList;
