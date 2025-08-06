@@ -2,6 +2,7 @@ import Translate from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import Link from "@site/src/components/Link/Link";
+import { useIsClient } from "@site/src/hooks/useIsClient";
 import React from "react";
 
 interface Article {
@@ -13,6 +14,8 @@ interface Article {
 
 function Articles() {
   const { i18n } = useDocusaurusContext();
+  const isClient = useIsClient();
+
   // const globalData = useGlobalData();
   // console.log("全局数据:", globalData);
   const docsData = usePluginData("docs-enhance") as any;
@@ -55,9 +58,15 @@ function Articles() {
     return shuffled;
   };
 
-  const recommendedArticles = shuffleArray(allRecommendedArticles)
-    .slice(0, 5)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const recommendedArticles = isClient
+    ? shuffleArray(allRecommendedArticles)
+        .slice(0, 5)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    : allRecommendedArticles
+        .slice(0, 5)
+        .sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
 
   const date = (dateString: string) => {
     const d = new Date(dateString);
