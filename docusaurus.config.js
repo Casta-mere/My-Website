@@ -178,7 +178,7 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: '系列文章',
             items: [
               {
                 label: 'LaTeX',
@@ -195,7 +195,7 @@ const config = {
             ],
           },
           {
-            title: 'Community',
+            title: '社交媒体',
             items: [
               {
                 label: 'Github',
@@ -217,13 +217,8 @@ const config = {
             ],
           },
           {
-            title: 'More',
+            title: "数据统计",
             items: [
-              {
-                label: '友链',
-                href: '/friends',
-                'data-umami-event': 'friends',
-              },
               {
                 label: 'RSS',
                 href: 'https://www.castamerego.com/blog/rss.xml',
@@ -233,6 +228,21 @@ const config = {
                 label: '数据统计',
                 href: 'https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com',
                 'data-umami-event': 'data-analytics',
+              },
+              {
+                label: '网站状态',
+                href: 'https://stats.uptimerobot.com/p2lVhjnriB',
+                'data-umami-event': 'uptimerobot-stats',
+              },
+            ]
+          },
+          {
+            title: '更多',
+            items: [
+              {
+                label: '友链',
+                href: '/friends',
+                'data-umami-event': 'friends',
               },
               {
                 label: 'Mind-Scout',
