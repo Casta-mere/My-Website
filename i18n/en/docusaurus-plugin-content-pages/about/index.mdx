@@ -1,0 +1,108 @@
+---
+title: 关于本站
+---
+
+import Comment from "@site/src/components/Comment/Comment";
+import DaysCounter from "@site/src/components/DaysCounter";
+import UmamiTotalViewCounter from "@site/src/components/PageViewCounter/UmamiTotalViewCounter";
+import { RoughNotation } from "react-rough-notation";
+
+# About This site
+
+This blog site is long overdue
+
+Though my writing may lack elegance
+
+I do hope this corner of the web can hold some of my thoughts and learnings, thus this little site came to be
+
+If any words here can bring some inspiration or help to readers, then this site's existence would carry even greater meaning
+
+This site has been running for <RoughNotation type="underline" show={true} color="#32CD32"  strokeWidth={2} animationDelay={2000} ><DaysCounter startDate="2023-09-21"/></RoughNotation> days, and has received a total of <RoughNotation type="underline" show={true} color="#FFD700"  strokeWidth={2} animationDelay={3000} ><UmamiTotalViewCounter /></RoughNotation> visits
+
+## ⚙️ Tech Stack
+
+This site is built with [Docusaurus](https://docusaurus.io/) , currently running Docusaurus [V3.6.1](https://docusaurus.io/blog/releases/3.6). And latest version is [V3.8.1](https://docusaurus.io/blog/releases/3.8)
+
+This site have <RoughNotation type="highlight" show={true} color="rgba(255, 241, 118, 0.6)"  strokeWidth={2} animationDelay={5000} iterations={1} >integrated following features</RoughNotation>. You may refer to this article I wrote: [Docusaurus Themes](/docs/Server/) to apply these features to your own Docusaurus site
+
+- 💬 Comments with [giscus](https://giscus.app/zh-CN)
+- 🔍 Search doc with [algolia search](https://www.algolia.com/)
+- 📊 Data collect and analyze with [umami](https://umami.castamerego.com/share/EplxZVQRe6OkyBt3)
+- 🖼️ Zoom image with [Image-zoom](https://www.npmjs.com/package/docusaurus-plugin-image-zoom)
+- 🏖️ [TailWind CSS](https://tailwindcss.com/)
+- 📈 [Mermaid](https://mermaid.js.org/) figure & charts
+- 📜 [Rough Notation](https://roughnotation.com/) annotation
+- 🌏 English/中文
+
+I have also built <RoughNotation type="highlight" show={true} color="rgba(220, 20, 60, 0.6)"  strokeWidth={2} animationDelay={6000} iterations={1} >the following custom components/features</RoughNotation>
+
+- ⌨️ [TypeWriter](/docs/Snippets/Components/TypeWriter) Typewriter effect component
+- 🔗 [Link](/docs/Snippets/Components/Link) Hyperlink component
+- 🖥️ [CommandLine](/docs/Snippets/Components/cmdTerminal) Command line terminal component
+- 💳 Donation component
+- 📖 Reference component
+
+### Server
+
+This site is hosted on Alibaba Cloud, currently using a cheap instance at 99 RMB/year, expiring on 2026-9-2.
+
+Specifications:
+
+- Ubuntu 22.04 64-bit
+- 2 cores (vCPU) 2GiB RAM
+- East China 1 (Hangzhou)
+
+### Domain
+
+This site's domain is `castamerego.com`, purchased from Alibaba Cloud at 90 RMB/year, currently paid up to 2026-11-17
+
+ICP certification is [浙 ICP 备 2022034316 号-1](https://beian.miit.gov.cn/)
+
+with some subdomains for different projects:
+
+- `www.castamerego.com` this blog site
+- `umami.castamerego.com` umami data statistics backend
+- `readbook.castamerego.com` Read-Book project
+- `mind-scout.castamerego.com` Mind-Scout project
+
+### Development Flow
+
+The development flow is as follows:
+
+The Dev version is deployed on a NAS at home, connected via Tailscale at work, and directly connected at home
+
+After each update, I first test `npm run build` locally, and if there are no issues, I directly SCP the built content to the server, where I run `npm run serve`
+
+GitHub is only used for version control, and I have not yet attempted GitHub Pages deployment
+
+The benefits of this approach are as follows:
+
+- Regardless of location, the Dev version is always the same, allowing for seamless transitions between work and home
+- The server does not need to build, reducing performance requirements (the server is currently unable to build)
+
+### SSL Certificate
+
+This site uses HTTPS, with SSL certificate from Alibaba Cloud. Though it's a free **personal test certificate**, but it has to be renewed every three months recently, which is a bit troublesome
+
+## 📊 Data Analysis
+
+The data statistics of this site is built with [Umami](https://umami.is), and data displayed at [Umami Dashboard](https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com)
+
+Collect following data:
+
+- Page Views
+- Visitors
+- Bounce Rate
+- Duration
+- Specific Link Clicks
+- Other data
+
+One benefit is that data can be fetched and displayed via API within the site, for example: This site has been running for <RoughNotation type="underline" show={true} color="#32CD32"  strokeWidth={2} animationDelay={2000} ><DaysCounter startDate="2023-09-21"/></RoughNotation> days, and has received a total of <RoughNotation type="underline" show={true} color="#FFD700"  strokeWidth={2} animationDelay={3000} ><UmamiTotalViewCounter /></RoughNotation> visits
+
+Based on this feature, I have also displayed the view count data on each blog and doc page
+
+## ☀️ Connect & Inspire
+
+Go to [Friends Page](/friends) to leave a message and exchange links with this site
+
+<Comment />
