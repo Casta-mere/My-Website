@@ -1,7 +1,13 @@
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
 import { FaLanguage, FaRss } from "react-icons/fa";
-import { FaBlog, FaBook, FaCode, FaGithub } from "react-icons/fa6";
+import {
+  FaBlog,
+  FaBook,
+  FaCode,
+  FaGithub,
+  FaTrainSubway,
+} from "react-icons/fa6";
 
 const useNavButtonAnimation = () => {
   React.useEffect(() => {
@@ -171,6 +177,13 @@ export default function SiteNavigation() {
       label: "RSS",
       labelen: "RSS",
       iconColor: "#ff0000da",
+    },
+    {
+      href: "https://www.travellings.cn/go.html",
+      icon: <FaTrainSubway />,
+      label: "开往",
+      labelen: "Travelling",
+      iconColor: "#f8ca6b",
     },
   ];
   return (

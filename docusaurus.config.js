@@ -245,6 +245,11 @@ const config = {
                 'data-umami-event': 'friends',
               },
               {
+                label: '开往',
+                href: 'https://www.travellings.cn/go.html',
+                'data-umami-event': 'travelling',
+              },
+              {
                 label: 'Mind-Scout',
                 href: 'http://mindscout.castamerego.com',
                 'data-umami-event': 'Mind-Scout',
