@@ -70,5 +70,9 @@
   "link.item.label.网站状态": {
     "message": "Website Status",
     "description": "The label of footer link with label=网站状态 linking to https://stats.uptimerobot.com/p2lVhjnriB"
+  },
+  "link.item.label.开往": {
+    "message": "Travelling",
+    "description": "The label of footer link with label=开往 linking to https://www.travellings.cn/go.html"
   }
 }
