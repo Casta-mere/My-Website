@@ -1,11 +1,13 @@
 import Translate from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import React from "react";
+import { ProjectItem, projectList } from "@site/src/data/projects/projects";
+import classNames from "classnames";
+import React, { useEffect, useRef, useState } from "react";
 import { FaBook, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { ProjectItem, projectList } from "../../data/projects/projects";
+import "./ProjectShowcase.styles.css";
 
 declare global {
   interface Window {
@@ -18,9 +20,31 @@ declare global {
 function ProjectCard({ proj }: { proj: ProjectItem }) {
   const { i18n } = useDocusaurusContext();
   const mainLink = proj.url || proj.github || undefined;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        setIsImageLoaded(true);
+      } else {
+        const timer = setTimeout(() => {
+          if (img.complete && img.naturalWidth > 0) {
+            setIsImageLoaded(true);
+          }
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [proj.title]);
+
   return (
     <div
-      key={proj.github}
       className="project-card bg-slate-800/60 rounded-xl p-6 shadow-lg text-white relative overflow-hidden transition-all duration-300 cursor-pointer group"
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("a")) return;
@@ -40,13 +64,21 @@ function ProjectCard({ proj }: { proj: ProjectItem }) {
       role="button"
       style={{ outline: "none" }}
     >
-      <div className="absolute inset-0 pointer-events-none z-0 project-card-glass"></div>
+      <div className="absolute inset-0 pointer-events-none z-10 project-card-glass"></div>
       {proj.img && (
         <div className="w-full h-32 rounded-lg overflow-hidden flex items-center justify-center mb-3">
           <img
+            ref={imgRef}
             src={proj.img}
             alt={proj.title}
-            className="w-full h-full object-contain rounded-lg"
+            className={classNames(
+              "w-full h-full object-contain rounded-lg transition-opacity duration-500",
+              {
+                "opacity-0": !isImageLoaded,
+                "opacity-100": isImageLoaded,
+              }
+            )}
+            onLoad={handleImageLoad}
           />
         </div>
       )}
@@ -152,87 +184,6 @@ export default function ProjectShowcase() {
           ))}
         </Slider>
       </div>
-      {/* 注入高级悬浮动效样式 */}
-      <style>{`
-        .project-card {
-          box-shadow: 0 4px 24px 0 #a259e6a0, 0 1.5px 8px 0 #3b82f680;
-        }
-        .project-card:hover {
-          transform: scale(1.04) translateY(-4px);
-          box-shadow: 0 8px 32px 0 #a259e6cc, 0 2px 16px 0 #3b82f6cc;
-        }
-        .project-card-glass {
-          background: linear-gradient(120deg, #a259e6 10%, #3b82f6 60%, #f472b6 100%);
-          opacity: 0.18;
-          filter: blur(16px);
-          border-radius: 1rem;
-          transition: opacity 0.3s;
-        }
-        .project-card:hover .project-card-glass {
-          opacity: 0.32;
-        }
-        .project-card:hover p {
-          opacity: 1;
-        }
-        
-        /* Carousel */
-        .slick-dots {
-          bottom: -50px;
-        }
-        .slick-dots li button:before {
-          color: #a259e6;
-          font-size: 12px;
-        }
-        .slick-dots li.slick-active button:before {
-          color: #f472b6;
-        }
-        .slick-prev, .slick-next {
-          z-index: 10;
-          width: 40px;
-          height: 40px;
-          top: 50%;
-          transform: translateY(-50%);
-          position: absolute;
-        }
-        .slick-prev {
-          left: -50px;
-        }
-        .slick-next {
-          right: -50px;
-        }
-        .slick-prev:before, .slick-next:before {
-          font-size: 20px;
-          color: #a259e6;
-          line-height: 1;
-        }
-        .slick-prev:hover:before, .slick-next:hover:before {
-          color: #f472b6;
-        }
-        @media (max-width: 768px) {
-          .slick-prev, .slick-next {
-            display: none !important;
-          }
-          .slick-slider {
-            margin: 0 !important;
-          }
-        }
-        .slick-slider {
-          position: relative;
-          margin: 0 60px;
-          padding-top: 10px;
-        }
-        @media (max-width: 768px) {
-          .slick-slider {
-            margin: 0;
-          }
-        }
-        .slick-track {
-          padding-top: 10px;
-        }
-        .slick-list {
-          padding-top: 10px !important;
-        }
-      `}</style>
     </section>
   );
 }

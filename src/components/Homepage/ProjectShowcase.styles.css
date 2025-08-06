@@ -1,0 +1,99 @@
+/* ProjectShowcase 组件样式 */
+.project-card {
+  box-shadow: 0 4px 24px 0 #a259e6a0, 0 1.5px 8px 0 #3b82f680;
+}
+
+.project-card:hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow: 0 8px 32px 0 #a259e6cc, 0 2px 16px 0 #3b82f6cc;
+}
+
+.project-card-glass {
+  background: linear-gradient(120deg, #a259e6 10%, #3b82f6 60%, #f472b6 100%);
+  opacity: 0.18;
+  filter: blur(16px);
+  border-radius: 1rem;
+  transition: opacity 0.3s;
+}
+
+.project-card:hover .project-card-glass {
+  opacity: 0.32;
+}
+
+.project-card:hover p {
+  opacity: 1;
+}
+
+/* Carousel 样式 */
+.slick-dots {
+  bottom: -50px;
+}
+
+.slick-dots li button:before {
+  color: #a259e6;
+  font-size: 12px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #f472b6;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+}
+
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 20px;
+  color: #a259e6;
+  line-height: 1;
+}
+
+.slick-prev:hover:before,
+.slick-next:hover:before {
+  color: #f472b6;
+}
+
+@media (max-width: 768px) {
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+  .slick-slider {
+    margin: 0 !important;
+  }
+}
+
+.slick-slider {
+  position: relative;
+  margin: 0 60px;
+  padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .slick-slider {
+    margin: 0;
+  }
+}
+
+.slick-track {
+  padding-top: 10px;
+}
+
+.slick-list {
+  padding-top: 10px !important;
+}
