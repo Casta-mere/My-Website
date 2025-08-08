@@ -34,6 +34,11 @@ Conda:
   label: Conda
   permalink: /Conda
 
+Copilot:
+  description: Copilot
+  label: Copilot
+  permalink: /Copilot
+
 Crontab:
   description: Crontab
   label: Crontab
@@ -148,6 +153,11 @@ TTY:
   description: TTY
   label: TTY
   permalink: /TTY
+
+Talk:
+  description: Talk
+  label: Talk
+  permalink: /Talk
 
 Terminal:
   description: Terminal
