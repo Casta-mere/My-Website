@@ -5,9 +5,11 @@ authors: [Castamere]
 tags: [Life, VS code, Copilot, Talk]
 ---
 
+import { RoughNotation } from "react-rough-notation";
+
 # 杂谈 001 · VScode / Copilot 25.08 更新
 
-2025.08.08 , VS code 发布八月更新，同一天 Copilot 也更新了 GPT-5, 浅体验一下
+2025.08.08 , VS code 发布八月更新(V1.103.0)，同一天 Copilot 也更新了 GPT-5, 浅体验一下
 
 VS code 更新
 
@@ -30,7 +32,7 @@ AI 内容的更新，后面统一和 [Copilot 更新](/blog/talk-001#copilot-更
 
 ### 发行说明更新
 
-一进来就有一个小优化，之前好像没见过，现在发行说明有侧边栏跳转了，确实很方便
+一进来就有一个小优化，之前好像没见过，现在发行说明有侧边栏跳转了。笔者每次看发行说明都会先跳到终端那部分，然后再从头看，确实很方便
 
 ![v1.103.0](./image/Tab.gif)
 
@@ -43,6 +45,8 @@ AI 内容的更新，后面统一和 [Copilot 更新](/blog/talk-001#copilot-更
 ![AI percentage](./image/AI.png)
 
 一个百分比的小进度条，瞟一眼就不太好意思 tab tab tab 了，简直是天才
+
+(统计数据被领导发现就完蛋咯)
 
 ## Copilot 更新
 
@@ -82,7 +86,7 @@ AI 的回复中，可以直接渲染公式。可能在验证公式正确性时�
 
 GPT-5 首发直接进 copilot, 1x 倍率，先体验几天看看吧
 
-初步体验感觉分析的总时长不变，但会"卡一会"。就是问了问题之后，先便秘一阵，再窜稀一样叽里呱啦说一大堆出来
+初步体验感觉分析的总时长不变，但会"卡一会"。就是问了问题之后，先便秘一阵，再<RoughNotation type="strike-through" show={true} color="rgba(255, 0, 0, 0.7)" strokeWidth={4} iterations={1} multiline={true} >窜稀一样</RoughNotation>叽里呱啦说一大堆出来
 
 ## 后记
 
