@@ -77,7 +77,7 @@ Docusaurus 官方提供了 [Browser Only](https://docusaurus.io/docs/advanced/ss
 
 ### SSR
 
-先说什么是 SSR。在笔者之前写的 React 系列文章中介绍过，点击[这里](http://localhost:3000/docs/React/Next/Fundamentals#服务端渲染server-side-rendering)可以跳转查看，这里也会简单介绍一下
+先说什么是 SSR。在笔者之前写的 React 系列文章中介绍过，点击[这里](/docs/React/Next/Fundamentals#服务端渲染server-side-rendering)可以跳转查看，这里也会简单介绍一下
 
 SSR (*Server Side Rendering*) 即 服务端渲染。是指在服务器端将动态页面内容和数据渲染成完整的 HTML 页面，然后将整个页面发送给客户端。客户端收到的是已经包含完整内容的 HTML 页面
 
