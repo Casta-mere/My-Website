@@ -56,6 +56,13 @@ const friendList: FriendItem[] = [
     description: "以热爱之名，点亮技术探索者的漫长岁月！",
     tags: ["技术博客"],
   },
+  {
+    title: "半方池水半方田",
+    avatar: "https://cdn.gallery.uuanqin.top/img/avatar.webp",
+    url: "https://blog.uuanqin.top/",
+    description: "只能懂一点点",
+    tags: [],
+  },
 ];
 
 export default friendList;
