@@ -472,5 +472,14 @@
   },
   "项目": {
     "message": "Projects"
+  },
+  "站外链接": {
+    "message": "External Link"
+  },
+  "页面内跳转": {
+    "message": "In-Page Anchor"
+  },
+  "站内文章": {
+    "message": "Internal Link"
   }
 }
