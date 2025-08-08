@@ -28,7 +28,7 @@ const DocusaurusMDXLinkEnhance = (props: Props) => {
 
   const isExternalLink = !href.startsWith("/");
   const isAnchorLink =
-    href.includes("#") && href.startsWith(usePlainLocation());
+    href.includes("#") && href.split("#")[0] === usePlainLocation();
 
   return (
     <span className="tailwind" style={{ display: "inline-block" }}>
