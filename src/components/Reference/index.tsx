@@ -45,7 +45,7 @@ const Reference = ({ references }: Props) => {
             <div key={index}>
               [{index + 1}] {ref.author && <span>{ref.author}, </span>}
               {ref.time && <span>{ref.time}, </span>}
-              <Link title={ref.title} url={ref.url} />
+              <Link title={ref.title} url={ref.url} badge={true} />
             </div>
           );
         })}
