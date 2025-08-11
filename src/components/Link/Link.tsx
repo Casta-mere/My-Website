@@ -1,7 +1,13 @@
-import { useLocation } from "@docusaurus/router";
 import { useColorMode as useDocusaurusColorMode } from "@docusaurus/theme-common";
+import { usePlainLocation } from "@site/src/hooks/usePlainLocation";
 import classNames from "classnames";
-import React, { useRef, useState } from "react";
+import React from "react";
+import {
+  colors,
+  LinkBadge,
+  UnderlineAnimation,
+  useHoverEffect,
+} from "./_components";
 
 interface Props {
   title: string;
@@ -9,26 +15,9 @@ interface Props {
   size?: "sm" | "lg";
   open?: "newTab" | "sameTab";
   onSameUrl?: "open" | "refresh" | "disable";
-  colorMode?: "dark" | "light" | "custom";
+  colorMode?: "dark" | "light" | "homepage";
+  badge?: boolean;
 }
-
-const colors = [
-  {
-    main: "text-blue-500",
-    hover: "hover:text-orange-500",
-    underScore: "bg-orange-500",
-  },
-  {
-    main: "text-blue-400",
-    hover: "hover:text-violet-500",
-    underScore: "bg-violet-500",
-  },
-  {
-    main: "text-gray-300",
-    hover: "hover:text-violet-500",
-    underScore: "bg-violet-500",
-  },
-];
 
 const Link = ({
   title,
@@ -37,11 +26,10 @@ const Link = ({
   onSameUrl = "refresh",
   size = "sm",
   colorMode,
+  badge,
 }: Props) => {
-  const [hover, setHover] = useState(false);
-  const [leaving, setLeaving] = useState(true);
-  const timeoutId = useRef<number | null>(null);
-  let mode: "dark" | "light" | "custom";
+  const { hover, leaving, onMouseEnter, onMouseLeave } = useHoverEffect();
+  let mode: "dark" | "light" | "homepage";
   if (colorMode) {
     mode = colorMode;
   } else {
@@ -51,45 +39,26 @@ const Link = ({
       mode = "light";
     }
   }
-  const color = colors[mode === "dark" ? 1 : mode === "light" ? 0 : 2];
-  const isSameUrl = useLocation().pathname === url;
+  const color = colors[mode];
+  const href = url;
+
+  const isExternalLink = !href.startsWith("/");
+  const isAnchorLink =
+    href.includes("#") && href.split("#")[0] === usePlainLocation();
 
   return (
     <a
-      href={isSameUrl ? (onSameUrl === "disable" ? undefined : url) : url}
+      href={isAnchorLink ? (onSameUrl === "disable" ? undefined : url) : url}
       className={classNames({
         "relative inline-block": true,
         [color.main]: true,
         [color.hover]: true,
       })}
-      onMouseEnter={() => {
-        setHover(true);
-        if (timeoutId.current) {
-          clearTimeout(timeoutId.current);
-        }
-        timeoutId.current = window.setTimeout(() => {
-          timeoutId.current = null;
-          setLeaving(false);
-        }, 500);
-      }}
-      onMouseLeave={() => {
-        if (timeoutId.current) {
-          clearTimeout(timeoutId.current);
-          timeoutId.current = window.setTimeout(() => {
-            setHover(false);
-            setLeaving(false);
-          }, 300);
-          window.setTimeout(() => {
-            setLeaving(true);
-          }, 350);
-        } else {
-          setHover(false);
-          setLeaving(true);
-        }
-      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       target={
         open === "newTab"
-          ? isSameUrl
+          ? isAnchorLink
             ? onSameUrl === "open"
               ? "_blank"
               : undefined
@@ -99,26 +68,18 @@ const Link = ({
       rel="noopener noreferrer"
     >
       {title}
-
-      <span
-        className={classNames({
-          "absolute right-0 h-0.5 ": true,
-          "bottom-0": size === "sm",
-          "-bottom-1": size === "lg",
-          [color.underScore]: true,
-          "w-0 transition-all duration-500": leaving,
-          "w-full": !leaving,
-        })}
-      />
-      <span
-        className={classNames({
-          "absolute left-0 h-0.5": true,
-          "bottom-0": size === "sm",
-          "-bottom-1": size === "lg",
-          [color.underScore]: true,
-          "w-full transition-all duration-500": hover,
-          "w-0": !hover,
-        })}
+      {badge && (
+        <LinkBadge
+          isVisible={hover}
+          isExternalLink={isExternalLink}
+          isAnchorLink={isAnchorLink}
+        />
+      )}
+      <UnderlineAnimation
+        hover={hover}
+        leaving={leaving}
+        underlineColor={color.underScore}
+        size={size}
       />
     </a>
   );

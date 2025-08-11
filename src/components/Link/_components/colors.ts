@@ -1,7 +1,12 @@
-export interface ColorScheme {
+interface ColorScheme {
   main: string;
   hover: string;
   underScore: string;
+}
+
+interface BadgeColorScheme {
+  badgeColor: string;
+  arrowColor: string;
 }
 
 const colors: Record<string, ColorScheme> = {
@@ -14,6 +19,26 @@ const colors: Record<string, ColorScheme> = {
     main: "text-blue-400",
     hover: "hover:text-violet-500",
     underScore: "bg-violet-500",
+  },
+  homepage: {
+    main: "text-gray-300",
+    hover: "hover:text-violet-500",
+    underScore: "bg-violet-500",
+  },
+};
+
+export const badgeColors: Record<string, BadgeColorScheme> = {
+  external: {
+    badgeColor: "bg-orange-500",
+    arrowColor: "border-t-orange-500",
+  },
+  internal: {
+    badgeColor: "bg-blue-500",
+    arrowColor: "border-t-blue-500",
+  },
+  inpage: {
+    badgeColor: "bg-violet-500",
+    arrowColor: "border-t-violet-500",
   },
 };
 
