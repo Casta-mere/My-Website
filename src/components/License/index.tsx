@@ -17,6 +17,7 @@ const License = () => {
             <Link
               title="CC 4.0 BY-SA"
               url="https://creativecommons.org/licenses/by-sa/4.0/"
+              badge={true}
             />{" "}
             版权协议，转载请标明出处
           </>
@@ -26,6 +27,7 @@ const License = () => {
             <Link
               title="CC 4.0 BY-SA"
               url="https://creativecommons.org/licenses/by-sa/4.0/"
+              badge={true}
             />
           </>
         )}
