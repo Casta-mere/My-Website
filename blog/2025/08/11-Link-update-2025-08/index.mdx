@@ -1,0 +1,159 @@
+---
+slug: Link-update-2025-08
+title: 超链接小组件更新，嵌入原生 Docusaurus
+authors: [Castamere]
+tags: [Snippet]
+recommended: true
+references:
+  - title: wuanqin
+    url: https://blog.uuanqin.top/
+---
+
+import Link from "@site/src/components/Link/Link";
+import Link1 from "./components/Link1";
+
+<div className="tailwind">
+  <div className="text-2xl">
+    <Link
+      title="这还是一个超链接"
+      url="/blog/Link-update-2025-08"
+      open="sameTab"
+      badge={true}
+    />
+  </div>
+</div>
+
+{/* truncate */}
+
+## 缘起
+
+在翻看 [@wuanqin](https://blog.uuanqin.top/) 的博客时，发现博主的超链接，会有一个悬浮的小框，显示外链/内链
+
+![uuanqin](./image/uuanqin.gif)
+
+顺带还有些功能也想实现，以及重构代码，就一起搞了
+
+## 悬浮框
+
+做这个悬浮框分两部分，一个是样式，一个是区分内外链接
+
+### 内外链接判断
+
+笔者把引用的链接分为了三种:
+
+- 站外链接
+- 站内文章
+- 页面内跳转
+
+页面内跳转是，比如从 `/blog/Link-update-2025-08` 跳转到 `/blog/Link-update-2025-08#内外链接判断`，即跳到当前页面内的某一 part
+
+站外文章最好判断，不以 `/` 开头的都算，其他就就属于站内文章。判断是否是页面内跳转比较麻烦，首先判断链接内是否有 `#`；然后把 `#` 及之后的内容去掉，和当前路径做对比
+
+```tsx title="链接类型判断" showLineNumbers
+import { useLocation } from "@docusaurus/router";
+const currentPath = useLocation().pathname;
+
+const isExternalLink = !href.startsWith("/");
+const isAnchorLink = href.includes("#") && href.split("#")[0] === currentPath;
+```
+
+但这样在 docusaurus 中会有一个问题，`uselocation` 返回的是包括 i18n 在内的路径，也就是类似 `/en/blog/` 这种，而我们在 markdown 里的路径就是一个纯净路径，是 docusaurus 的的多语言支持给我们正确添加 i18n 的
+
+:::tip
+这部分是 Docusaurus 的 `@docusaurus/Link` 组件的功能
+:::
+
+举个栗子，如果使用 `[超链接小组件](/blog/Link)` 这样的语法，那么在英文版，会自动给我们添加 `/en` 的前缀跳转，这样避免语言间的混乱。但文中的 href 还是原始的 `/blog/Link`
+
+所以笔者自制了一个 hook，用于在 docusaurus 中获取当前的纯净路径。其实也不复杂，就是区别 defaultLocale 和 其他 Locale 的情况
+
+```tsx title="usePlainLocation" showLineNumbers
+import { useLocation } from "@docusaurus/router";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
+export function usePlainLocation(): string {
+  const { i18n } = useDocusaurusContext();
+  const currentPath = useLocation().pathname;
+
+  if (i18n.currentLocale === i18n.defaultLocale) {
+    return currentPath;
+  }
+
+  const localePrefix = `/${i18n.currentLocale}`;
+  if (currentPath.startsWith(localePrefix)) {
+    const plainPath = currentPath.slice(localePrefix.length);
+    return plainPath || "/";
+  }
+
+  return currentPath;
+}
+```
+
+然后这样用就可以了
+
+```tsx title="链接类型判断" showLineNumbers
+import { usePlainLocation } from "@site/src/hooks/usePlainLocation";
+const currentPath = useLocation().pathname;
+
+const isExternalLink = !href.startsWith("/");
+const isAnchorLink =
+  href.includes("#") && href.split("#")[0] === usePlainLocation();
+```
+
+### 悬浮框样式
+
+想做一个类似聊天气泡，下面有个小尖尖那种，一点点来：
+
+先让他显示出来：通过外层的 relative 来定位这个链接的宽度，再在中间显示出来，一个圆角矩形+一个小啾啾
+
+```tsx
+return (
+  <span className="tailwind">
+    <span className="relative inline-block">
+      一个链接
+      <LinkBadge />
+    </span>
+  </span>
+);
+```
+
+<Link1 />
+
+<details>
+
+<summary>LinkBadge</summary>
+
+```tsx title="LinkBadge.tsx" showLineNumbers
+import React from "react";
+const LinkBadge: React.FC = () => {
+  return (
+    ...
+    <span
+      className={classNames({
+        "absolute -top-8 left-1/2 transform -translate-x-1/2": true,
+        "px-2 py-1 text-xs rounded shadow-lg": true,
+        "pointer-events-none": true,
+        "whitespace-nowrap": true,
+        "text-white": true,
+        "bg-orange-500": true,
+      })}
+    >
+      站外链接
+      <span
+        className={classNames({
+          "absolute top-full left-1/2 transform -translate-x-1/2": true,
+          "border-l-4 border-r-4 border-t-4": true,
+          "w-0 h-0": true,
+          "border-transparent": true,
+          "border-t-orange-500": true,
+        })}
+      />
+    </span>
+    ...
+  );
+};
+
+export default LinkBadge;
+```
+
+</details>
