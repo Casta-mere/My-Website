@@ -9,23 +9,45 @@ keywords:
 
 import Link from "@site/src/components/Link/Link";
 
-A hyperlink component in Docusaurus, currently supports the following features
+A hyperlink component in Docusaurus, currently supports the following features. You can find source code on [Github](https://github.com/Casta-mere/Link), latest Version is V1.1
 
 - [x] Dynamic underline effect
 - [x] Docusaurus light/dark theme switch
+- [x] Internal/External Link display
+- [x] Docusaurus MDX integration
+- [x] Custom font size, underline, color
 
-## 效果演示
+## demo
 
 <div className="tailwind">
   <div className="text-2xl mb-4">
     <Link
-      title="This is a link"
+      title="This is link component"
       url="/docs/Snippets/Components/Link"
       onSameUrl="refresh"
     />
   </div>
 </div>
 
+[This is DocusaurusMDXLinkEnhance component](/docs/Snippets/Components/Link)
+
 :::info
-You can also refer to [Link](/blog/Link) for detailed introduction to how this component is implemented
+You can also refer to following blogs for detailed introduction to how this component is implemented
+
+[Link](/blog/Link)
+
+[超链接小组件更新，嵌入原生 Docusaurus](/blog/Link-update-2025-08)
 :::
+
+## Component Comparison
+
+There are two components. One is the `Link` component with many custom options. Another is `DocusaurusMDXLinkEnhance` component to enhance the link in Markdown
+
+| Function \\ Component                   | Link            | DocusaurusMDXLinkEnhance |
+| --------------------------------------- | --------------- | ------------------------ |
+| Animations                              | ✔️              | ✔️                       |
+| Internal/External display on/off switch | ✔️(default off) | ❌(default on)           |
+| Docusaurus optimization                 | ❌              | ✔️                       |
+| Custom redirect logic                   | ✔️              | ❌                       |
+| Custom font, size, underline            | ✔️              | ❌                       |
+| Add custome color                       | ✔️              | ❌                       |
