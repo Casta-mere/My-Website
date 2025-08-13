@@ -63,6 +63,7 @@ const config = {
           copyright: `Copyright © 2022-${new Date().getFullYear()} Castamere`,
           title: 'Castamere',
           description: 'Castamere',
+          limit: null,
           createFeedItems: async (params) => {
             const { blogPosts, defaultCreateFeedItems, ...rest } = params;
             return defaultCreateFeedItems({
