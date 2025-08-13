@@ -28,7 +28,7 @@ import Link3 from "./components/Link3";
 
 ![demo](./image/demo.gif)
 
-这次更新制作了一个悬浮窗动画效果，可以根据链接的不同类型渲染不同样式。其次是将部分功能封装，并嵌入了 docusaurus 的 mdx `<a>` 标签，就可以在 markdown 文件中，使用 `[text](url)` 语法来调用
+这次更新制作了一个悬浮窗动画效果，可以根据链接的不同类型渲染不同样式。其次是将部分功能封装，并嵌入了 Docusaurus 的 mdx `<a>` 标签，就可以在 markdown 文件中，使用 `[text](url)` 语法来调用
 
 并且放到了 [Github](https://github.com/Casta-mere/Link) 上，欢迎大家使用和二创
 
@@ -56,7 +56,7 @@ import Link3 from "./components/Link3";
 
 页面内跳转是，比如从 `/blog/Link-update-2025-08` 跳转到 `/blog/Link-update-2025-08#内外链接判断`，即跳到当前页面内的某一 part
 
-站外文章最好判断，不以 `/` 开头的都算，其他就就属于站内文章。判断是否是页面内跳转比较麻烦，首先判断链接内是否有 `#`；然后把 `#` 及之后的内容去掉，和当前路径做对比
+站外文章最好判断，不以 `/` 开头的都算，其他就属于站内文章。判断是否是页面内跳转比较麻烦，首先判断链接内是否有 `#`；然后把 `#` 及之后的内容去掉，和当前路径做对比
 
 ```tsx title="链接类型判断" showLineNumbers
 import { useLocation } from "@docusaurus/router";
@@ -66,7 +66,7 @@ const isExternalLink = !href.startsWith("/");
 const isAnchorLink = href.includes("#") && href.split("#")[0] === currentPath;
 ```
 
-但这样在 docusaurus 中会有一个问题，`uselocation` 返回的是包括 i18n 在内的路径，也就是类似 `/en/blog/` 这种，而我们在 markdown 里的路径就是一个纯净路径，是 docusaurus 的的多语言支持给我们正确添加 i18n 的
+但这样在 Docusaurus 中会有一个问题，`useLocation` 返回的是包括 i18n 在内的路径，也就是类似 `/en/blog/` 这种，而我们在 markdown 里的路径就是一个纯净路径，是 Docusaurus 的多语言支持给我们正确添加 i18n 的
 
 :::tip
 这部分是 Docusaurus 的 `@docusaurus/Link` 组件的功能
@@ -74,7 +74,7 @@ const isAnchorLink = href.includes("#") && href.split("#")[0] === currentPath;
 
 举个栗子，如果使用 `[超链接小组件](/blog/Link)` 这样的语法，那么在英文版，会自动给我们添加 `/en` 的前缀跳转，这样避免语言间的混乱。但文中的 href 还是原始的 `/blog/Link`
 
-所以笔者自制了一个 hook，用于在 docusaurus 中获取当前的纯净路径。其实也不复杂，就是区别 defaultLocale 和 其他 Locale 的情况
+所以笔者自制了一个 hook，用于在 Docusaurus 中获取当前的纯净路径。其实也不复杂，就是区别 defaultLocale 和 其他 Locale 的情况
 
 ```tsx title="usePlainLocation" showLineNumbers
 import { useLocation } from "@docusaurus/router";
@@ -299,9 +299,9 @@ export const badgeColors: Record<string, BadgeColorScheme> = {
 
 即:
 
-> **不管是鼠标快速扫过还是悬浮不动，下划线都会先全拉满，再进行下一步的操作**
+> **不管是鼠标快速扫过还是悬浮不动，下划线会先全部拉满，再进行下一步的操作**
 
-针对这个悬浮框也一样，不管是鼠标快速扫过，还是悬浮到上面，都会<RoughNotation type="highlight" show={true} color="rgba(251, 205, 2, 0.5)" strokeWidth={1} iterations={1} multiline={true} >完整的显示一次动画</RoughNotation>
+针对这个悬浮框也一样，不管是鼠标快速扫过，还是悬浮到上面，都会<RoughNotation type="highlight" show={true} color="rgba(251, 205, 2, 0.5)" strokeWidth={1} iterations={1} multiline={true} >完整地显示一次动画</RoughNotation>
 
 ![demo](./image/demo.gif)
 
@@ -433,3 +433,208 @@ export default LinkBadge;
 ```
 
 </details>
+
+## 嵌入 Docusaurus
+
+笔者想在 markdown 里直接使用 `[text](url)` 语法来调用这个组件，那就是直接用 `swizzle`
+
+### Swizzle `<a>`
+
+:::tip
+不知道 Docusaurus swizzle 的朋友可以看[这里](https://docusaurus.io/docs/swizzling)
+
+简单来说就是修改 Docusaurus 的系统组件
+:::
+
+首先把所有能 `swizzle` 的组件列出来
+
+```bash
+npm run swizzle -- --list | grep -i link
+```
+
+| Component                        | Description                                                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Footer/LinkItem                  | The footer link item component                                                                                                   |
+| Footer/Links                     | The footer component rendering the footer links                                                                                  |
+| Footer/Links/MultiColumn         | The footer component rendering the footer links with a multi-column layout                                                       |
+| Footer/Links/Simple              | The footer component rendering the footer links with a simple layout (single row)                                                |
+| MDXComponents/A                  | The component used to render `<a>` tags and Markdown links in MDX                                                                |
+| SkipToContent                    | The component responsible for implementing the accessibility "skip to content" link (https://www.w3.org/TR/WCAG20-TECHS/G1.html) |
+| BlogPostItem/Footer/ReadMoreLink | N/A                                                                                                                              |
+
+发现我们要改的是 `MDXComponents/A` 组件。使用如下命令 swizzle
+
+```bash
+npm run swizzle @docusaurus/theme-classic MDXComponents/A
+```
+
+会生成 `./src/theme/MDXComponents/A.tsx`
+
+```tsx title="./src/theme/MDXComponents/A.tsx" showLineNumbers
+import Link from "@docusaurus/Link";
+import type { Props } from "@theme/MDXComponents/A";
+import React from "react";
+
+export default function MDXA(props: Props): JSX.Element {
+  return <Link {...props} />;
+}
+```
+
+接下来修改一下组件来适配
+
+### 组件适配
+
+从上面我们可以看到, Docusaurus Markdown 中的链接，会被渲染为 Docusaurus 的 `<Link>` 组件，其有以下优点
+
+- 自动检测 url 是否存在(站内 url)
+- 链接预加载
+- 自动应用 base URL
+- 智能添加 target="\_blank" rel="noopener noreferrer"
+
+你可以在[这里](https://docusaurus.io/docs/docusaurus-core#link)找到它的详细介绍
+
+但笔者之前的组件是从零开始一点点做的，不太好适配。所以就先把很多内容进行封装，然后分为两支，一个是原有的 Link 组件，完全自定义；另一个是强化了 Docusaurus 的 `<Link>` 组件，在后面会进行功能对比
+
+首先把 Link 提取出来
+
+```tsx title="DocusaurusMDXLinkEnhance.tsx" showLineNumbers
+import Link from "@docusaurus/Link";
+import type { Props } from "@theme/MDXComponents/A";
+import React from "react";
+
+const DocusaurusMDXLinkEnhance = (props: Props) => {
+  return (
+    <span>
+      <Link {...props} />
+    </span>
+  );
+};
+
+export default DocusaurusMDXLinkEnhance;
+```
+
+看了一下, 参数只需要 href 来判断内/外链，再研究一下 props，获取出来
+
+```tsx title="DocusaurusMDXLinkEnhance.tsx" showLineNumbers
+...
+  const DocusaurusMDXLinkEnhance = (props: Props) => {
+    // git-add-next-line
++   const { href } = props;
+
+    return (
+      <span>
+        <Link {...props} />
+      </span>
+    );
+  };
+```
+
+具体封装的过程就不细讲了，总之最终版本如下:
+
+<details>
+
+<summary>LinkBadge</summary>
+
+```tsx title="DocusaurusMDXLinkEnhance.tsx" showLineNumbers
+import Link from "@docusaurus/Link";
+import { useColorMode as useDocusaurusColorMode } from "@docusaurus/theme-common";
+import { usePlainLocation } from "@site/src/hooks/usePlainLocation";
+import type { Props } from "@theme/MDXComponents/A";
+import classNames from "classnames";
+import React from "react";
+import {
+  colors,
+  LinkBadge,
+  UnderlineAnimation,
+  useHoverEffect,
+} from "./_components";
+
+const DocusaurusMDXLinkEnhance = (props: Props) => {
+  if (!props.href) return <Link {...props} />;
+  const { href } = props;
+
+  const { hover, leaving, onMouseEnter, onMouseLeave } = useHoverEffect();
+
+  let mode: "dark" | "light";
+  try {
+    mode = useDocusaurusColorMode().colorMode;
+  } catch {
+    mode = "dark";
+  }
+
+  const color = colors[mode];
+
+  const isExternalLink = !href.startsWith("/");
+  const isAnchorLink =
+    href.includes("#") && href.split("#")[0] === usePlainLocation();
+
+  return (
+    <span className="tailwind" style={{ display: "inline-block" }}>
+      <span
+        className={classNames({
+          "relative inline-block": true,
+          [color.main]: true,
+          [color.hover]: true,
+        })}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        <Link {...props} />
+
+        <LinkBadge
+          isVisible={hover}
+          isExternalLink={isExternalLink}
+          isAnchorLink={isAnchorLink}
+        />
+
+        <UnderlineAnimation
+          hover={hover}
+          leaving={leaving}
+          underlineColor={color.underScore}
+        />
+      </span>
+    </span>
+  );
+};
+
+export default DocusaurusMDXLinkEnhance;
+```
+
+</details>
+
+### 嵌入
+
+然后改一下前面生成的 `./src/theme/MDXComponents/A.tsx`，使用我们的组件即可
+
+```tsx title="./src/theme/MDXComponents/A.tsx" showLineNumbers
+  // git-remove-next-line
+- import Link from "@docusaurus/Link";
+  // git-add-next-line
++ import DocusaurusMDXLinkEnhance from "@site/src/components/Link/DocusaurusMDXLinkEnhance";
+  import type { Props } from "@theme/MDXComponents/A";
+  import React from "react";
+
+  export default function MDXA(props: Props): JSX.Element {
+    // git-remove-next-line
+-   return <Link {...props} />;
+    // git-add-next-line
++   return <DocusaurusMDXLinkEnhance {...props} />;
+  }
+```
+
+## 对比
+
+代码放到了 [Github](https://github.com/Casta-mere/Link) 上，目前版本为 V1.1。如上面所说，分为两支。一个是原有 `Link` 组件，很多内容都可以自定义，另一个是 `DocusaurusMDXLinkEnhance`，仅用于加强 Markdown 中的使用
+
+| 功能 \\ 组件         | Link           | DocusaurusMDXLinkEnhance |
+| -------------------- | -------------- | ------------------------ |
+| 各种动画             | ✔️             | ✔️                       |
+| 设置是否显示悬浮框   | ✔️(默认不显示) | ❌(默认显示)             |
+| Docusaurus 优化      | ❌             | ✔️                       |
+| 跳转逻辑自定义       | ✔️             | ❌                       |
+| 字体字号下划线自定义 | ✔️             | ❌                       |
+| 添加自定义颜色       | ✔️             | ❌                       |
+
+## 后记
+
+后面可能考虑搞成一个 npm 包，但完了再研究吧
