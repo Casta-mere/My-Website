@@ -9,23 +9,45 @@ keywords:
 
 import Link from "@site/src/components/Link/Link";
 
-一个在 Docusaurus 中的超链接小组件，目前支持以下功能
+一个在 Docusaurus 中的超链接小组件，目前支持以下功能。代码放到了 [Github](https://github.com/Casta-mere/Link) 上，目前版本为 V1.1
 
 - [x] 动态下划线效果
 - [x] Docusaurus 下亮暗主题切换
+- [x] 内/外链接提示悬浮框
+- [x] Docusaurus MDX 集成
+- [x] 自定义字体字号、下划线、颜色
 
 ## 效果演示
 
 <div className="tailwind">
   <div className="text-2xl mb-4">
     <Link
-      title="这是一个超链接"
+      title="这是 Link 组件"
       url="/docs/Snippets/Components/Link"
       onSameUrl="refresh"
     />
   </div>
 </div>
 
+[这是 DocusaurusMDXLinkEnhance 组件](/docs/Snippets/Components/Link)
+
 :::info
-可参考 [Link](/blog/Link) 一文，详细介绍了该组件是如何实现的
+可参考以下文章，详细介绍了该组件是如何实现的
+
+[超链接小组件](/blog/Link)
+
+[超链接小组件更新，嵌入原生 Docusaurus](/blog/Link-update-2025-08)
 :::
+
+## 组件对比
+
+代码分为两支。一个是原有 `Link` 组件，很多内容都可以自定义，另一个是 `DocusaurusMDXLinkEnhance`，仅用于加强 Markdown 中的使用
+
+| 功能 \\ 组件         | Link           | DocusaurusMDXLinkEnhance |
+| -------------------- | -------------- | ------------------------ |
+| 各种动画             | ✔️             | ✔️                       |
+| 设置是否显示悬浮框   | ✔️(默认不显示) | ❌(默认显示)             |
+| Docusaurus 优化      | ❌             | ✔️                       |
+| 跳转逻辑自定义       | ✔️             | ❌                       |
+| 字体字号下划线自定义 | ✔️             | ❌                       |
+| 添加自定义颜色       | ✔️             | ❌                       |
