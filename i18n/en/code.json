@@ -481,5 +481,8 @@
   },
   "站内文章": {
     "message": "Internal Link"
+  },
+  "站内资源": {
+    "message": "Internal Resource"
   }
 }

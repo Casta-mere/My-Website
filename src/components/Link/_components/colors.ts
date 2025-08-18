@@ -36,9 +36,13 @@ export const badgeColors: Record<string, BadgeColorScheme> = {
     badgeColor: "bg-blue-500",
     arrowColor: "border-t-blue-500",
   },
-  inpage: {
+  inPage: {
     badgeColor: "bg-violet-500",
     arrowColor: "border-t-violet-500",
+  },
+  resource: {
+    badgeColor: "bg-amber-800",
+    arrowColor: "border-t-amber-800",
   },
 };
 

@@ -43,6 +43,7 @@ const Link = ({
   const href = url;
 
   const isExternalLink = !href.startsWith("/");
+  const isResourceLink = href.startsWith("/assets/");
   const isAnchorLink =
     href.includes("#") && href.split("#")[0] === usePlainLocation();
 
@@ -73,6 +74,7 @@ const Link = ({
           isVisible={hover}
           isExternalLink={isExternalLink}
           isAnchorLink={isAnchorLink}
+          isResourceLink={isResourceLink}
         />
       )}
       <UnderlineAnimation

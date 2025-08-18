@@ -27,6 +27,7 @@ const DocusaurusMDXLinkEnhance = (props: Props) => {
   const color = colors[mode];
 
   const isExternalLink = !href.startsWith("/");
+  const isResourceLink = href.startsWith("/assets/");
   const isAnchorLink =
     href.includes("#") && href.split("#")[0] === usePlainLocation();
 
@@ -47,6 +48,7 @@ const DocusaurusMDXLinkEnhance = (props: Props) => {
           isVisible={hover}
           isExternalLink={isExternalLink}
           isAnchorLink={isAnchorLink}
+          isResourceLink={isResourceLink}
         />
 
         <UnderlineAnimation
