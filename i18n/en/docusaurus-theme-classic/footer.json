@@ -74,5 +74,9 @@
   "link.item.label.开往": {
     "message": "Travelling",
     "description": "The label of footer link with label=开往 linking to https://www.travellings.cn/go.html"
+  },
+  "link.item.label.虫洞": {
+    "message": "Wormhole",
+    "description": "The label of footer link with label=虫洞 linking to https://www.foreverblog.cn/go.html"
   }
 }
