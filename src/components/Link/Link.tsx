@@ -52,8 +52,8 @@ const Link = ({
       href={isAnchorLink ? (onSameUrl === "disable" ? undefined : url) : url}
       className={classNames({
         "relative inline-block": true,
-        [color.main]: true,
-        [color.hover]: true,
+        [color.main]: !hover,
+        [color.hover]: hover,
       })}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
