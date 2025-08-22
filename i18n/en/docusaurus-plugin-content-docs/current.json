@@ -28,11 +28,19 @@
     "description": "The label for category Python 代码段 in sidebar snippetsSidebar"
   },
   "sidebar.tutorialSidebar.category.服务器搭建": {
-    "message": "服务器搭建",
+    "message": "Server",
     "description": "The label for category 服务器搭建 in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.总结与计划": {
-    "message": "总结与计划",
+    "message": "Plans",
     "description": "The label for category 总结与计划 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Docker": {
+    "message": "Docker",
+    "description": "The label for category Docker in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Python": {
+    "message": "Python",
+    "description": "The label for category Python in sidebar tutorialSidebar"
   }
 }
