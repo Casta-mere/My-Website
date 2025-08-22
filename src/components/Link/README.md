@@ -28,3 +28,5 @@ React 超链接小组件
 - **V0.5** 修改"站内文章/页面内跳转"逻辑
 - **V1.0** 更好的封装，Link 组件同步完成
 - **V1.1** 更新各种文档，参考[超链接小组件更新，嵌入原生 Docusaurus](https://castamerego.com/blog/Link-update-2025-08)
+- **V1.2** 添加 "站内资源" 特殊样式，badge 添加 `select-none`
+- **V1.3** 优化悬浮时颜色样式

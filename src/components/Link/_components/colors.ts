@@ -12,17 +12,17 @@ interface BadgeColorScheme {
 const colors: Record<string, ColorScheme> = {
   light: {
     main: "text-blue-500",
-    hover: "hover:text-orange-500",
+    hover: "text-orange-500",
     underScore: "bg-orange-500",
   },
   dark: {
     main: "text-blue-400",
-    hover: "hover:text-violet-500",
+    hover: "text-violet-500",
     underScore: "bg-violet-500",
   },
   homepage: {
     main: "text-gray-300",
-    hover: "hover:text-violet-500",
+    hover: "text-violet-500",
     underScore: "bg-violet-500",
   },
 };
