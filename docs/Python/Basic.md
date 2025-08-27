@@ -4,10 +4,14 @@ title: Python 基础
 keywords:
   - Python
   - pip
+references:
+  - author: 章鱼猫先生
+    title: 如何卸载 python setup.py install 安装的包？
+    time: 2021
+    url: https://cloud.tencent.com/developer/article/1889271
 ---
 
 # Python 基础
-
 
 ## python 库安装
 
@@ -26,14 +30,20 @@ keywords:
 #### .tar.gz
 
 :::important
-该方式仅限于从 PyPI 下载下来的库，而非从 github 下载下来的**源码**。源码安装方式参考[这里](/docs/Python/Basic/#源码安装)
+该方式仅限于从 PyPI 下载下来的库，而非从 github 下载下来的**源码**。使用 github 源码安装方式参考[这里](/docs/Python/Basic/#源码安装)
 :::
 
-该种格式下的库，传到服务器后先使用 `tar -xzvf xxx.tar.gz` 进行解压，然后进入解压的文件夹。使用如下命令安装即可(**该方式不需要 pip**)
+该种格式下的库，传到服务器后先使用 `tar -xzvf xxx.tar.gz` 进行解压，然后进入解压的文件夹。有 pip 的情况下，直接 `pip install xxx.tar.gz` 即可
 
-```python title="安装 package"
-python setup.py install
+如果没有 pip，则使用如下命令安装。使用此种方式时，建议加 `--record install.log` 以防后面要卸载的时候找不到安装位置
+
+```bash title="安装 package"
+python setup.py install --record install.log
 ```
+
+:::tip
+卸载的时候使用 `cat install.log | xargs rm -rf` 即可
+:::
 
 #### .whl
 
@@ -82,5 +92,9 @@ nano ~/.pip/pip.conf
 mkdir %USERPROFILE%\pip
 notepad %USERPROFILE%\pip\pip.ini
 ```
+
+## Conda
+
+参考 [MiniConda 的安装与使用](/blog/MiniConda)
 
 [PyPI]: https://pypi.org/
