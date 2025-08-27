@@ -92,7 +92,7 @@ const sidebars = {
         type: "doc",
         id: "Python/README",
       },
-      items: ["Python/Basic"],
+      items: ["Python/Basic", "Python/Unittest"],
     },
     {
       type: "category",
