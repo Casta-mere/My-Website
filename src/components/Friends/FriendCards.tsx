@@ -86,7 +86,7 @@ const FriendCards = () => {
   return (
     <div className="tailwind">
       <section className="my-8">
-        <ul className="grid gap-6 sm:grid-cols-2">
+        <ul className="grid gap-6 sm:grid-cols-3">
           {friendList.map((friend) => (
             <FriendCard friend={friend} key={friend.title} />
           ))}
