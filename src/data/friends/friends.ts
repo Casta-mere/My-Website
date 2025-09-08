@@ -63,6 +63,27 @@ const friendList: FriendItem[] = [
     description: "只能懂一点点",
     tags: [],
   },
+  {
+    title: "小胡同学",
+    avatar: "https://bu.dusays.com/2025/07/05/68690b5992ae7.png",
+    url: "https://blog.henrywhu.cn/",
+    description: "在喜欢的事情里反复横跳的斜杠学生",
+    tags: ["前端开发"],
+  },
+  {
+    title: "浩瀚星河",
+    avatar: "https://cdn.codepzj.cn/image/20250529174726187.jpeg",
+    url: "https://www.golangblog.com",
+    description: "缓慢向上也是一种勇气",
+    tags: [],
+  },
+  {
+    title: "lailai's Home",
+    description: "Student & Developer",
+    url: "https://lailai.one",
+    avatar: "https://lailai.one/img/logo.png",
+    tags: [],
+  },
 ];
 
 export default friendList;
