@@ -94,7 +94,8 @@ function Articles() {
                 <Link
                   title={Article.title}
                   url={Article.url}
-                  colorMode="custom"
+                  colorMode="homepage"
+                  open="sameTab"
                 />
               </td>
               <td className="whitespace-nowrap px-2 py-1 text-sm text-right align-middle text-gray-400 bg-transparent">
