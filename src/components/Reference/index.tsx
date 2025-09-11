@@ -30,7 +30,7 @@ const Reference = ({ references }: Props) => {
             📜
           </button>
 
-          <h1
+          <h2
             className={classNames({
               "text-3xl font-bold": true,
               " text-black": colorMode === "light",
@@ -38,7 +38,7 @@ const Reference = ({ references }: Props) => {
             })}
           >
             <Translate>参考文献</Translate>
-          </h1>
+          </h2>
         </div>
         {references.map((ref, index) => {
           return (
