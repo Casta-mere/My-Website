@@ -39,6 +39,11 @@ Gisus:
   label: Gisus
   permalink: /Gisus
 
+IndexNow:
+  description: IndexNow
+  label: IndexNow
+  permalink: /IndexNow
+
 Issue Tracker:
   description: Issue Tracker
   label: Issue Tracker
@@ -113,6 +118,11 @@ Rechart:
   description: Rechart
   label: Rechart
   permalink: /Rechart
+
+SQL:
+  description: SQL
+  label: SQL
+  permalink: /SQL
 
 SSL:
   description: SSL

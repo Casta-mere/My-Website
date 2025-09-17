@@ -97,6 +97,15 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "SQL",
+      link: {
+        type: "doc",
+        id: "SQL/README",
+      },
+      items: ["SQL/NF"],
+    },
+    {
+      type: "category",
       label: "Latex",
       link: {
         type: "doc",
