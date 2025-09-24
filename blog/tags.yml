@@ -144,6 +144,11 @@ Screen:
   label: Screen
   permalink: /Screen
 
+Server:
+  description: Server
+  label: Server
+  permalink: /Server
+
 Snippet:
   description: Snippet
   label: Snippet
