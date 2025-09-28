@@ -29,7 +29,6 @@ const config = {
   projectName: 'My-Website', // Usually your repo name.
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -40,6 +39,9 @@ const config = {
   },
   markdown: {
     mermaid: true,
+    hooks:{
+      onBrokenMarkdownLinks: "throw",
+    }
   },
   themes: ['@docusaurus/theme-live-codeblock','@docusaurus/theme-mermaid'],
   plugins: [
