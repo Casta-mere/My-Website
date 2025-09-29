@@ -11,6 +11,8 @@ tags: [Docusaurus]
 
 时隔十个月，再次更新版本，看有没有什么新花样
 
+![Docusaurus V3.9](./image/Docusaurus39.png)
+
 <!-- truncate -->
 
 ## CodeBlock
