@@ -147,11 +147,17 @@ CopyButton 与 WordWrapButton 迁入 Buttons 分组；新增 Buttons、Layout、
 
 也不是加不上去，得去很底层的地方改，前面提到的 `CodeBlockMetadata` 以及获取的方法，都定义到了 `/node_modules/@docusaurus/theme-common/src/utils/codeBlockUtils.tsx`。从这个地方改实在是有点笨，不好适应版本更新，慢慢研究吧
 
+### live
+
+3.9.0 更新时，live CodeBlock 出现了问题，没办法编辑了。当时是周五晚，想着先放着了
+
+周日来了发现，更新 3.9.1 直接修复了
+
+那效率很高了
 
 ## Mermaid
 
 更新之后 Mermaid 更新了  Eclipse Layout Kernel，需要重新升级一下，具体是什么还没研究
-
 
 ```bash
 npm install @mermaid-js/layout-elk
@@ -167,9 +173,9 @@ npm install @mermaid-js/layout-elk
 markdown: {
     mermaid: true,
     hooks:{
-      onBrokenMarkdownLinks: "throw",
+        onBrokenMarkdownLinks: "throw",
     }
-  },
+},
 ```
 ## 后记
 
