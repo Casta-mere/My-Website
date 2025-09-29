@@ -39,6 +39,8 @@ bypass:
 :::
 
 ```yml
+  - "*.douban.com"
+  - "*.qq.com"
   - zhihu.com
   - "*.zhihu.com"
   - baidu.com
@@ -49,6 +51,8 @@ bypass:
   - csdn.net
   - "*.csdn.net"
   - "*.ug.link"
+  - "*.dptech.com"
+  - "*.dp.com"
   - "*.castamerego.com"
   - "*.jd.com"
   - "*.taobao.com"
