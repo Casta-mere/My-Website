@@ -5,9 +5,6 @@ keywords:
   - React
   - Typewriter
   - Snippet
-last_update:
-  date: 13 SEP 2024 GMT
-  author: Casta-mere
 ---
 
 一个简单的 React 打字机效果小组件
