@@ -19,6 +19,11 @@ Daisy UI:
   label: Daisy UI
   permalink: /DaisyUI
 
+Steam:
+  description: Steam
+  label: Steam
+  permalink: /Steam
+
 Database:
   description: Database
   label: Database
