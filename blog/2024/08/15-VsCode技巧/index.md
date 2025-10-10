@@ -3,6 +3,11 @@ slug: VScodeTip
 title: VS code 小技巧
 authors: [Castamere]
 tags: [VS code, Tip]
+references:
+  - title: VScode中Markdown插件设置复制图像的默认存储路径
+    author: wjc2b
+    time: 2025
+    url: https://wjc2b.github.io/docs/Note/paste_img
 ---
 
 列举一些好用的 VS code 小技巧(**持续更新**)，目前有：
@@ -12,6 +17,7 @@ tags: [VS code, Tip]
 - [选中所有匹配项](/blog/VScodeTip#选中所有匹配项)
 - [搜索文件名](/blog/VScodeTip#搜索文件名)
 - [打开最近工作区](/blog/VScodeTip#选中所有匹配项)
+- [设置 Markdown 复制图片的路径](/blog/VScodeTip#设置-markdown-复制图片的路径)
 
 <!--truncate-->
 
@@ -49,6 +55,19 @@ tags: [VS code, Tip]
 
 ## 打开最近工作区  
 
-```cmd
-ctrl + r
-```
+`ctrl + r`
+
+## 设置 Markdown 复制图片的路径
+
+首先用 `Ctrl + ,` 打开设置，搜索 `markdown.copyFiles.destination`，建议仅修改工作区设置
+
+![cvimage](image/cvimage.png)
+
+笔者在这里设置
+
+| 键        | 值                                     |
+| --------- | -------------------------------------- |
+| `docs/**` | `${documentDirName}/image/${fileName}` |
+| `blog/**` | `${documentDirName}/image/${fileName}` |
+
+这样在 `docs` 和 `blog` 目录下的 Markdown 文件复制图片时，图片会自动存储到对应的 `image` 文件夹中，且图片名称和复制前保持一致
