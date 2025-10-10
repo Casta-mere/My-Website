@@ -29,11 +29,13 @@ export default function RecentGames() {
 
   return (
     <div className="tailwind">
-      <div className="container mb-5">
+      <div className="container">
         <ul className="grid sm:grid-cols-1 max-w-xl">
-          {games.map((game: any) => (
-            <GameCardS key={game.appid} game={game} />
-          ))}
+          {games.length === 0 && <p>博主去拯救世界了——</p>}
+          {games.length !== 0 &&
+            games.map((game: any) => (
+              <GameCardS key={game.appid} game={game} />
+            ))}
         </ul>
       </div>
     </div>

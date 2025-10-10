@@ -20,7 +20,11 @@ import Terminal from "./components/Terminal";
 
 起因是前一天搞 steam 自动化脚本，获取游玩时长，就是下面这个
 
-<RecentGames />
+<div className="tailwind">
+    <div className="mb-5">
+        <RecentGames />
+    </div>
+</div>
 
 想看一下 `crontab` 有没有正常运行，结果发现 ssh 直接连不上服务器。同时 [umami](https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com) 和[本站](https://castamerego.com)也进不去了。但有意思的是 [uptimerbot](https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com) 却没有显示任何问题，现在想想可能是 CDN 的原因吗
 
