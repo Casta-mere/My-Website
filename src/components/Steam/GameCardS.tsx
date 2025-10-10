@@ -31,7 +31,7 @@ const GameCardS = ({ game }: GameCardProps) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={classNames({
-        "rounded-xl p-1": true,
+        "rounded-xl px-1": true,
         "bg-gray-200": hovered && colorMode === "light",
         "bg-gray-700": hovered && colorMode === "dark",
         "cursor-pointer": hovered,
