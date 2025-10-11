@@ -5,9 +5,6 @@ keywords:
   - Screen
   - Linux
   - Terminal
-last_update:
-  date: 1 DEC 2023 GMT
-  author: Casta-mere
 ---
 
 # Screen
@@ -64,6 +61,7 @@ screen -ls # 列出当前窗口
 screen -r 窗口号 # 回到指定窗口
 exit # 删除当前窗口
 Ctrl+a+d # 退出当前窗口
+screen -S [screenid] -X quit # 在 Screen 外删除指定窗口
 ```
 
 [GNU Screen]: https://www.gnu.org/software/screen/
