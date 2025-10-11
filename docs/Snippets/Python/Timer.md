@@ -12,7 +12,7 @@ keywords:
 
 ```python showLineNumbers title="timer"
 from functools import wraps
-import time
+from time import perf_counter
 
 def timer(func):
     '''
@@ -21,9 +21,9 @@ def timer(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        start = time.time()
+        start = perf_counter()
         result = func(*args, **kwargs)
-        end = time.time()
+        end = perf_counter()
         print(f"FUNCTION: {func.__name__}\ncost time: {end-start:.4f} seconds")
         return result
 
