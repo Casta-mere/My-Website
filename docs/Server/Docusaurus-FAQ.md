@@ -143,6 +143,17 @@ const Example = () => {
 
 ### 生成翻译
 
+使用 Docusaurus 的 `Translate` 组件可以很方便的进行翻译
+
+```tsx showLineNumbers
+import Translate from "@docusaurus/Translate";
+
+<Translate>要翻译的内容</Translate>
+```
+
+添加完成后，用下面的命令，会生成对应的 json 文件，然后就可以在对应的语言文件中添加翻译了
+
+
 ```npm title="生成翻译"
 npm run write-translations -- --locale en
 ```
@@ -168,3 +179,15 @@ const Locale = () => {
 [Docusaurus Import]: https://docusaurus.io/zh-CN/docs/next/markdown-features/react#importing-components
 [Docusaurus useColorMode]: https://docusaurus.io/zh-CN/docs/api/themes/configuration#use-color-mode
 [Docusaurus useLocation]: https://docusaurus.io/zh-CN/docs/advanced/routing#generating-and-accessing-routes
+
+## 运行时不自动打开浏览器
+
+在 ``package.json`` 中的 ``scripts`` 里添加 ``--no-open`` 参数即可
+
+```json showLineNumbers
+{
+  "scripts": {
+    "start": "docusaurus start --no-open"
+  }
+}
+```
