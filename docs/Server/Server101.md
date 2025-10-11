@@ -5,9 +5,6 @@ keywords:
   - 阿里云服务器
   - ssh
   - zsh
-last_update:
-  date: 2 SEP 2024 GMT
-  author: Casta-mere
 ---
 
 import Terminal_1 from "./components/Server/ssh_1";
@@ -131,6 +128,10 @@ npm config set loglevel=http
 npm install -g n
 n install 18.18.2
 ```
+
+:::tip
+npm 单次换源 `npm install xxx --registry=https://registry.npmmirror.com/`
+:::
 
 ### wsl
 
