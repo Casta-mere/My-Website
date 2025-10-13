@@ -1,8 +1,8 @@
 ---
 slug: PythonAsyncIO
-title:  Python's AsyncIO 实践指南
+title: Python's AsyncIO 实践指南
 authors: [Castamere]
-tags: [Translated, Python, AsyncIO, Concurrency, Asynchronous Programming, Coroutines ]
+tags: [Translated, Python, AsyncIO, Concurrency, Asynchronous Programming, Coroutines]
 references:
   - author: Leodanis Pozo Ramos
     title: Python's asyncio：A Hands-On Walkthrough
@@ -88,7 +88,7 @@ Async I/O may seem counterintuitive and paradoxical at first. How does something
 > 
 > **Synchronous version**: Judit plays one game at a time, never two at the same time, until the game is complete. Each game takes (55 + 5) * 30 == 1800 seconds, or 30 minutes. The entire exhibition takes 24 * 30 == 720 minutes, or **12 hours**
 > 
-> **Asynchronous version**: Judit moves from table to table, making one move at each table. She leaves the table and lets the opponent make their next move during the wait time. One move on all 24 games takes Judit 24 * 5 == 120 seconds, or 2 minutes. The entire exhibition is now cut down to 120 * 30 == 3600 seconds, or just **1 hour**. ([Source](https://youtu.be/iG6fr81xHKA?t=4m29s))>
+> **Asynchronous version**: Judit moves from table to table, making one move at each table. She leaves the table and lets the opponent make their next move during the wait time. One move on all 24 games takes Judit 24 * 5 == 120 seconds, or 2 minutes. The entire exhibition is now cut down to 120 * 30 == 3600 seconds, or just **1 hour**. ([Source](https://youtu.be/iG6fr81xHKA?t=4m29s))
 
 There’s only one Judit Polgár, who makes only one move at a time. Playing asynchronously cuts the exhibition time down from 12 hours to 1 hour. Async I/O applies this principle to programming. In async I/O, a program’s event loop—more on that later—runs multiple tasks, allowing each to take turns running at the optimal time
 
@@ -257,7 +257,7 @@ The colorized output speaks louder than a thousand words. Here’s how this scri
 
 ![random output](image/rand.gif)
 
-This program defines the `makerandom()` coroutine and runs it concurrently with three different inputs. Most programs will consist of small, modular coroutines and a wrapper function that serves to [chain](https://realpython.com/async-io-python/#coroutine-chaining) each smaller coroutine. In `main()`, you gather the three tasks. The three calls to` makerandom()` are your **pool of tasks**
+This program defines the `makerandom()` coroutine and runs it concurrently with three different inputs. Most programs will consist of small, modular coroutines and a wrapper function that serves to [chain](https://realpython.com/async-io-python/#coroutine-chaining) each smaller coroutine. In `main()`, you gather the three tasks. The three calls to `makerandom()` are your **pool of tasks**
 
 While the random number generation in this example is a CPU-bound task, its impact is negligible. The `asyncio.sleep()` simulates an I/O-bound task and makes the point that only I/O-bound or non-blocking tasks benefit from the async I/O model.
 
@@ -427,7 +427,7 @@ It takes an individual producer or consumer a variable amount of time to add and
 
 A queue-based version of chained.py is shown below:
 
-```python title="queue.py" showLineNumbers
+```python title="chained.py" showLineNumbers
 import asyncio
 import random
 import time
@@ -656,7 +656,7 @@ End: 14:36:38
 Both tasks done: True
 ```
 
-In this example, the `main() `function uses `asyncio.as_completed()`, which yields tasks in the order they complete, not in the order they were started. As the program loops through the tasks, it awaits them, allowing the results to be available immediately upon completion
+In this example, the `main()` function uses `asyncio.as_completed()`, which yields tasks in the order they complete, not in the order they were started. As the program loops through the tasks, it awaits them, allowing the results to be available immediately upon completion
 
 As a result, the faster task (`task1`) finishes first and its result is printed earlier, while the longer task (`task2`) completes and prints afterward. The `as_completed()` function is useful when you need to handle tasks dynamically as they finish, which improves responsiveness in concurrent workflows
 
@@ -802,19 +802,19 @@ Now that you have some experience with `asyncio` in Python, you can use the ques
 These FAQs are related to the most important concepts you’ve covered in this tutorial. Click the *Show/Hide* toggle beside each question to reveal the answer
 
 <details>
-<summary>What is `asyncio` in Python and Why should you use it</summary>
+<summary>What is `asyncio` in Python and why should you use it?</summary>
 
 You use `asyncio` to write concurrent code with the async and await keywords, allowing you to efficiently manage multiple I/O-bound tasks in a single thread without blocking your program
 </details>
 
 <details>
-<summary>Is `asyncio` better than multithreading for I/O bound tasks?</summary>
+<summary>Is `asyncio` better than multithreading for I/O-bound tasks?</summary>
 
 You typically get better performance from `asyncio` for I/O-bound work because it avoids the overhead and complexity of threads. This allows thousands of tasks to run concurrently without the limitations of Python’s GIL
 </details>
 
 <details>
-<summary>When should you use `asyncio` in your Python Programs</summary>
+<summary>When should you use `asyncio` in your Python programs?</summary>
 
 Use `asyncio` when your program spends a significant amount of time waiting on I/O-bound operations—such as network requests or file access—and you want to run many of these tasks concurrently and efficiently
 </details>
@@ -826,7 +826,7 @@ You define a coroutine using the `async def` syntax. To run it, either pass it t
 </details>
 
 <details>
-<summary>What role does the event loop play in `asyncio`</summary>
+<summary>What role does the event loop play in `asyncio`?</summary>
 
 You rely on the event loop to manage the scheduling and execution of your coroutines, giving each one a chance to run whenever it awaits or completes an I/O-bound operation
 </details>
