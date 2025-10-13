@@ -4,6 +4,16 @@ Asian Games:
   label: Asian Games
   permalink: /Asian-Games
 
+AsyncIO:
+  description: AsyncIO
+  label: AsyncIO
+  permalink: /AsyncIO
+
+Asynchronous Programming:
+  description: Asynchronous Programming
+  label: Asynchronous Programming
+  permalink: /Asynchronous-Programming
+
 Awk:
   description: Awk
   label: Awk
@@ -29,6 +39,11 @@ Computer Networks:
   label: Computer Networks
   permalink: /Computer-Networks
 
+Concurrency:
+  description: Concurrency
+  label: Concurrency
+  permalink: /Concurrency
+
 Conda:
   description: Conda
   label: Conda
@@ -38,6 +53,11 @@ Copilot:
   description: Copilot
   label: Copilot
   permalink: /Copilot
+
+Coroutines:
+  description: Coroutines
+  label: Coroutines
+  permalink: /Coroutines
 
 Crontab:
   description: Crontab
@@ -173,6 +193,11 @@ Tip:
   description: Tip
   label: Tip
   permalink: /Tip
+
+Translated:
+  description: Translated
+  label: Translated
+  permalink: /Translated
 
 Ubuntu:
   description: Ubuntu
