@@ -1,0 +1,14 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden">
+  <g>
+    <path d="M258 360C258 176.089 429.027 27 640 27 850.973 27 1022 176.089 1022 360 1022 543.911 850.973 693 640 693 429.027 693 258 543.911 258 360Z" fill="#2F5597" fill-rule="evenodd"/>
+    <path d="M429 445C429 328.468 523.468 234 640 234 756.532 234 851 328.468 851 445 851 561.532 756.532 656 640 656 523.468 656 429 561.532 429 445Z" fill="#BBC4E3" fill-rule="evenodd"/>
+    <text fill="#FFFFFF" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="42.6667" transform="translate(526.58 440)">Parallelism</text>
+    <text fill="#FFFFFF" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="32" transform="translate(491.667 481)">（</text>
+    <text fill="#15884B" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="32" transform="translate(523.667 481)">Multiprocessing</text>
+    <text fill="#FFFFFF" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="32" transform="translate(756.333 481)">）</text>
+    <text fill="#FFFFFF" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="42.6667" transform="translate(518.753 146)">Concurrency</text>
+    <text fill="#FFFFFF" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="32" transform="translate(462.167 187)">（</text>
+    <text fill="#15884B" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="32" transform="translate(494.167 187)">Threading, Async IO</text>
+    <text fill="#FFFFFF" font-family="DengXian,DengXian_MSFontService,sans-serif" font-weight="700" font-size="32" transform="translate(785.833 187)">）</text>
+  </g>
+</svg>
