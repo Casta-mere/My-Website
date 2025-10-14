@@ -173,3 +173,8 @@
     opacity: 0;
   }
 }
+
+.main .dim,
+.main .dim * {
+  color: rgb(108, 117, 125) !important;
+}
