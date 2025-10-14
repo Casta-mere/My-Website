@@ -23,8 +23,8 @@ In this tutorial, you’ll learn how Python `asyncio` works, how to define and r
 **By the end of this tutorial, you’ll understand that**:
 
 - Python’s `asyncio` provides a framework for writing single-threaded **concurrent code** using **coroutines**, **event loops**, and **non-blocking I/O operations**
-- For I/O-bound tasks, async I/O **can often outperform multithreading**—especially when managing a large number of concurrent tasks—because it avoids the overhead of thread management.
-- You should use `asyncio` when your application spends significant time waiting on **I/O operations**, such as network requests or file access, and you want to **run many of these tasks concurrently** without creating extra threads or processes.
+- For I/O-bound tasks, async I/O **can often outperform multithreading**—especially when managing a large number of concurrent tasks—because it avoids the overhead of thread management
+- You should use `asyncio` when your application spends significant time waiting on **I/O operations**, such as network requests or file access, and you want to **run many of these tasks concurrently** without creating extra threads or processes
 
 :::important
 本篇是笔者翻译的 [Python's asyncio: A Hands-On Walkthrough](https://realpython.com/async-io-python/#other-async-io-features-in-python)，**仅作中文翻译及学习交流使用**，如有侵权请联系删除
@@ -35,7 +35,7 @@ In this tutorial, you’ll learn how Python `asyncio` works, how to define and r
 # Python's asyncio: A Hands-On Walkthrough
 
 :::tip
-Get Your Code: [Click here](./demo/materials-python-asyncio-.zip) to download the free sample code that you’ll use to learn about async I/O in Python.
+Get Your Code: [Click here](./demo/materials-python-asyncio-.zip) to download the free sample code that you’ll use to learn about async I/O in Python
 :::
 
 ## A First Look at Async I/O
@@ -108,7 +108,7 @@ Now that you have some background on async I/O as a concurrency model, it’s ti
 
 ### Coroutines and Coroutine Functions
 
-At the heart of async I/O is the concept of a [**coroutine**](https://realpython.com/ref/glossary/coroutine/), which is an object that can suspend its execution and resume it later. In the meantime, it can pass the control to an event loop, which can execute another coroutine. Coroutine objects result from calling a [**coroutine function**](https://realpython.com/ref/glossary/coroutine-function/), also known as an **asynchronous function**. You define one with the async def construct.
+At the heart of async I/O is the concept of a [**coroutine**](https://realpython.com/ref/glossary/coroutine/), which is an object that can suspend its execution and resume it later. In the meantime, it can pass the control to an event loop, which can execute another coroutine. Coroutine objects result from calling a [**coroutine function**](https://realpython.com/ref/glossary/coroutine-function/), also known as an **asynchronous function**. You define one with the async def construct
 
 Before writing your first piece of asynchronous code, consider the following example that runs synchronously:
 
@@ -165,11 +165,11 @@ if __name__ == "__main__":
 
 <Terminal1 />
 
-Thanks to the async I/O approach, the total execution time is just over two seconds instead of six, demonstrating the efficiency of `asyncio` for I/O-bound tasks.
+Thanks to the async I/O approach, the total execution time is just over two seconds instead of six, demonstrating the efficiency of `asyncio` for I/O-bound tasks
 
 While using `time.sleep()` and `asyncio.sleep()` may seem banal, they serve as stand-ins for time-intensive processes that involve wait time. A call to `time.sleep()` can represent a time-consuming blocking function call, while `asyncio.sleep()` is used to stand in for a [non-blocking call](https://realpython.com/ref/glossary/non-blocking-operation/) that also takes some time to complete
 
-As you’ll see in the next section, the benefit of awaiting something, including `asyncio.sleep()`, is that the surrounding function can temporarily cede control to another function that’s more readily able to do something immediately. In contrast, `time.sleep()` or any other blocking call is incompatible with asynchronous Python code because it stops everything in its tracks for the duration of the sleep time.
+As you’ll see in the next section, the benefit of awaiting something, including `asyncio.sleep()`, is that the surrounding function can temporarily cede control to another function that’s more readily able to do something immediately. In contrast, `time.sleep()` or any other blocking call is incompatible with asynchronous Python code because it stops everything in its tracks for the duration of the sleep time
 
 ### The `async` and `await` Keywords
 
@@ -177,7 +177,7 @@ At this point, a more formal definition of `async`, `await`, and the coroutine f
 
 - The `async def` syntax construct introduces either a `coroutine function` or an [**asynchronous generator**](https://realpython.com/ref/glossary/asynchronous-generator/)
 - The `async with` and `async for` syntax constructs introduce asynchronous `with statements` and `for` **loops**, respectively
-- The **`await`** keyword suspends the execution of the surrounding coroutine and passes control back to the event loop.
+- The **`await`** keyword suspends the execution of the surrounding coroutine and passes control back to the event loop
 
 To clarify the last point a bit, when Python encounters an `await f()` expression in the scope of a `g()` coroutine, `await` tells the event loop: *suspend the execution of g() until the result of f() is returned. In the meantime, let something else run*
 
@@ -259,7 +259,7 @@ The colorized output speaks louder than a thousand words. Here’s how this scri
 
 This program defines the `makerandom()` coroutine and runs it concurrently with three different inputs. Most programs will consist of small, modular coroutines and a wrapper function that serves to [chain](https://realpython.com/async-io-python/#coroutine-chaining) each smaller coroutine. In `main()`, you gather the three tasks. The three calls to `makerandom()` are your **pool of tasks**
 
-While the random number generation in this example is a CPU-bound task, its impact is negligible. The `asyncio.sleep()` simulates an I/O-bound task and makes the point that only I/O-bound or non-blocking tasks benefit from the async I/O model.
+While the random number generation in this example is a CPU-bound task, its impact is negligible. The `asyncio.sleep()` simulates an I/O-bound task and makes the point that only I/O-bound or non-blocking tasks benefit from the async I/O model
 
 ### The Async I/O Event Loop
 
@@ -352,7 +352,7 @@ Async I/O has its own set of possible programming patterns that allow you to wri
 
 ### Coroutine Chaining
 
-A key feature of coroutines is that you can *chain* them together. Remember, a coroutine is awaitable, so another coroutine can await it using the `await` keyword. This makes it easier to break your program into smaller, manageable, and reusable coroutines.
+A key feature of coroutines is that you can *chain* them together. Remember, a coroutine is awaitable, so another coroutine can await it using the `await` keyword. This makes it easier to break your program into smaller, manageable, and reusable coroutines
 
 The example below simulates a two-step process that fetches information about a user. The first step fetches the user information, and the second step fetches their published posts:
 
@@ -421,9 +421,9 @@ The `asyncio` package provides a few [queue-like classes](https://realpython.com
 
 An alternative approach is to use **producers** that add items to a [queue](https://realpython.com/ref/glossary/queue/). Each producer may add multiple items to the queue at staggered, random, and unannounced times. Then, a group of **consumers** pulls items from the queue as they show up, greedily and without waiting for any other signal
 
-In this design, there’s no chaining between producers and consumers. Consumers don’t know the number of producers, and vice versa.
+In this design, there’s no chaining between producers and consumers. Consumers don’t know the number of producers, and vice versa
 
-It takes an individual producer or consumer a variable amount of time to add and remove items from the queue. The queue serves as a throughput that can communicate with the producers and consumers without them talking to each other directly.
+It takes an individual producer or consumer a variable amount of time to add and remove items from the queue. The queue serves as a throughput that can communicate with the producers and consumers without them talking to each other directly
 
 A queue-based version of chained.py is shown below:
 
@@ -662,7 +662,7 @@ As a result, the faster task (`task1`) finishes first and its result is printed 
 
 ### Async Exception Handling
 
-Starting with [Python 3.11](https://realpython.com/python311-new-features/), you can use the [ExceptionGroup](https://realpython.com/python311-exception-groups/) class to handle multiple unrelated exceptions that may occur concurrently. This is especially useful when running multiple coroutines that can raise different exceptions. Additionally, the new `except*` syntax helps you gracefully deal with several errors at once.
+Starting with [Python 3.11](https://realpython.com/python311-new-features/), you can use the [ExceptionGroup](https://realpython.com/python311-exception-groups/) class to handle multiple unrelated exceptions that may occur concurrently. This is especially useful when running multiple coroutines that can raise different exceptions. Additionally, the new `except*` syntax helps you gracefully deal with several errors at once
 
 Here’s a quick demo of how to use this class in asynchronous code:
 
