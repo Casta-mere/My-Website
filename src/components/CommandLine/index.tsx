@@ -117,6 +117,7 @@ export const TerminalResponse = ({
   userName = USERNAME,
   dir = DIR,
   response_style = RESPONSE_STYLE,
+  dim = false,
 }) => {
   const childrenArray = React.Children.toArray(children);
   const userNamePath = userName === "" ? `~/${dir} ` : `${userName}@~/${dir} `;
@@ -129,13 +130,17 @@ export const TerminalResponse = ({
     </>
   );
 
+  const childClassName = dim ? styles.dim : undefined;
+
   switch (response_style) {
     case "NEWLINE":
       return (
         <>
           <div style={{ lineHeight: "1.5rem", alignItems: "" }}>
             {childrenArray.map((child, index) => (
-              <div key={index}>{child}</div>
+              <div key={index} className={childClassName}>
+                {child}
+              </div>
             ))}
           </div>
         </>
@@ -153,7 +158,7 @@ export const TerminalResponse = ({
               );
 
             return (
-              <div key={index}>
+              <div key={index} className={childClassName}>
                 {frontMatter}
                 {child}
               </div>
