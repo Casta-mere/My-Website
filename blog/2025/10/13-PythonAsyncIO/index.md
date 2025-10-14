@@ -8,7 +8,6 @@ references:
     title: Python's asyncio：A Hands-On Walkthrough
     time: 2025
     url: https://realpython.com/async-io-python
-  
 ---
 
 import Terminal from "./components/Terminal";
@@ -16,63 +15,76 @@ import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
 
-Python’s `asyncio` library enables you to write concurrent code using the `async` and `await` keywords. The core building blocks of async I/O in Python are awaitable objects—most often coroutines—that an event loop schedules and executes asynchronously. This programming model lets you efficiently manage multiple I/O-bound tasks within a single thread of execution
+Python 的 `asyncio` 库允许使用 `async` 和 `await` 关键字来编写并发代码。其核心构件是可等待对象 (awaitable objects)，通常为**协程 (coroutines)**。这些可等待对象由事件循环 (event loop) 调度并以异步方式执行。这种编程模型能够在单线程环境下，高效地管理大量 I/O 密集型任务
 
-In this tutorial, you’ll learn how Python `asyncio` works, how to define and run coroutines, and when to use asynchronous programming for better performance in applications that perform I/O-bound tasks
+本教程将介绍 Python `asyncio` 的工作原理; 如何定义并运行协程; 以及在处理 I/O 密集型任务的应用中何时使用异步编程以获得更好的性能
 
-**By the end of this tutorial, you’ll understand that**:
+**读完本文，你将了解**：
 
-- Python’s `asyncio` provides a framework for writing single-threaded **concurrent code** using **coroutines**, **event loops**, and **non-blocking I/O operations**
-- For I/O-bound tasks, async I/O **can often outperform multithreading**—especially when managing a large number of concurrent tasks—because it avoids the overhead of thread management
-- You should use `asyncio` when your application spends significant time waiting on **I/O operations**, such as network requests or file access, and you want to **run many of these tasks concurrently** without creating extra threads or processes
+- Python `asyncio` 提供了一个使用**协程**、**事件循环**和**非阻塞 I/O 操作**来编写单线程并发代码的框架
+- 对于 I/O 密集型任务，异步 I/O **通常比多线程 (multithreading) 更高效**，尤其是在管理大量并发任务时，因为它避免了线程调度与同步带来的开销
+- 当应用程序在等待 **I/O 操作**(如网络请求或文件访问)上花费大量时间，且希望在不额外创建线程(threads)或进程(processes)的情况下**并发执行大量相似任务**时，应当使用 `asyncio`
 
-:::important
+:::important 重要
 本篇是笔者翻译的 [Python's asyncio: A Hands-On Walkthrough](https://realpython.com/async-io-python/#other-async-io-features-in-python)，**仅作中文翻译及学习交流使用**，如有侵权请联系删除
 :::
 
 <!-- truncate -->
 
-# Python's asyncio: A Hands-On Walkthrough
+# Python's AsyncIO 实践指南
 
 :::tip
-Get Your Code: [Click here](./demo/materials-python-asyncio-.zip) to download the free sample code that you’ll use to learn about async I/O in Python
+[点击这里](./demo/materials-python-asyncio-.zip)下载本篇中用到的代码
 :::
 
-## A First Look at Async I/O
+## 写在前面
 
-Before exploring `asyncio`, it’s worth taking a moment to compare async I/O with other concurrency models to see how it fits into Python’s broader, sometimes dizzying, landscape. Here are some essential concepts to start with:
+笔者会在术语第一次出现时标注英文，以减少歧义
 
-- **Parallelism** consists of executing multiple operations at the same time
-- **Multiprocessing** is a means of achieving parallelism that entails spreading tasks over a computer’s central processing unit (CPU) cores. Multiprocessing is well-suited for CPU-bound tasks, such as tightly bound [for loops](https://realpython.com/python-for-loop/) and mathematical computations
-- **Concurrency** is a slightly broader term than parallelism, suggesting that multiple tasks have the ability to run in an overlapping manner. Concurrency doesn’t necessarily imply parallelism
-- **Threading** is a concurrent execution model in which multiple threads take turns executing tasks. A single process can contain multiple threads. Python’s relationship with threading is complicated due to the [global interpreter lock (GIL)](https://realpython.com/python-gil/), but that’s beyond the scope of this tutorial
+[文末](/blog/PythonAsyncIO#术语表)会提供一个简短的术语表，供读者参考
 
-Threading is good for [I/O-bound tasks](https://realpython.com/ref/glossary/io-bound-task/). An I/O-bound job is dominated by a lot of waiting on [input/output (I/O)](https://realpython.com/ref/glossary/input-output/) to complete, while a [CPU-bound task](https://realpython.com/ref/glossary/cpu-bound-task/) is characterized by the computer’s cores continually working hard from start to finish
+## 初见 Async I/O
 
-The Python [standard library](https://realpython.com/ref/glossary/standard-library/) has offered longstanding [support for these models](https://docs.python.org/3/library/concurrency.html) through its `multiprocessing`, `concurrent.futures`, and `threading` packages
+:::warning 译者注 
+原文中 `Async I/O` 和 `asyncio` 有多处混用，笔者会根据自己的理解进行区分
 
-Now it’s time to add a new member to the mix. In recent years, a separate model has been more comprehensively built into [CPython](https://realpython.com/cpython-source-code-guide/): **asynchronous I/O**, commonly called **async I/O**. This model is enabled through the standard library’s [asyncio](https://realpython.com/ref/stdlib/asyncio/) package and the [async](https://realpython.com/python-keywords/#the-async-keyword) and [await](https://realpython.com/python-keywords/#the-await-keyword) keywords
+- **`Async I/O`** 指异步 I/O 这种并发模型
+- **`asyncio`** 指 Python 标准库中的 `asyncio` 包
+:::
+
+在深入探讨 `asyncio` 之前，不妨花点时间将异步 I/O 与其他并发模型进行比较，看看它如何融入 Python 宏大(~~眼花缭乱~~)的生态体系。以下是几个关键概念：
+
+- **并行 (Parallelism)** 指的是同时执行多个操作
+- **多进程 (Multiprocessing)** 是实现并行的一种方式，可将任务分配到多个 CPU 核心上。多进程适合 CPU 密集型任务，例如计算密集的[循环](https://realpython.com/python-for-loop/)，数学计算等
+- **并发 (Concurrency)** 的概念比并行更宽泛，它表示多个任务可以以重叠方式运行；**并发不一定意味着并行**
+- **线程 (Threading)** 是一种并发执行模型，多个线程轮流执行任务。一个进程可以包含多个线程。由于[全局解释器锁 (GIL)](https://realpython.com/python-gil/)，Python 与线程的关系较为复杂，本文不做展开
+
+多线程对于 [I/O 密集型任务](https://realpython.com/ref/glossary/io-bound-task/)表现更佳。I/O 密集型任务的特点是大量等待[输入/输出 (I/O)](https://realpython.com/ref/glossary/input-output/) 操作完成，而 [CPU 密集型任务](https://realpython.com/ref/glossary/cpu-bound-task/)通常从开始到结束都会持续占用 CPU 核心
+
+Python [标准库](https://realpython.com/ref/glossary/standard-library/)通过 `multiprocessing`、`concurrent.futures` 和 `threading` 包为这些并发模型[提供了长期支持](https://docs.python.org/3/library/concurrency.html)
+
+近年来，另一种模型已更全面地融入 [CPython](https://realpython.com/cpython-source-code-guide/)：**异步 I/O (async I/O)**。该模型由标准库的 [`asyncio`](https://realpython.com/ref/stdlib/asyncio/) 包以及 [`async`](https://realpython.com/python-keywords/#the-async-keyword) 和 [`await`](https://realpython.com/python-keywords/#the-await-keyword) 关键字提供
 
 :::note
-Async I/O isn’t a new concept. It exists in—or is being built into—other languages such as [Go](https://gobyexample.com/goroutines), [C#](https://docs.microsoft.com/en-us/dotnet/csharp/async), and [Rust](https://doc.rust-lang.org/book/ch17-00-async-await.html)
+异步 I/O 并不是一个新概念。它已经存在于其他语言中，或者正在被引入其他语言，例如 [Go](https://gobyexample.com/goroutines)、[C#](https://docs.microsoft.com/en-us/dotnet/csharp/async) 和 [Rust](https://doc.rust-lang.org/book/ch17-00-async-await.html) 
 :::
 
-The `asyncio` package is billed by the Python documentation as a [library to write concurrent code](https://docs.python.org/3/library/asyncio.html). However, async I/O isn’t threading or multiprocessing. It’s not built on top of either of these
+Python 官方文档将 `asyncio` 描述为 [用于编写并发代码的库](https://docs.python.org/3/library/asyncio.html)。但异步 I/O 并非建立在多线程或多进程之上
 
-Async I/O is a single-threaded, single-process technique that uses [cooperative multitasking](https://en.wikipedia.org/wiki/Cooperative_multitasking). Async I/O gives a feeling of concurrency despite using a single thread in a single process. [Coroutines](https://realpython.com/ref/glossary/coroutine/)—or **coro** for short—are a central feature of async I/O and can be scheduled concurrently, but they’re not inherently concurrent 
+异步 I/O 是一种单线程、单进程，基于[协作式多任务 (Cooperative Multitasking)](https://en.wikipedia.org/wiki/Cooperative_multitasking) 的技术。即便只在单进程的单线程中运行，仍可呈现并发效果。 [协程 (coroutines)](https://realpython.com/ref/glossary/coroutine/) 是异步 I/O 的核心抽象：**可被并发调度，但它们本身并不具备并发性**
 
-To reiterate, async I/O is a model of concurrent programming, but it’s not parallelism. It’s more closely aligned with threading than with multiprocessing, but it’s different from both and is a standalone member of the concurrency ecosystem
+再重申一下，异步 I/O 是并发编程模型，但它并不能并行。相比于多进程，异步 I/O 更接近于多线程，但它与两者都有所不同，是并发生态系统中的独立成员
 
-That leaves one more term. What does it mean for something to be **asynchronous**? This isn’t a rigorous definition, but for the purposes of this tutorial, you can think of two key properties:
+接下来，还有一个术语需要解释。说了半天，到底什么是 **异步 (asynchronous)** ? 这里为了本教程更易懂，给出一个非严格的定义，仅考虑两个关键点：
 
-1. **Asynchronous routines** can pause their execution while waiting for a result and allow other routines to run in the meantime
-2. **Asynchronous code** facilitates the concurrent execution of tasks by coordinating asynchronous routines
- 
-Here’s a diagram that puts it all together. The white terms represent concepts, and the green terms represent the ways they’re implemented:
+1. **异步例程 (asynchronous routines)** 在等待结果时，可以暂停它的执行，并允许其他代码在此期间运行
+2. **异步代码 (asynchronous code)** 通过协调异步例程，促进任务的并发执行
+
+这里给出一张图，帮助理解。白色的术语代表概念，绿色的术语代表 Python 中的实现方式：
 
 ![compare](image/compare.SVG)
 
-For a thorough exploration of threading versus multiprocessing versus async I/O, pause here and check out the [Speed Up Your Python Program With Concurrency](https://realpython.com/python-concurrency/) tutorial. For now, you’ll focus on async I/O
+本篇只关注异步 I/O，如果想深入了解多线程，多进程和异步 I/O 之间的区别，可以暂停一下，阅读这篇 [Speed Up Your Python Program With Concurrency](https://realpython.com/python-concurrency/)
 
 ### Async I/O Explained
 
@@ -830,3 +842,16 @@ You define a coroutine using the `async def` syntax. To run it, either pass it t
 
 You rely on the event loop to manage the scheduling and execution of your coroutines, giving each one a chance to run whenever it awaits or completes an I/O-bound operation
 </details>
+
+## 附录
+
+### 术语表
+
+| 术语     | 英文                   | 术语     | 英文                |
+| -------- | ---------------------- | -------- | ------------------- |
+| 并发     | Concurrency/Concurrent | 并行     | Parallelism         |
+| 协程     | Coroutine              | 事件循环 | Event Loop          |
+| 线程     | Thread                 | 进程     | Process             |
+| 多线程   | Multithreading         | 多进程   | Multiprocessing     |
+| 同步     | Synchronous            | 异步     | Asynchronous(async) |
+| I/O 密集 | IO-bound               | CPU 密集 | CPU-bound           |

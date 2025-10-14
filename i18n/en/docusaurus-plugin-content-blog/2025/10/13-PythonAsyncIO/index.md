@@ -52,7 +52,7 @@ Threading is good for [I/O-bound tasks](https://realpython.com/ref/glossary/io-b
 
 The Python [standard library](https://realpython.com/ref/glossary/standard-library/) has offered longstanding [support for these models](https://docs.python.org/3/library/concurrency.html) through its `multiprocessing`, `concurrent.futures`, and `threading` packages
 
-Now it’s time to add a new member to the mix. In recent years, a separate model has been more comprehensively built into [CPython](https://realpython.com/cpython-source-code-guide/): **asynchronous I/O**, commonly called **async I/O**. This model is enabled through the standard library’s [asyncio](https://realpython.com/ref/stdlib/asyncio/) package and the [async](https://realpython.com/python-keywords/#the-async-keyword) and [await](https://realpython.com/python-keywords/#the-await-keyword) keywords
+Now it’s time to add a new member to the mix. In recent years, a separate model has been more comprehensively built into [CPython](https://realpython.com/cpython-source-code-guide/): **asynchronous I/O**, commonly called **async I/O**. This model is enabled through the standard library’s [`asyncio`](https://realpython.com/ref/stdlib/asyncio/) package and the [`async`](https://realpython.com/python-keywords/#the-async-keyword) and [`await`](https://realpython.com/python-keywords/#the-await-keyword) keywords
 
 :::note
 Async I/O isn’t a new concept. It exists in—or is being built into—other languages such as [Go](https://gobyexample.com/goroutines), [C#](https://docs.microsoft.com/en-us/dotnet/csharp/async), and [Rust](https://doc.rust-lang.org/book/ch17-00-async-await.html)
