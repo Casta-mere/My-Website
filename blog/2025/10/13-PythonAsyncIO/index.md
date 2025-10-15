@@ -114,15 +114,15 @@ Python 官方文档将 `asyncio` 描述为[用于编写并发代码的库](https
 
 话虽如此，如今 Python 的异步编程生态系统已经成熟了许多。`asyncio` 包日趋稳定，并提供了可靠的 [API](https://realpython.com/ref/glossary/api/)。文档也经过大幅度的修订，同时社区里也涌现出了不少高质量的资源
 
-## Async I/O in Python With `asyncio`
+## Python 的 Async I/O: `asyncio`
 
-Now that you have some background on async I/O as a concurrency model, it’s time to explore Python’s implementation. Python’s asyncio package and its two related keywords, [async](https://realpython.com/python-keywords/#the-async-keyword) and [await](https://realpython.com/python-keywords/#the-await-keyword), serve different purposes but come together to help you declare, build, execute, and manage asynchronous code
+了解了异步 I/O 的并发模型之后，我们来看看 Python 的实现。 Python 的 `asyncio` 包与两个关键字 [`async`](https://realpython.com/python-keywords/#the-async-keyword) 和 [`await`](https://realpython.com/python-keywords/#the-await-keyword) 各司其职，把他们组合起来，就可以声明、构建、执行以及管理异步代码
 
-### Coroutines and Coroutine Functions
+### 协程与协程函数
 
-At the heart of async I/O is the concept of a [**coroutine**](https://realpython.com/ref/glossary/coroutine/), which is an object that can suspend its execution and resume it later. In the meantime, it can pass the control to an event loop, which can execute another coroutine. Coroutine objects result from calling a [**coroutine function**](https://realpython.com/ref/glossary/coroutine-function/), also known as an **asynchronous function**. You define one with the async def construct
+上文提到，异步 I/O 的核心是[**协程**](https://realpython.com/ref/glossary/coroutine/)的概念。它是一种可以暂停并在稍后恢复执行的对象。在此期间，它可以把控制权交还给事件循环，由后者去执行其他协程。协程对象来自于调用[**协程函数**](https://realpython.com/ref/glossary/coroutine-function/)，也称为**异步函数**，使用 `async def` 定义
 
-Before writing your first piece of asynchronous code, consider the following example that runs synchronously:
+在开始写异步代码前，先来看一个同步运行的示例:
 
 ```python title="synchronous.py" showLineNumbers
 import time
@@ -144,15 +144,15 @@ if __name__ == "__main__":
     print(f"{__file__} executed in {elapsed:0.2f} seconds.")
 ```
 
-The `count()` function [prints](https://realpython.com/python-print/) `One` and waits for a second, then prints `Two` and waits for another second. The loop in the [main()](https://realpython.com/python-main-function/) function executes count() three times. Below, in the [if __name__ == "__main__"](https://realpython.com/if-name-main-python/) condition, you take a snapshot of the current time at the beginning of the execution, call main(), compute the total time, and display it on the screen
+这段代码很简单，`count()` 会[打印](https://realpython.com/python-print/) `One`, 休眠 1 秒, 再打印 `Two`, 然后再 休眠 1 秒。主函数调用 `count()` 三次，并计时
 
-When you [run this script](https://realpython.com/run-python-scripts/), you’ll get the following output:
+[运行](https://realpython.com/run-python-scripts/)这段代码，会有如下输出：
 
 <Terminal />
 
-The script prints One and Two alternatively, taking a second between each printing operation. In total, it takes a bit more than six seconds to run
+代码会交替打印 `One` 和 `Two`，每次之间间隔一秒，总耗时略多于 6 秒
 
-If you update this script to use Python’s async I/O model, then it would look something like the following
+下面用 Python 的异步 I/O 模型重写这段代码：
 
 ```python title="countasync.py" showLineNumbers
 import asyncio
@@ -175,13 +175,19 @@ if __name__ == "__main__":
     print(f"{__file__} executed in {elapsed:0.2f} seconds.")
 ```
 
+使用 `async` 把 `count()`  定义为协程函数。在 `count()` 中用 `await` 关键字等待 `asyncio.sleep()` 执行时，会把控制权交还给事件循环，并表示：*我将休眠 1 秒。期间请继续执行其他任务*
+
+`main()` 也是一个协程函数，它使用 [`asyncio.gather()`](https://realpython.com/async-io-python/#other-asyncio-tools) 并发运行三个 `count()` 实例。然后用 `asyncio.run()` 启动[`事件循环`](https://realpython.com/async-io-python/#the-async-io-event-loop)来执行 `main()`
+
+执行效果如下:
+
 <Terminal1 />
 
-Thanks to the async I/O approach, the total execution time is just over two seconds instead of six, demonstrating the efficiency of `asyncio` for I/O-bound tasks
+得益于异步 I/O，总耗时从 6 秒降低到了 2 秒。体现了 `asyncio` 在 I/O 密集型任务中的效率优势
 
-While using `time.sleep()` and `asyncio.sleep()` may seem banal, they serve as stand-ins for time-intensive processes that involve wait time. A call to `time.sleep()` can represent a time-consuming blocking function call, while `asyncio.sleep()` is used to stand in for a [non-blocking call](https://realpython.com/ref/glossary/non-blocking-operation/) that also takes some time to complete
+用 `time.sleep()` 和 `asyncio.sleep()` 演示看似简单，但能代表包含等待时间的耗时过程。其中 `time.sleep()` 模拟阻塞型调用，而 `asyncio.sleep()` 模拟非阻塞型调用
 
-As you’ll see in the next section, the benefit of awaiting something, including `asyncio.sleep()`, is that the surrounding function can temporarily cede control to another function that’s more readily able to do something immediately. In contrast, `time.sleep()` or any other blocking call is incompatible with asynchronous Python code because it stops everything in its tracks for the duration of the sleep time
+下一节会讲到，像 `asyncio.sleep()` 这样的非阻塞等待的优势在于：可以暂时将控制权让出给其他可立即执行的函数。相反，`time.sleep()` 这种阻塞型调用会阻塞整个事件循环，使其他协程在睡眠期间无法前进，因此与异步 Python 代码并不兼容
 
 ### The `async` and `await` Keywords
 

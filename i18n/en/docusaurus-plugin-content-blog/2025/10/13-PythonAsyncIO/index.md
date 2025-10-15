@@ -105,11 +105,11 @@ That said, the ecosystem around async programming in Python has improved signifi
 
 ## Async I/O in Python With `asyncio`
 
-Now that you have some background on async I/O as a concurrency model, it’s time to explore Python’s implementation. Python’s asyncio package and its two related keywords, [async](https://realpython.com/python-keywords/#the-async-keyword) and [await](https://realpython.com/python-keywords/#the-await-keyword), serve different purposes but come together to help you declare, build, execute, and manage asynchronous code
+Now that you have some background on async I/O as a concurrency model, it’s time to explore Python’s implementation. Python’s `asyncio` package and its two related keywords, [`async`](https://realpython.com/python-keywords/#the-async-keyword) and [`await`](https://realpython.com/python-keywords/#the-await-keyword), serve different purposes but come together to help you declare, build, execute, and manage asynchronous code
 
 ### Coroutines and Coroutine Functions
 
-At the heart of async I/O is the concept of a [**coroutine**](https://realpython.com/ref/glossary/coroutine/), which is an object that can suspend its execution and resume it later. In the meantime, it can pass the control to an event loop, which can execute another coroutine. Coroutine objects result from calling a [**coroutine function**](https://realpython.com/ref/glossary/coroutine-function/), also known as an **asynchronous function**. You define one with the async def construct
+At the heart of async I/O is the concept of a [**coroutine**](https://realpython.com/ref/glossary/coroutine/), which is an object that can suspend its execution and resume it later. In the meantime, it can pass the control to an event loop, which can execute another coroutine. Coroutine objects result from calling a [**coroutine function**](https://realpython.com/ref/glossary/coroutine-function/), also known as an **asynchronous function**. You define one with the `async def` construct
 
 Before writing your first piece of asynchronous code, consider the following example that runs synchronously:
 
@@ -139,7 +139,7 @@ When you [run this script](https://realpython.com/run-python-scripts/), you’ll
 
 <Terminal />
 
-The script prints One and Two alternatively, taking a second between each printing operation. In total, it takes a bit more than six seconds to run
+The script prints `One` and `Two` alternatively, taking a second between each printing operation. In total, it takes a bit more than six seconds to run
 
 If you update this script to use Python’s async I/O model, then it would look something like the following
 
@@ -163,6 +163,12 @@ if __name__ == "__main__":
     elapsed = time.perf_counter() - start
     print(f"{__file__} executed in {elapsed:0.2f} seconds.")
 ```
+
+Now, you use the `async` keyword to turn `count()` into a coroutine function that prints `One`, waits for one second, then prints `Two`, and waits another second. You use the `await` keyword to *await* the execution of `asyncio.sleep()`. This gives the control back to the program’s event loop, saying: *I will sleep for one second. Go ahead and run something else in the meantime*
+
+The `main()` function is another coroutine function that uses [`asyncio.gather()`](https://realpython.com/async-io-python/#other-asyncio-tools) to run three instances of `count()` concurrently. You use the `asyncio.run()` function to launch the [event loop](https://realpython.com/async-io-python/#the-async-io-event-loop) and execute `main()`
+
+Compare the performance of this version to that of the synchronous version:
 
 <Terminal1 />
 
