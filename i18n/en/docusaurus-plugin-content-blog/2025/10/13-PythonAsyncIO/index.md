@@ -101,7 +101,7 @@ Building durable multithreaded code can be challenging and prone to errors. Asyn
 
 Be aware that async programming can get tricky when you venture a bit below the surface level. Python’s async model is built around concepts such as callbacks, coroutines, events, transports, protocols, and [futures](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future)—even just the terminology can be intimidating
 
-That said, the ecosystem around async programming in Python has improved significantly. The asyncio package has matured and now provides a stable [API](https://realpython.com/ref/glossary/api/). Additionally, its documentation has received a considerable overhaul, and some high-quality resources on the subject have also emerged
+That said, the ecosystem around async programming in Python has improved significantly. The `asyncio` package has matured and now provides a stable [API](https://realpython.com/ref/glossary/api/). Additionally, its documentation has received a considerable overhaul, and some high-quality resources on the subject have also emerged
 
 ## Async I/O in Python With `asyncio`
 

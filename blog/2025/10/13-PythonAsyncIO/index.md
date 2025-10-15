@@ -54,10 +54,10 @@ Python 的 `asyncio` 库允许使用 `async` 和 `await` 关键字来编写并�
 
 在深入探讨 `asyncio` 之前，不妨花点时间将异步 I/O 与其他并发模型进行比较，看看它如何融入 Python 宏大(~~眼花缭乱~~)的生态体系。以下是几个关键概念：
 
-- **并行 (Parallelism)** 指的是同时执行多个操作
-- **多进程 (Multiprocessing)** 是实现并行的一种方式，可将任务分配到多个 CPU 核心上。多进程适合 CPU 密集型任务，例如计算密集的[循环](https://realpython.com/python-for-loop/)，数学计算等
-- **并发 (Concurrency)** 的概念比并行更宽泛，它表示多个任务可以以重叠方式运行；**并发不一定意味着并行**
-- **线程 (Threading)** 是一种并发执行模型，多个线程轮流执行任务。一个进程可以包含多个线程。由于[全局解释器锁 (GIL)](https://realpython.com/python-gil/)，Python 与线程的关系较为复杂，本文不做展开
+- **并行 (Parallelism)**: 同时执行多个操作
+- **多进程 (Multiprocessing)**: 实现并行的一种方式，可将任务分配到多个 CPU 核心上。多进程适合 CPU 密集型任务，例如计算密集的[循环](https://realpython.com/python-for-loop/)，数学计算等
+- **并发 (Concurrency)**: 比并行更宽泛，它表示多个任务可以以重叠方式推进；**并发不一定意味着并行**
+- **线程 (Threading)**: 一种并发执行模型，多个线程轮流执行任务。一个进程可以包含多个线程。由于[全局解释器锁 (GIL)](https://realpython.com/python-gil/)，Python 与线程的关系较为复杂，本文不做展开
 
 多线程对于 [I/O 密集型任务](https://realpython.com/ref/glossary/io-bound-task/)表现更佳。I/O 密集型任务的特点是大量等待[输入/输出 (I/O)](https://realpython.com/ref/glossary/input-output/) 操作完成，而 [CPU 密集型任务](https://realpython.com/ref/glossary/cpu-bound-task/)通常从开始到结束都会持续占用 CPU 核心
 
@@ -69,13 +69,13 @@ Python [标准库](https://realpython.com/ref/glossary/standard-library/)通过 
 异步 I/O 并不是一个新概念。它已经存在于其他语言中，或者正在被引入其他语言，例如 [Go](https://gobyexample.com/goroutines)、[C#](https://docs.microsoft.com/en-us/dotnet/csharp/async) 和 [Rust](https://doc.rust-lang.org/book/ch17-00-async-await.html) 
 :::
 
-Python 官方文档将 `asyncio` 描述为 [用于编写并发代码的库](https://docs.python.org/3/library/asyncio.html)。但异步 I/O 并非建立在多线程或多进程之上
+Python 官方文档将 `asyncio` 描述为[用于编写并发代码的库](https://docs.python.org/3/library/asyncio.html)。但异步 I/O 并非建立在多线程或多进程之上
 
-异步 I/O 是一种单线程、单进程，基于[协作式多任务 (Cooperative Multitasking)](https://en.wikipedia.org/wiki/Cooperative_multitasking) 的技术。即便只在单进程的单线程中运行，仍可呈现并发效果。 [协程 (coroutines)](https://realpython.com/ref/glossary/coroutine/) 是异步 I/O 的核心抽象：**可被并发调度，但它们本身并不具备并发性**
+异步 I/O 是一种单线程、单进程并基于[协作式多任务 (Cooperative Multitasking)](https://en.wikipedia.org/wiki/Cooperative_multitasking) 的技术。即便只在单进程的单线程中运行，仍可呈现并发效果。 [协程 (coroutines)](https://realpython.com/ref/glossary/coroutine/) 是异步 I/O 的核心抽象：**可被并发调度，但它们本身并不具备并发性**
 
 再重申一下，异步 I/O 是并发编程模型，但它并不能并行。相比于多进程，异步 I/O 更接近于多线程，但它与两者都有所不同，是并发生态系统中的独立成员
 
-接下来，还有一个术语需要解释。说了半天，到底什么是 **异步 (asynchronous)** ? 这里为了本教程更易懂，给出一个非严格的定义，仅考虑两个关键点：
+接下来，还有一个术语需要解释。说了半天，到底什么是 **异步 (asynchronous)**? 这里为了本教程更易懂，给出一个非严格的定义，仅考虑两个关键点：
 
 1. **异步例程 (asynchronous routines)** 在等待结果时，可以暂停它的执行，并允许其他代码在此期间运行
 2. **异步代码 (asynchronous code)** 通过协调异步例程，促进任务的并发执行
@@ -86,33 +86,33 @@ Python 官方文档将 `asyncio` 描述为 [用于编写并发代码的库](http
 
 本篇只关注异步 I/O，如果想深入了解多线程，多进程和异步 I/O 之间的区别，可以暂停一下，阅读这篇 [Speed Up Your Python Program With Concurrency](https://realpython.com/python-concurrency/)
 
-### Async I/O Explained
+### Async I/O 原理
 
-Async I/O may seem counterintuitive and paradoxical at first. How does something that facilitates concurrent code use a single thread in a single CPU core? Miguel Grinberg’s [PyCon](https://realpython.com/pycon-guide/) talk explains everything quite beautifully:
+初见 Async I/O 可能会觉得有些反直觉，甚至自相矛盾。它是如何在单线程、单 CPU 核心中实现并发代码的呢？Miguel Grinberg 在 [PyCon](https://realpython.com/pycon-guide/) 的演讲对此给出了精彩阐释
 
-> Chess master Judit Polgár hosts a chess exhibition in which she plays multiple amateur players. She has two ways of conducting the exhibition: synchronously and asynchronously
-> 
-> Assumptions:
-> - 24 opponents
-> - Judit makes each chess move in 5 seconds
-> - Opponents each take 55 seconds to make a move
-> - Games average 30 pair-moves (60 moves total)
-> 
-> **Synchronous version**: Judit plays one game at a time, never two at the same time, until the game is complete. Each game takes (55 + 5) * 30 == 1800 seconds, or 30 minutes. The entire exhibition takes 24 * 30 == 720 minutes, or **12 hours**
-> 
-> **Asynchronous version**: Judit moves from table to table, making one move at each table. She leaves the table and lets the opponent make their next move during the wait time. One move on all 24 games takes Judit 24 * 5 == 120 seconds, or 2 minutes. The entire exhibition is now cut down to 120 * 30 == 3600 seconds, or just **1 hour**. ([Source](https://youtu.be/iG6fr81xHKA?t=4m29s))
+> 国际象棋大师 Judit Polgár 主持了一场国际象棋展览赛，期间她与多名业余选手对弈。她有两种方式来进行这场展览赛：同步和异步
+>
+> 假设:
+> - 24 名对手
+> - Judit 每次走棋耗时 5 秒
+> - 对手每次走棋耗时 55 秒
+> - 平均每局棋 30 个回合 (共 60 步)
+>
+> **同步版本**: Judit 一次只进行一局比赛，绝不同时进行两局，直到比赛结束。每局比赛耗时 (55 + 5) * 30 == 1800 秒，即 30 分钟。整场展览赛耗时 24 * 30 == 720 分钟，即 **12 小时**
+>
+> **异步版本**: Judit 在各个棋桌间穿梭，每次在每张桌子上走一步棋。她离开棋桌，让对手在等待期间走下一步棋。所有 24 局比赛各走一步棋耗时 Judit 24 * 5 == 120 秒，即 2 分钟。整场展览赛耗时 120 * 30 == 3600 秒，即仅 **1 小时** ([来源](https://youtu.be/iG6fr81xHKA?t=4m29s))
 
-There’s only one Judit Polgár, who makes only one move at a time. Playing asynchronously cuts the exhibition time down from 12 hours to 1 hour. Async I/O applies this principle to programming. In async I/O, a program’s event loop—more on that later—runs multiple tasks, allowing each to take turns running at the optimal time
+只有一个 Judit Polgár，每次只能走一步棋。异步下棋可以把展览赛的时间从 12 小时缩短到 1 小时。这就是异步 I/O 的原理。在异步 I/O 中，程序的事件循环(后面会详细介绍)会运行多个任务，使每个任务都能在最佳时机轮流执行
 
-Async I/O takes long-running [functions](https://realpython.com/defining-your-own-python-function/)—like a complete chess game in the example above—that would block a program’s execution (Judit Polgár’s time). It manages them in a way so other functions can run during that downtime. In the chess example, Judit Polgár plays with another participant while the previous ones make their moves
+异步 I/O 会处理那些耗时较长的[函数](https://realpython.com/defining-your-own-python-function/)，例如上面提到的完整国际象棋比赛，这些函数会阻塞程序的执行(就像 Judit Polgár 的时间)。它通过特殊机制管理这些操作，使其他函数能在等待期间继续运行。在国际象棋的例子中，Judit Polgár 会在前一个对手走棋时与另一个对手下棋
 
-### Async I/O Isn’t Simple
+### Async I/O 并不简单
 
-Building durable multithreaded code can be challenging and prone to errors. Async I/O avoids some of the potential speed bumps you might encounter with a multithreaded design. However, that’s not to say that [asynchronous programming](https://realpython.com/ref/glossary/asynchronous-programming/) is a simple task in Python
+要写出经得起折腾的多线程代码并不容易，还很容易埋下 bug。异步 I/O 可以规避多线程设计中的不少坑，但这并不意味着在 Python 中进行[异步编程](https://realpython.com/ref/glossary/asynchronous-programming/)就是件轻松的事
 
-Be aware that async programming can get tricky when you venture a bit below the surface level. Python’s async model is built around concepts such as callbacks, coroutines, events, transports, protocols, and [futures](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future)—even just the terminology can be intimidating
+深入一些就会发现，异步编程会变得棘手。Python 的异步模型是围绕一组概念构建的：回调(callbacks)、协程(coroutines)、事件(events)、传输(transports)、协议(protocols) 以及 [Future 对象](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future)，光是这些术语听起来就足够让人犯怵
 
-That said, the ecosystem around async programming in Python has improved significantly. The asyncio package has matured and now provides a stable [API](https://realpython.com/ref/glossary/api/). Additionally, its documentation has received a considerable overhaul, and some high-quality resources on the subject have also emerged
+话虽如此，如今 Python 的异步编程生态系统已经成熟了许多。`asyncio` 包日趋稳定，并提供了可靠的 [API](https://realpython.com/ref/glossary/api/)。文档也经过大幅度的修订，同时社区里也涌现出了不少高质量的资源
 
 ## Async I/O in Python With `asyncio`
 
