@@ -364,15 +364,15 @@ World!
 
 此示例与上一节中的示例功能相同。但区别在于，它不使用 `asyncio.run()` 来运行 `main()` 函数，而是直接使用 `await` 
 
-## Common Async I/O Programming Patterns
+## 常见 Async I/O 编程模式
 
-Async I/O has its own set of possible programming patterns that allow you to write better asynchronous code. In practice, you can *chain coroutines* or use a [queue](https://realpython.com/ref/glossary/queue/) of coroutines. You’ll learn how to use these two patterns in the following sections
+异步 I/O 有独特的编程模式，可以帮助写更好的异步代码。实践中，可以*串联协程*或者用协程 [队列](https://realpython.com/ref/glossary/queue/)。本章会分别介绍这两种模式
 
-### Coroutine Chaining
+### 协程串联
 
-A key feature of coroutines is that you can *chain* them together. Remember, a coroutine is awaitable, so another coroutine can await it using the `await` keyword. This makes it easier to break your program into smaller, manageable, and reusable coroutines
+协程的一个特点是它可以被串联起来。正如上文所说，协程都应当是可等待的，因此我们可以在一个协程中使用 `await` 等待另一个协程。从而将程序拆解为更小、更易管理且可复用的协程
 
-The example below simulates a two-step process that fetches information about a user. The first step fetches the user information, and the second step fetches their published posts:
+下面的样例模拟了一个简单的流程：先获取用户信息，再获取其已发布的帖子：
 
 ```python title="chain.py" showLineNumbers
 import asyncio
@@ -417,21 +417,21 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-In this example, you define two major coroutines: `fetch_user()` and `fetch_posts()`. Both simulate a network call with a random delay using `asyncio.sleep()`
+在这个样例中，有两个主要的协程 `fetch_user()` 和 `fetch_posts()`。两者都通过一个随机时长的 `asyncio.sleep()` 来模拟网络请求
 
-In the `fetch_user()` coroutine, you return a mock user [dictionary](https://realpython.com/python-dicts/). In `fetch_posts()`, you use that dictionary to return a list of mock posts attributed to the user at hand. Random delays simulate real-world asynchronous behavior like network latency
+在 `fetch_user()` 协程中，会返回一个用户[字典](https://realpython.com/python-dicts/)。在 `fetch_posts()` 中基于该字典获取该用户的帖子列表。两者都通过随机时长的 `asyncio.sleep()` 模拟网络调用，其中的随机延迟用来模拟真实环境中的异步特性(如网络时延)
 
-The coroutine chaining happens in the `get_user_with_posts()`. This coroutine awaits `fetch_user()` and stores the result in the user [variable](https://realpython.com/python-variables/). Once the user information is available, it’s passed to `fetch_posts()` to retrieve the posts asynchronously
+在 `get_user_with_posts()` 中就使用了协程的串联。该协程先等待 `fetch_user()` 完成，并将结果存入一个用户[变量](https://realpython.com/python-variables/)中。获取到用户信息后，再将其传递给 `fetch_posts()` 以异步方式获取帖子
 
-In `main()`, you use `asyncio.gather()` to run the chained coroutines by executing `get_user_with_posts()` as many times as the number of user IDs you have
+在 `main()` 中，使用 `asyncio.gather()` 并发执行已串联的协程：按用户 ID 数量分别调用 `get_user_with_posts()`
 
-Here’s the result of executing the script:
+执行结果如下：
 
 <Terminal2 />
 
-If you sum up the time of all the operations, then this example would take around 7.6 seconds with a synchronous implementation. However, with the asynchronous implementation, it only takes 2.68 seconds
+若将所有操作的时间相加，采用同步实现将耗时约 7.6 秒。但采用异步实现仅需 2.68 秒
 
-The pattern, consisting of awaiting one coroutine and passing its result into the next, creates a **coroutine chain**, where each step depends on the previous one. This example mimics a common async workflow where you get one piece of information and use it to get related data
+协程串联的模式通过等待一个协程并将其结果传递给下一个协程，形成了一条**协程链 (coroutine chain)**，其中每个步骤都依赖于前一个步骤。此示例模拟了常见的异步工作流：获取一段信息后，利用该信息获取相关数据
 
 ### Coroutine and Queue Integration
 
@@ -853,13 +853,14 @@ You rely on the event loop to manage the scheduling and execution of your corout
 
 ### 术语表
 
-| 术语     | 英文                   | 术语     | 英文                |
-| -------- | ---------------------- | -------- | ------------------- |
-| 并发     | Concurrency/Concurrent | 并行     | Parallelism         |
-| 协程     | Coroutine              | 事件循环 | Event Loop          |
-| 线程     | Thread                 | 进程     | Process             |
-| 多线程   | Multithreading         | 多进程   | Multiprocessing     |
-| 同步     | Synchronous            | 异步     | Asynchronous(async) |
-| I/O 密集 | IO-bound               | CPU 密集 | CPU-bound           |
+| 术语            | 英文                   | 术语     | 英文                |
+| --------------- | ---------------------- | -------- | ------------------- |
+| 并发            | Concurrency/Concurrent | 并行     | Parallelism         |
+| 协程            | Coroutine              | 事件循环 | Event Loop          |
+| 线程            | Thread                 | 进程     | Process             |
+| 多线程          | Multithreading         | 多进程   | Multiprocessing     |
+| 同步            | Synchronous            | 异步     | Asynchronous(async) |
+| I/O 密集        | IO-bound               | CPU 密集 | CPU-bound           |
+| 协程链/串联协程 | Coroutine Chain        |          |                     |
 
 REPL: Read-Eval-Print-Loop 可译为`交互式解释器`
