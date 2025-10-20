@@ -110,13 +110,13 @@ Python 官方文档将 `asyncio` 描述为[用于编写并发代码的库](https
 
 要写出经得起折腾的多线程代码并不容易，还很容易埋下 bug。异步 I/O 可以规避多线程设计中的不少坑，但这并不意味着在 Python 中进行[异步编程](https://realpython.com/ref/glossary/asynchronous-programming/)就是件轻松的事
 
-深入一些就会发现，异步编程会变得棘手。Python 的异步模型是围绕一组概念构建的：回调(callbacks)、协程(coroutines)、事件(events)、传输(transports)、协议(protocols) 以及 [Future 对象](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future)，光是这些术语听起来就足够让人犯怵
+深入一些就会发现，Python 的异步编程很棘手。Python 的异步模型是围绕一组概念构建的：回调(callbacks)、协程(coroutines)、事件(events)、传输(transports)、协议(protocols) 以及 [Future 对象](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future)，光是这些术语听起来就足够让人犯怵
 
 话虽如此，如今 Python 的异步编程生态系统已经成熟了许多。`asyncio` 包日趋稳定，并提供了可靠的 [API](https://realpython.com/ref/glossary/api/)。文档也经过大幅度的修订，同时社区里也涌现出了不少高质量的资源
 
 ## Python 的 Async I/O: `asyncio`
 
-了解了异步 I/O 的并发模型之后，我们来看看 Python 的实现。 Python 的 `asyncio` 包与两个关键字 [`async`](https://realpython.com/python-keywords/#the-async-keyword) 和 [`await`](https://realpython.com/python-keywords/#the-await-keyword) 各司其职，把他们组合起来，就可以声明、构建、执行以及管理异步代码
+了解了异步 I/O 的并发模型之后，我们来看看 Python 的实现。 Python 的 `asyncio` 包与两个关键字 [`async`](https://realpython.com/python-keywords/#the-async-keyword) 和 [`await`](https://realpython.com/python-keywords/#the-await-keyword) 各司其职，把它们组合起来，就可以声明、构建、执行以及管理异步代码
 
 ### 协程与协程函数
 
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     print(f"{__file__} executed in {elapsed:0.2f} seconds.")
 ```
 
-这段代码很简单，`count()` 会[打印](https://realpython.com/python-print/) `One`, 休眠 1 秒, 再打印 `Two`, 然后再 休眠 1 秒。主函数调用 `count()` 三次，并计时
+这段代码很简单，`count()` 会[打印](https://realpython.com/python-print/) `One`, 休眠 1 秒, 再打印 `Two`, 然后再休眠 1 秒。主函数调用 `count()` 三次，并计时
 
 [运行](https://realpython.com/run-python-scripts/)这段代码，会有如下输出：
 
@@ -189,53 +189,53 @@ if __name__ == "__main__":
 
 下一节会讲到，像 `asyncio.sleep()` 这样的非阻塞等待的优势在于：可以暂时将控制权让出给其他可立即执行的函数。相反，`time.sleep()` 这种阻塞型调用会阻塞整个事件循环，使其他协程在睡眠期间无法前进，因此与异步 Python 代码并不兼容
 
-### The `async` and `await` Keywords
+### `async` 和 `await` 关键字
 
-At this point, a more formal definition of `async`, `await`, and the coroutine functions they help you create is in order
+接下来有必要对 `async`, `await` 及其创建的协程函数进行更正式的定义：
 
-- The `async def` syntax construct introduces either a `coroutine function` or an [**asynchronous generator**](https://realpython.com/ref/glossary/asynchronous-generator/)
-- The `async with` and `async for` syntax constructs introduce asynchronous `with statements` and `for` **loops**, respectively
-- The **`await`** keyword suspends the execution of the surrounding coroutine and passes control back to the event loop
+- `async def` 语法可以用来定义 `协程函数` 或者 [**异步生成器**](https://realpython.com/ref/glossary/asynchronous-generator/)
+- `async with` 和 `async for` 语法分别用来构造 `异步上下文管理器` 和 `异步 for` **循环**
+- `await` 关键字会暂停所在协程的执行，并将控制权交还给事件循环
 
-To clarify the last point a bit, when Python encounters an `await f()` expression in the scope of a `g()` coroutine, `await` tells the event loop: *suspend the execution of g() until the result of f() is returned. In the meantime, let something else run*
+这里再用一个例子解释一下最后一条：当 Python 在执行 `g()` 协程时遇到 `await f()`, `await` 就会告诉事件循环: *暂停 g() 的执行直至 f() 返回结果，期间允许其他任务运行*
 
-In code, that last bullet point looks roughly like the following:
+体现到代码里大概是这样:
 
 ```python
 async def g():
-    result = await f()  # Pause and come back to g() when f() returns
+    result = await f()  # 暂停执行 g(), 等 f() 执行完再回来
     return result
 ```
 
-There’s also a strict set of rules around when and how you can use `async` and `await`. These rules are helpful whether you’re still picking up the syntax or already have exposure to using `async` and `await`:
+`async` 和 `await` 有一套严格的使用规则：
 
-- Using the `async def` construct, you can define a coroutine function. It may use `await`, `return`, or `yield`, but all of these are optional:
-  - `await`, `return`, or both can be used in regular coroutine functions. To call a coroutine function, you must either `await` it to get its result or run it directly in an event loop
-  - `yield` used in an `async def `function creates an asynchronous generator. To iterate over this generator, you can use an [`async for` loop or a comprehension](https://realpython.com/async-io-python/#async-iterators-loops-and-comprehensions)
-  - `async def` may not use `yield from`, which will raise a [`SyntaxError`](https://realpython.com/invalid-syntax-python/)
-- Using `await` outside of an `async def` function also raises a `SyntaxError`. You can only use `await` in the body of coroutines
+- 使用 `async def` 可以构造协程函数，在协程函数中可以选择性地使用 `await`, `return` 和 `yield`
+  - `await` 和 `return` 都可以用在普通的协程函数中。调用时必须要用 `await` 获取结果，或者直接在事件循环中运行
+  - 在 `async def` 的函数中用 `yield` 替换 `return`, 就构造出了异步生成器。可通过 [`async for` 循环或列表推导式](https://realpython.com/async-io-python/#async-iterators-loops-and-comprehensions) 迭代该生成器
+  - 和普通的生成器不同，在异步生成器中不能使用 `yield from`, 否则直接报 [`SyntaxError`](https://realpython.com/invalid-syntax-python/)
+- 仅能在协程中使用 `await` 关键字，在外部使用同样会报 [`SyntaxError`](https://realpython.com/invalid-syntax-python/)
 
-Here are some terse examples that summarize these rules:
+以下是一些简单的示例，概括了这些规则：
 
 ```python title="summary" showLineNumbers
 async def f(x):
-    y = await z(x)  # Okay - `await` and `return` allowed in coroutines
+    y = await z(x)  # ✔️ - `await` and `return` allowed in coroutines
     return y
 
 async def g(x):
-    yield x  # Okay - this is an async generator
+    yield x  # ✔️ - this is an async generator
 
 async def m(x):
-    yield from gen(x)  # No - SyntaxError
+    yield from gen(x)  # ❌ - SyntaxError
 
 def n(x):
-    y = await z(x)  # No - SyntaxError (no `async def` here)
+    y = await z(x)  # ❌ - SyntaxError (no `async def` here)
     return y
 ```
 
-Finally, when you use `await f()`, it’s required that `f()` be an object that’s [**awaitable**](https://realpython.com/ref/glossary/awaitable/), which is either another coroutine or an object defining an `.__await__()` [special method](https://realpython.com/python-magic-methods/) that returns an iterator. For most purposes, you should only need to worry about coroutines
+最后，当我们使用 `await f()` 时，需要 `f()` 是一个[**可等待对象**](https://realpython.com/ref/glossary/awaitable/)。也就是两种情况：要么是一个协程，要么是实现了 `.__await__()` [特殊方法](https://realpython.com/python-magic-methods/)的对象。虽然但是，大多数情况考虑协程就好了
 
-Here’s a more elaborate example of how async I/O cuts down on wait time. Suppose you have a coroutine function called `make_random()` that keeps producing random integers in the range [0, 10] and returns when one of them exceeds a threshold. In the following example, you run this function asynchronously three times. To differentiate each call, you use colors:
+下面这个样例更直观地展示异步 I/O 如何缩短等待时间。定义一个协程函数 `makerandom()`，该函数持续生成[0, 10]范围内的随机整数，并在其中一个数值超过阈值时返回。在下面的示例中，将并发调用该函数三次。为区分每次调用，用不同颜色标记：
 
 ```python title="rand.py" showLineNumbers
 import asyncio
@@ -271,9 +271,13 @@ if __name__ == "__main__":
     print(f"r1: {r1}, r2: {r2}, r3: {r3}")
 ```
 
-The colorized output speaks louder than a thousand words. Here’s how this script is carried out:
+执行结果如下:
 
 ![random output](image/rand.gif)
+
+代码中定义了 `makerandom()` 协程，并且用三组不同输入异步运行。大多数异步代码都是像这样，首先有一个小型的模块化协程，以及一个用来[链接](https://realpython.com/async-io-python/#coroutine-chaining)协程的包装函数。然后在 `main()` 函数中把它们打包起来。这三个 `makerandom()` 就构成了**任务池**
+
+虽然生成随机数是 CPU 密集型的操作，但这里的影响可以忽略不计。这里 `asyncio.sleep()` 模拟 I/O 密集型任务，强调只有 I/O 密集型或其他非阻塞型任务，才更适合异步 I/O
 
 This program defines the `makerandom()` coroutine and runs it concurrently with three different inputs. Most programs will consist of small, modular coroutines and a wrapper function that serves to [chain](https://realpython.com/async-io-python/#coroutine-chaining) each smaller coroutine. In `main()`, you gather the three tasks. The three calls to `makerandom()` are your **pool of tasks**
 
