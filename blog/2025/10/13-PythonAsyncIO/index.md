@@ -599,9 +599,9 @@ https://realpython.com: status -> 200
 
 最后，`main()` 函数并发执行多个 `check()` 协程，实现并发抓取 URL，无需等待前一个请求完成即可启动下一个
 
-### Other `asyncio` Tools
+### 其他 `asyncio` 工具
 
-In addition to `asyncio.run()`, you’ve used a few other package-level functions, such as `asyncio.gather()` and `asyncio.get_event_loop()`. You can use [`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) to schedule the execution of a coroutine object, followed by the usual call to the `asyncio.run()` function:
+除了 `asyncio.run()` 之外，上文已经用到了一些其他的 `asyncio` 包函数，比如 `asyncio。gather()` 和 `asyncio.get_event_loop`。除此之外还可以使用 [`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) 来安排协程对象的执行，随后再调用常规的 `asyncio.run()` 函数：
 
 ```python title="asyncio" showLineNumbers
 >>> import asyncio
@@ -625,13 +625,13 @@ task.done() = False
 result: [1, 2, 3]
 ```
 
-This pattern includes a subtle detail you need to be aware of: if you create tasks with `create_task()` but don’t await them or wrap them in `gather()`, and your `main()` coroutine finishes, then those manually created tasks will be canceled when the event loop ends. You must await all tasks you want to complete
+使用 `asyncio.create_task()` 有一个小细节需要注意：如果创建了之后，不去等待它们，或者没有包装在 `gather()` 里面，那么当主协程  `main()` 结束时，事件循环随之收尾时，这些“无人等待”的任务会被统一取消。也就是说，想让它们真正跑完，，一定要 `await` 它们(或用 gather/TaskGroup 管起来)
 
-The `create_task()` function wraps an awaitable object into a higher-level [`Task`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task) object that’s scheduled to run concurrently on the event loop in the background. In contrast, awaiting a coroutine runs it immediately, pausing the execution of the caller until the awaited coroutine finishes
+`asyncio.create_task()` 会把一个可等待对象包装为一个更高层次的 [`Task`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task) 对象，将其调度到事件循环中后台并发运行。相反地，直接对协程进行 `await` 会立即运行该协程，并暂停当前的调用者，直到被等待的协程完成
 
-The `gather()` function is meant to neatly put a collection of coroutines into a single **future object**. This object represents a placeholder for a result that’s initially unknown but will be available at some point, typically as the result of asynchronous computations
+`asyncio.gather()` 则是用来把一组协程整齐地汇聚为一个单一的 **Future 对象**。这个对象只是一个结果占位符，其初始值未知，但将在某个时刻可用，通常作为异步计算的结果
 
-If you await `gather()` and specify multiple tasks or coroutines, then the loop will wait for all the tasks to complete. The result of `gather()` will be a list of the results across the inputs:
+若调用 `asyncio.gather()` 并指定多个任务或协程，事件循环将等待所有任务完成。此时 `asyncio.gather()` 的返回值将是所有输入结果的集合：
 
 ```python title="gather" showLineNumbers
 >>> import time
@@ -655,9 +655,9 @@ Both tasks done: True
 result: [[2, 5, 10], [1, 2, 3]]
 ```
 
-You probably noticed that `gather()` waits for the entire result of the whole set of coroutines that you pass it. The order of results from `gather()` is deterministic and corresponds to the order of awaitables originally passed to it
+`asyncio.gather()` 会等待传入的整组协程**全部完成**后再返回。且结果顺序与传入顺序严格一致
 
-Alternatively, you can loop over `asyncio.as_completed()` to get tasks as they complete. The function returns a synchronous iterator that yields tasks as they finish. Below, the result of `coro([3, 2, 1])` will be available before `coro([10, 5, 2])` is complete, which wasn’t the case with the `gather()` function:
+另外，可以通过遍历 `asyncio.as_completed()`，以按"完成先后"获取任务。该函数返回一个同步迭代器，会在各个任务完成时依次产出结果。下面这个例子中，`coro([3, 2, 1])` 的结果会先于 `coro([10, 5, 2])` 可用；而用 `asyncio.gather()` 时不是这样(`asyncio.gather` 按传入顺序给结果，并要等全部完成)
 
 ```python title="asyncio.as_completed()" showLineNumbers
 >>> async def main():
@@ -679,9 +679,9 @@ End: 14:36:38
 Both tasks done: True
 ```
 
-In this example, the `main()` function uses `asyncio.as_completed()`, which yields tasks in the order they complete, not in the order they were started. As the program loops through the tasks, it awaits them, allowing the results to be available immediately upon completion
+在这个示例中，`main()` 使用了 `asyncio.as_completed()`，它按任务完成的先后顺序产出任务，而不是按启动顺序。程序在事件循环中等待这些任务时，**每个任务一完成就能立刻被获取**
 
-As a result, the faster task (`task1`) finishes first and its result is printed earlier, while the longer task (`task2`) completes and prints afterward. The `as_completed()` function is useful when you need to handle tasks dynamically as they finish, which improves responsiveness in concurrent workflows
+因此，更快的任务 (`task1`) 会先完成并更早打印结果，而耗时更长的任务 (`task2`) 随后才完成并打印。`asyncio.as_completed()` 适用于需要对每个任务及时响应的场景，它能显著提升并发工作流的响应能力
 
 ### Async Exception Handling
 
