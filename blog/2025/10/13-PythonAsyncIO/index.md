@@ -433,17 +433,17 @@ if __name__ == "__main__":
 
 协程串联的模式通过等待一个协程并将其结果传递给下一个协程，形成了一条**协程链 (coroutine chain)**，其中每个步骤都依赖于前一个步骤。此示例模拟了常见的异步工作流：获取一段信息后，利用该信息获取相关数据
 
-### Coroutine and Queue Integration
+### 协程与队列集成
 
-The `asyncio` package provides a few [queue-like classes](https://realpython.com/queue-in-python/#using-asynchronous-queues) that are designed to be similar to [classes](https://realpython.com/python-classes/) in the [queue](https://docs.python.org/3/library/queue.html#module-queue) module. In the examples so far, you haven’t needed a queue structure. In `chained.py`, each task is performed by a coroutine, which you chain with others to pass data from one to the next
+`asyncio` 包提供了一些[队列类](https://realpython.com/queue-in-python/#using-asynchronous-queues)，其设计理念和[队列](https://docs.python.org/3/library/queue.html#module-queue)模块的[类](https://realpython.com/python-classes/)相似。前面的样例中，并不需要队列结构：在 `chain.py` 中，每个任务都由协程执行，而数据的传递通过链式调用实现
 
-An alternative approach is to use **producers** that add items to a [queue](https://realpython.com/ref/glossary/queue/). Each producer may add multiple items to the queue at staggered, random, and unannounced times. Then, a group of **consumers** pulls items from the queue as they show up, greedily and without waiting for any other signal
+另一种实现方式则是生产者/消费者模型：**生产者**会向[队列](https://realpython.com/ref/glossary/queue/)中添加项。每个生产者可在错开、随机且无预告的时间点向队列添加多项内容。而**消费者**会贪心地从队列中提取新添加的项，无需等待任何信号
 
-In this design, there’s no chaining between producers and consumers. Consumers don’t know the number of producers, and vice versa
+在这种设计中，生产者和消费者之间没有链式依赖，双方也不需要知道对方的数量
 
-It takes an individual producer or consumer a variable amount of time to add and remove items from the queue. The queue serves as a throughput that can communicate with the producers and consumers without them talking to each other directly
+单个生产者或消费者向队列添加或移除项所需的时间是可变的。队列作为缓冲与通信通道，可在生产者与消费者之间传递数据，而无需它们直接交互
 
-A queue-based version of chained.py is shown below:
+下面是一个基于队列的 `chained.py`:
 
 ```python title="chained.py" showLineNumbers
 import asyncio
@@ -496,19 +496,19 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-In this example, the `producer()` function asynchronously fetches mock user data. Each fetched user dictionary is placed into an `asyncio.Queue` object, which shares the data with consumers. After producing all user objects, the producer inserts a [sentinel value](https://en.wikipedia.org/wiki/Sentinel_value)—also known as a [poison pill](https://realpython.com/queue-in-python/#killing-a-worker-with-the-poison-pill) in this context—for each consumer to signal that no more data will be sent, allowing the consumers to shut down cleanly
+在这个例子中，`producer()` 会异步地获取用户数据，获取到的数据会添加到 `asyncio.Queue` 中，该队列将数据共享给消费者。在生产完所有用户对象后，生产者会插入一个[哨兵值  (sentinel value)](https://en.wikipedia.org/wiki/Sentinel_value)，用于向每个消费者发出数据发送终止信号，使消费者能够安全关闭
 
-The `consumer()` function continuously reads from the queue. If it receives a user dictionary, it simulates fetching that user’s posts, waits a random delay, and prints the results. If it gets the sentinel value, then it breaks the loop and exits
+`consumer()` 会持续地从队列中读数据，如果获取到了一个用户对象，就会去获取该用户的帖子，并将结果打印输出。如果获取到了上面的哨兵值，就终止循环并退出
 
-This decoupling allows multiple consumers to process users concurrently, even while the producer is still generating users, and the queue ensures safe and ordered communication between producers and consumers
+这种解耦使得多个消费者可以并发的处理用户—即使生产者仍在获取其他用户，而队列确保了生产者与消费者之间安全有序的通信
 
-The queue is the communication point between the producers and consumers, enabling a scalable and responsive system
+队列作为生产者与消费者之间的通信枢纽，使系统具备可扩展性和响应能力
 
-Here’s how the code works in practice:
+运行结果如下：
 
 <Terminal3 />
 
-Again, the code runs in only 2.68 seconds, which is more efficient than a synchronous solution. The result is pretty much the same as when you used chained coroutines in the previous section
+代码再次仅用 2.68 秒就运行完毕，效率高于同步解决方案。其结果与上一节中使用协程链时几乎相同
 
 ## Other Async I/O Features in Python
 
