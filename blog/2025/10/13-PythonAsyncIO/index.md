@@ -510,21 +510,22 @@ if __name__ == "__main__":
 
 代码再次仅用 2.68 秒就运行完毕，效率高于同步解决方案。其结果与上一节中使用协程链时几乎相同
 
-## Other Async I/O Features in Python
+## Python Async I/O 的其他功能
 
-Python’s async I/O features extend beyond the `async def` and `await` constructs. They include other advanced tools that make asynchronous programming more expressive and consistent with regular Python constructs
+Python 的异步 I/O 不仅仅包含 `async def` 和 `await` 结构，还有一些其他的工具。这些工具可以使异步编程更 Pythonic
 
-In the following sections, you’ll explore powerful async features, including async loops and comprehensions, the `async with` statement, and exception groups. These features will help you write cleaner, more readable asynchronous code
+接下来会介绍几个异步功能，包括异步循环、列表推导式、`async with` 上下文管理器、异常组。这些功能可以帮助我们编写更简洁、更易读的异步代码
 
-### Async Iterators, Loops, and Comprehensions
 
-Apart from using `async` and `await` to create coroutines, Python also provides the `async for` construct to iterate over an [asynchronous iterator](https://realpython.com/ref/glossary/asynchronous-iterator/). An asynchronous iterator allows you to iterate over asynchronously generated data. While the loop runs, it gives control back to the event loop so that other async tasks can run
+### 异步迭代器、循环、列表推导式
+
+除了使用 `async` 和 `await` 创建协程外，Python 还提供了 `async for` 结构来遍历[异步迭代器](https://realpython.com/ref/glossary/asynchronous-iterator/)。异步迭代器允许遍历异步生成的数据。在循环运行期间，它会将控制权交还给事件循环，以便其他异步任务得以执行
 
 :::note
-Note: To learn more about async iterators, check out the [Asynchronous Iterators and Iterables in Python](https://realpython.com/python-async-iterators/) tutorial
+想了解更多关于异步迭代器，可参考这篇：[Python 中的异步迭代器](https://realpython.com/python-async-iterators/)
 :::
 
-A natural extension of this concept is an [**asynchronous generator**](https://realpython.com/ref/glossary/asynchronous-generator/). Here’s an example that generates powers of two and uses them in a loop and comprehension:
+有异步迭代器，自然有[**异步生成器**](https://realpython.com/ref/glossary/asynchronous-generator/)。可以参考下面这个示例：异步生成 2 的幂
 
 ```python title="asynchronous generator" showLineNumbers
 >>> import asyncio
@@ -551,17 +552,21 @@ A natural extension of this concept is an [**asynchronous generator**](https://r
 [1, 2, 16]
 ```
 
-There’s a crucial distinction between synchronous and asynchronous generators, loops, and comprehensions. Their asynchronous counterparts don’t inherently make iteration concurrent. Instead, they allow the event loop to run other tasks between iterations when you explicitly yield control by using `await`. The iteration itself is still sequential unless you introduce concurrency by using `asyncio.gather()`
+同步与异步的生成器、循环和列表推导式有本质区别：异步版本并不会让迭代天然并发。相反，只有在显式 `await` 让出控制权时，事件循环才会在两次迭代之间运行其他任务。**迭代本身仍然是顺序的**，除非使用 asyncio.gather() 等方式引入并发
 
-Using `async for` and `async with` is only required when working with asynchronous iterators or context managers, where a regular `for` or `with` would raise errors
+我们仅在处理异步迭代器或上下文管理器时才需要使用 `async for` 和 `async with`，因为此时常规的 `for` 或 `with` 会引发错误
 
-### Async `with` Statements
+### 异步 `with` 语句
 
-The [`with` statement](https://realpython.com/python-with-statement/) also has an [asynchronous](https://realpython.com/ref/glossary/asynchronous-programming/) version, `async with`. This construct is quite common in async code, as many [I/O-bound tasks](https://realpython.com/ref/glossary/io-bound-task/) involve setup and teardown phases
+[`with` 语句](https://realpython.com/python-with-statement/)也有[异步](https://realpython.com/ref/glossary/asynchronous-programming/)版本：`async with`。这种结构在异步代码中还算常见，因为很多 [I/O 密集型](https://realpython.com/ref/glossary/io-bound-task/)任务都需要上下文管理(文件，数据库连接等)
 
-For example, say you need to write a coroutine to check whether some websites are online. To do that, you can use [aiohttp](https://docs.aiohttp.org/en/stable/index.html), which is a third-party library that you need to install by running `python -m pip install aiohttp` on your command line
+例如，假设需要编写协程来检测网站是否在线
 
-Here’s a quick example that implements the required functionality:
+:::tip
+这里使用第三方库 [aiohttp](https://docs.aiohttp.org/en/stable/index.html)，可以通过 `pip install aiohttp` 安装
+:::
+
+样例如下：
 
 ```python title="async with" showLineNumbers
 >>> import asyncio
@@ -588,11 +593,11 @@ https://pycoders.com: status -> 200
 https://realpython.com: status -> 200
 ```
 
-In this example, you use `aiohttp` and `asyncio` to perform concurrent [HTTP GET](https://realpython.com/api-integration-in-python/#get) requests to a list of websites. The `check()` coroutine fetches and prints the website’s status. The `async with` statement ensures that both `ClientSession` and the individual HTTP response are properly and asynchronously managed by opening and closing them without blocking the event loop
+我们用 `asyncio` 和 `aiohttp` 来并发地对一系列网站进行 [GET](https://realpython.com/api-integration-in-python/#get) 请求。`check()` 协程会获取并打印网站的状态。`async with` 语句会在不阻塞事件循环的情况下打开和关闭连接，以确保 `ClientSession` 和每个 HTTP 响应能被正确、异步地管理
 
-In this example, using `async with` guarantees that the underlying network resources, including connections and sockets, are correctly released, even if an error occurs
+在这个示例中，`async with` 确保底层网络资源(包括连接和套接字)即使发生错误也能正确释放
 
-Finally, `main()` runs the `check()` coroutines concurrently, allowing you to fetch the URLs in parallel without waiting for one to finish before starting the next
+最后，`main()` 函数并发执行多个 `check()` 协程，实现并发抓取 URL，无需等待前一个请求完成即可启动下一个
 
 ### Other `asyncio` Tools
 
