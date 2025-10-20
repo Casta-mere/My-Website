@@ -275,7 +275,7 @@ if __name__ == "__main__":
 
 ![random output](image/rand.gif)
 
-代码中定义了 `makerandom()` 协程，并且用三组不同输入异步运行。大多数异步代码都是像这样，首先有一个小型的模块化协程，以及一个用来[链接](https://realpython.com/async-io-python/#coroutine-chaining)协程的包装函数。然后在 `main()` 函数中把它们打包起来。这三个 `makerandom()` 就构成了**任务池**
+代码中定义了 `makerandom()` 协程，并且用三组不同输入异步运行。大多数异步代码都是像这样，首先有一个小型的模块化协程，以及一个用来[链接](https://realpython.com/async-io-python/#coroutine-chaining)协程的包装函数。然后在 `main()` 函数中统一调度它们。这三个 `makerandom()` 就构成了**任务池**
 
 虽然生成随机数是 CPU 密集型的操作，但这里的影响可以忽略不计。这里 `asyncio.sleep()` 模拟 I/O 密集型任务，强调只有 I/O 密集型或其他非阻塞型任务，才更适合异步 I/O
 
@@ -331,13 +331,13 @@ World!
 
 此外还可使用第三方的事件循环，比如 [uvloop](https://github.com/MagicStack/uvloop) 库也有自己的事件循环，而且号称比 `asyncio` 更快
 
-### `asyncio` REPL 交互环境
+### `asyncio` REPL
 
-Starting with [Python 3.8](https://realpython.com/python38-new-features/), the asyncio module includes a specialized interactive shell known as the [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli). This environment allows you to use await directly at the top level, without wrapping your code in a call to `asyncio.run()`. This tool facilitates experimenting, debugging, and learning about `asyncio` in Python
+从 [Python 3.8](https://realpython.com/python38-new-features/) 开始，`asyncio` 模块包含一个名为 [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli) 的专用交互环境。在这个环境中，可以直接用 `await` 关键字，不需要包装在 `asyncio.run()` 中。该环境一般用于测试、调试和单独学习 `asyncio`
 
-To start the [REPL](https://realpython.com/ref/glossary/repl/), you can run the following command:
+可以用如下命令进入 [`asyncio` REPL](https://realpython.com/ref/glossary/repl/)
 
-```
+```python
 $ python -m asyncio
 asyncio REPL 3.13.3 (main, Jun 25 2025, 17:27:59) ... on darwin
 Use "await" directly instead of "asyncio.run()".
@@ -346,7 +346,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-Once you get the >>> prompt, you can start running asynchronous code there. Consider the example below, where you reuse the code from the previous section:
+当出现 >>> 提示符后，即可在此处开始运行异步代码。参考下面的示例：
 
 ```python title="asyncio repl"
 >>> import asyncio
@@ -362,7 +362,7 @@ Hello...
 World!
 ```
 
-This example works the same as the one in the previous section. However, instead of running `main()` using `asyncio.run()`, you use await directly
+此示例与上一节中的示例功能相同。但区别在于，它不使用 `asyncio.run()` 来运行 `main()` 函数，而是直接使用 `await` 
 
 ## Common Async I/O Programming Patterns
 

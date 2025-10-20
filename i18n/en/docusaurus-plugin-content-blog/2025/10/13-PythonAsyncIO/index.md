@@ -322,7 +322,7 @@ Third-party event loops are also available. For example, the [uvloop](https://gi
 
 ### The `asyncio` REPL
 
-Starting with [Python 3.8](https://realpython.com/python38-new-features/), the asyncio module includes a specialized interactive shell known as the [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli). This environment allows you to use await directly at the top level, without wrapping your code in a call to `asyncio.run()`. This tool facilitates experimenting, debugging, and learning about `asyncio` in Python
+Starting with [Python 3.8](https://realpython.com/python38-new-features/), the `asyncio` module includes a specialized interactive shell known as the [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli). This environment allows you to use `await` directly at the top level, without wrapping your code in a call to `asyncio.run()`. This tool facilitates experimenting, debugging, and learning about `asyncio` in Python
 
 To start the [REPL](https://realpython.com/ref/glossary/repl/), you can run the following command:
 
@@ -351,7 +351,7 @@ Hello...
 World!
 ```
 
-This example works the same as the one in the previous section. However, instead of running `main()` using `asyncio.run()`, you use await directly
+This example works the same as the one in the previous section. However, instead of running `main()` using `asyncio.run()`, you use `await` directly
 
 ## Common Async I/O Programming Patterns
 
