@@ -279,31 +279,27 @@ if __name__ == "__main__":
 
 虽然生成随机数是 CPU 密集型的操作，但这里的影响可以忽略不计。这里 `asyncio.sleep()` 模拟 I/O 密集型任务，强调只有 I/O 密集型或其他非阻塞型任务，才更适合异步 I/O
 
-This program defines the `makerandom()` coroutine and runs it concurrently with three different inputs. Most programs will consist of small, modular coroutines and a wrapper function that serves to [chain](https://realpython.com/async-io-python/#coroutine-chaining) each smaller coroutine. In `main()`, you gather the three tasks. The three calls to `makerandom()` are your **pool of tasks**
+### Async I/O 事件循环
 
-While the random number generation in this example is a CPU-bound task, its impact is negligible. The `asyncio.sleep()` simulates an I/O-bound task and makes the point that only I/O-bound or non-blocking tasks benefit from the async I/O model
+在异步编程中，事件循环 (event loop) 是一个[持续运行的循环](https://realpython.com/python-while-loop/#intentional-infinite-loops)，用于跟踪协程的等待状态，并在空闲时调度其他可运行任务。当某个协程的等待条件被满足时，就可以将其唤醒
 
-### The Async I/O Event Loop
+在现代 Python 中，启动事件循环的推荐方式是使用 [`asyncio.run()`](https://docs.python.org/3/library/asyncio-runner.html#asyncio.run)。该函数负责获取事件循环，运行任务直至完成，最后关闭循环。当同一代码中存在其他正在运行的异步事件循环时，不可调用此函数
 
-In asynchronous programming, an event loop is like an [infinite loop](https://realpython.com/python-while-loop/#intentional-infinite-loops) that monitors coroutines, takes feedback on what’s idle, and looks around for things that can be executed in the meantime. It’s able to wake up an idle coroutine when whatever that coroutine is waiting for becomes available
-
-The recommended way to start an event loop in modern Python is to use [`asyncio.run()`](https://docs.python.org/3/library/asyncio-runner.html#asyncio.run). This function is responsible for getting the event loop, running tasks until they complete, and closing the loop. You can’t call this function when another async event loop is running in the same code
-
-You can also get an instance of the running loop with the [`get_running_loop()`](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_running_loop) function:
+也可以通过 `get_running_loop()` 函数获取当前运行中的事件循环实例：
 
 ```python
 loop = asyncio.get_running_loop()
 ```
 
-If you need to interact with the event loop within a Python program, the above pattern is a good way to do it. The `loop` object supports introspection with `.is_running()` and `.is_closed()`. It can be useful when you want to [schedule a callback](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-example-lowlevel-helloworld) by passing the loop as an argument, for example. Note that `get_running_loop()` raises a [`RuntimeError`](https://realpython.com/ref/builtin-exceptions/runtimeerror/) exception if there’s no running event loop
+上述 `loop` 对象是程序内与事件循环交互的主要接口。我们可以使用 `.is_running()` 和 `.is_closed()` 来检查 `loop` 对象的状态。例如需要[调度一个回调](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-example-lowlevel-helloworld)时，可以把 `loop` 对象作为参数传入。注意：若当前没有正在运行的事件循环，调用 `get_running_loop()` 会抛 [`RuntimeError`](https://realpython.com/ref/builtin-exceptions/runtimeerror/)
 
-What’s more important is understanding what goes on beneath the surface of the event loop. Here are a few points worth stressing:
+除此之外，更重要的是要理解事件循环的底层运转机制：
 
-- Coroutines don’t do much on their own until they’re tied to the event loop
-- By default, an async event loop runs in a single thread and on a single CPU core. In most `asyncio` applications, there will be only one event loop, typically in the main thread. Running multiple event loops in different threads is technically possible, but not commonly needed or recommended
-- Event loops are pluggable. You can write your own implementation and have it run tasks just like the event loops provided in `asyncio`
+- 协程在被绑定到事件循环前本身作用有限
+- Python 的异步事件循环是在单 CPU 核心的单线程上运行的。在大多数 `asyncio` 应用中通常仅有一个事件循环，且一般运行在主线程。虽然技术上可以在不同线程中运行多个事件循环，但一般用不上，也不推荐这样做
+- 事件循环是可插拔 (pluggable) 的，可以自己实现一个事件循环，然后用它来调度任务(而不用 `asyncio` 自带的)
 
-Regarding the first point, if you have a coroutine that awaits others, then calling it in isolation has little effect:
+对于上面的第一点，下面的代码很好地解释了：若协程需等待其他协程完成，则单独调用该协程几乎毫无意义
 
 ```python
 >>> import asyncio
@@ -319,7 +315,7 @@ Regarding the first point, if you have a coroutine that awaits others, then call
 <coroutine object main at 0x1027a6150>
 ```
 
-In this example, calling `main()` directly returns a coroutine object that you can’t use in isolation. You need to use `asyncio.run()` to schedule the `main()` coroutine for execution on the event loop:
+在这个例子中，直接调用 `main()` 函数会返回一个协程对象，该对象不能单独使用。需要用 `asyncio.run()` 将 `main()` 协程调度到事件循环中执行：
 
 ```python
 >>> asyncio.run(routine)
@@ -327,15 +323,15 @@ Hello...
 World!
 ```
 
-You typically wrap your `main()` coroutine in an `asyncio.run()` call. You can execute lower-level coroutines with `await`
+换句话说，本质上就是用一层 `asyncio.run()` 包装 `main()` 协程。当然，在协程中用 `await` 调用别的协程不需要考虑这个问题
 
-Finally, the fact that the event loop is *pluggable* means that you can use any working implementation of an event loop, and that’s unrelated to your structure of coroutines. The `asyncio` package ships with two different [event loop implementations](https://docs.python.org/3/library/asyncio-eventloop.html#event-loop-implementations)
+最后，事件循环的*可插拔性*意味着可以替换为任意兼容的实现，并且与协程完全解耦。事实上，仅 `asyncio` 包内就有两种[事件循环实现](https://docs.python.org/3/library/asyncio-eventloop.html#event-loop-implementations)
 
-The default event loop implementation depends on your platform and Python version. For example, on Unix, the default is typically [SelectorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.SelectorEventLoop), while Windows uses [ProactorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.ProactorEventLoop) for better subprocess and I/O support
+默认事件循环实现取决于平台和Python版本。在Unix系统中，默认通常采用 [SelectorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.SelectorEventLoop)，而 Windows 则采用 [ProactorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.ProactorEventLoop) 以获得更优的子进程和 I/O 支持
 
-Third-party event loops are also available. For example, the [uvloop](https://github.com/MagicStack/uvloop) package provides an alternative implementation that promises to be faster than the `asyncio` loops
+此外还可使用第三方的事件循环，比如 [uvloop](https://github.com/MagicStack/uvloop) 库也有自己的事件循环，而且号称比 `asyncio` 更快
 
-### The `asyncio` REPL
+### `asyncio` REPL 交互环境
 
 Starting with [Python 3.8](https://realpython.com/python38-new-features/), the asyncio module includes a specialized interactive shell known as the [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli). This environment allows you to use await directly at the top level, without wrapping your code in a call to `asyncio.run()`. This tool facilitates experimenting, debugging, and learning about `asyncio` in Python
 
@@ -865,3 +861,5 @@ You rely on the event loop to manage the scheduling and execution of your corout
 | 多线程   | Multithreading         | 多进程   | Multiprocessing     |
 | 同步     | Synchronous            | 异步     | Asynchronous(async) |
 | I/O 密集 | IO-bound               | CPU 密集 | CPU-bound           |
+
+REPL: Read-Eval-Print-Loop 可译为`交互式解释器`
