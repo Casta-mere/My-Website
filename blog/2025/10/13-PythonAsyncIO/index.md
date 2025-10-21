@@ -189,7 +189,7 @@ if __name__ == "__main__":
 
 下一节会讲到，像 `asyncio.sleep()` 这样的非阻塞等待的优势在于：可以暂时将控制权让出给其他可立即执行的函数。相反，`time.sleep()` 这种阻塞型调用会阻塞整个事件循环，使其他协程在睡眠期间无法前进，因此与异步 Python 代码并不兼容
 
-### `async` 和 `await` 关键字
+### `async` 和 `await` 
 
 接下来有必要对 `async`, `await` 及其创建的协程函数进行更正式的定义：
 
@@ -742,58 +742,58 @@ Both tasks done: True
 
 上面的代码中把 `asyncio.run()` 的调用包裹在 [`try`](https://realpython.com/ref/keywords/try/) 代码块中。然后用之前提到的 `except*` 语法分别捕获预期的异常
 
-## Async I/O in Context
+## Async I/O 的定位与边界
 
-Now that you’ve seen a healthy dose of asynchronous code, take a moment to step back and consider when async I/O is the ideal choice—and how to evaluate whether it’s the right fit or if another concurrency model might be better
+上文已经介绍了不少异步的代码，现在我们回头想一想：什么时候用异步 I/O 是最理想的，以及如何评估它是否真正适用，或者是否存在更合适的并发模型
 
-### When to Use Async I/O
+### 什么时候用 Async I/O
 
-Using `async def` for functions that perform blocking operations—such as standard file I/O or synchronous network requests—will block the entire event loop, negate the benefits of async I/O, and potentially reduce your program’s efficiency. Only use `async def` functions for [non-blocking operations](https://realpython.com/ref/glossary/non-blocking-operation/)
+如果在  `async def` 中执行阻塞操作，它仍会阻塞事件循环，抵消异步 I/O 的优势，降低程序的效率。相比之下，异步 I/O 还是更适合[非阻塞操作](https://realpython.com/ref/glossary/non-blocking-operation/)
 
-The battle between async I/O and multiprocessing isn’t a real battle. You can use both models [in concert](https://youtu.be/0kXaLh8Fz3k?t=10m30s) if you want. In practice, multiprocessing should be the right choice if you have multiple CPU-bound tasks
+异步 I/O 和**多进程**并不是非此即彼，需要时可以把这两种模型[配合使用](https://youtu.be/0kXaLh8Fz3k?t=10m30s)。实际应用中，多进程更适合 CPU 密集型的任务
 
-The contest between async I/O and threading is more direct. Threading isn’t simple, and even in cases where threading seems easy to implement, it can still lead to hard-to-trace bugs due to [race conditions](https://realpython.com/python-thread-lock/#race-conditions) and memory usage, among other things
+异步 I/O 和**多线程**之间的取舍则更为直接。线程并不简单，即使在看起来容易实现的场景中，也可能因为[竞态条件](https://realpython.com/python-thread-lock/#race-conditions)、内存使用等原因导致难以追踪的错误
 
-Threading also tends to scale less elegantly than async I/O because threads are a system resource with a finite availability. Creating thousands of threads will fail on many machines or can slow down your code. In contrast, creating thousands of async I/O tasks is completely feasible
+线程的扩展性往往不如异步 I/O。因为线程属于受限的系统资源，创建成千上万个线程在许多机器上会出问题，或显著拖慢代码。相反，创建成千上万的异步 I/O 任务则完全可行
 
-Async I/O shines when you have multiple I/O-bound tasks that would otherwise be dominated by blocking wait time, such as:
+当有多个 I/O 密集型任务，而这些任务的时间主要消耗在阻塞等待上时，异步 I/O 尤其适用，例如：
 
-- **Network I/O**, whether your program is acting as the server or the client
-- **Serverless designs**, such as a peer-to-peer, multi-user network like a group chat
-- **Read/write operations** where you want to mimic a [fire-and-forget](https://en.wikipedia.org/wiki/Fire-and-forget) style approach without worrying about holding a lock on the resource
+- **网络 I/O**: 服务端和客户端
+- **无服务器架构 (Serverless)**: 类似群聊的 p2p 用户网络
+- **读/写操作**: 采用[发出即忘 (fire-and-forget)](https://en.wikipedia.org/wiki/Fire-and-forget)的方式，而不必担心占用资源锁
 
-The biggest reason not to use async I/O is that `await` only supports a specific set of objects that define a particular set of methods. For example, if you want to do async read operations on a certain [database management system (DBMS)](https://en.wikipedia.org/wiki/Database#Database_management_system), then you’ll need to find a Python wrapper for that DBMS that supports the `async` and `await` syntax
+使用异步 I/O 的阻力在于，`await` 只支持实现特定方法集合的对象。比如，如果你想对某个[数据库管理系统 (DBMS)](https://en.wikipedia.org/wiki/Database#Database_management_system) 执行异步读操作，就需要找到一个支持 `async/await` 语法的该 DBMS 的 Python 封装
 
-### Libraries Supporting Async I/O
+### 支持 Async I/O 的库
 
-You’ll find several high-quality third-party libraries and frameworks that support or are built on top of `asyncio` in Python, including tools for web servers, databases, networking, testing, and more. Here are some of the most notable:
+Python 有很多高质量的第三方库支持 `asyncio`，或者就是完全基于 `asyncio` 的。覆盖 Web 服务器、数据库、网络、测试等领域。这里列出一些常用的
 
-- Web frameworks:
-  - [FastAPI](https://fastapi.tiangolo.com/): Modern async web framework for building [web APIs](https://realpython.com/python-api/)
-  - [Starlette](https://www.starlette.io/): Lightweight [asynchronous server gateway interface (ASGI)](https://en.wikipedia.org/wiki/Asynchronous_Server_Gateway_Interface) framework for building high-performance async web apps
-  - [Sanic](https://sanic.dev/): Async web framework built for speed using `asyncio`
-  - [Quart](https://github.com/pallets/quart): Async web microframework with the same API as [Flask](https://realpython.com/flask-project/)
-  - [Tornado](https://github.com/tornadoweb/tornado): Performant web framework and asynchronous networking library
-- ASGI servers:
-  - [uvicorn](https://www.uvicorn.org/): Fast ASGI web server
-  - [Hypercorn](https://pypi.org/project/Hypercorn/): ASGI server supporting several protocols and configuration options
-- Networking tools:
-  - [aiohttp](https://docs.aiohttp.org/): HTTP client and server implementation using `asyncio`
-  - [HTTPX](https://www.python-httpx.org/): Fully featured async and sync HTTP client
-  - [websockets](https://websockets.readthedocs.io/): Library for building WebSocket servers and clients with `asyncio`
-  - [aiosmtplib](https://aiosmtplib.readthedocs.io/): Async SMTP client for [sending emails](https://realpython.com/python-send-email/)
-- Database tools:
-  - [Databases](https://www.encode.io/databases/): Async database access layer compatible with [SQLAlchemy](https://realpython.com/python-sqlite-sqlalchemy/) core
-  - [Tortoise ORM](https://tortoise.github.io/): Lightweight async object-relational mapper (ORM)
-  - [Gino](https://python-gino.org/): Async ORM built on SQLAlchemy core for [PostgreSQL](https://realpython.com/python-sql-libraries/#postgresql)
-  - [Motor](https://motor.readthedocs.io/): Async [MongoDB](https://realpython.com/introduction-to-mongodb-and-python/) driver built on `asyncio`
-- Utility libraries:
-  - [aiofiles](https://github.com/Tinche/aiofiles): Wraps Python’s file API for use with `async` and `await`
-  - [aiocache](https://github.com/aio-libs/aiocache): Async caching library supporting [Redis](https://realpython.com/python-redis/) and Memcached
-  - [APScheduler](https://github.com/agronholm/apscheduler): A task scheduler with support for async jobs
-  - [pytest-asyncio](https://pytest-asyncio.readthedocs.io/): Adds support for testing async functions using [pytest](https://realpython.com/pytest-python-testing/)
+- Web 服务器
+  - [FastAPI](https://fastapi.tiangolo.com/): 构建 [web APIs](https://realpython.com/python-api/) 的现代异步网络框架
+  - [Starlette](https://www.starlette.io/): 轻量级[异步服务器网关接口 (ASGI)](https://en.wikipedia.org/wiki/Asynchronous_Server_Gateway_Interface) 框架，用来构建 高性能的异步 Web 应用
+  - [Sanic](https://sanic.dev/): 基于 `asyncio` 构建的高速异步 Web 框架
+  - [Quart](https://github.com/pallets/quart): 和 [Flask](https://realpython.com/flask-project/) 有相同 API 的异步 Web 微框架
+  - [Tornado](https://github.com/tornadoweb/tornado): 高性能 Web 框架及异步网络库
+- ASGI 服务器
+  - [uvicorn](https://www.uvicorn.org/): 高速 ASGI Web 服务器
+  - [Hypercorn](https://pypi.org/project/Hypercorn/): 支持多种协议和配置选项的 ASGI 服务器
+- 网络工具
+  - [aiohttp](https://docs.aiohttp.org/): 基于 `asyncio` 的 HTTP 客户端和服务器实现
+  - [HTTPX](https://www.python-httpx.org/): 完全支持异步和同步的 HTTP 客户端
+  - [websockets](https://websockets.readthedocs.io/): 用 `asyncio` 构建 WebSocket 服务器和客户端
+  - [aiosmtplib](https://aiosmtplib.readthedocs.io/): 用于[发送电子邮件](https://realpython.com/python-send-email/)的异步 SMTP 客户端
+- 数据库工具
+  - [Databases](https://www.encode.io/databases/): 支持异步操作的数据库框架，兼容 [SQLAlchemy](https://realpython.com/python-sqlite-sqlalchemy/) core
+  - [Tortoise ORM](https://tortoise.github.io/): 轻量级异步对象关系映射器 (ORM)
+  - [Gino](https://python-gino.org/): 基于 SQLAlchemy core 的异步 ORM，适用于 [PostgreSQL](https://realpython.com/python-sql-libraries/#postgresql)
+  - [Motor](https://motor.readthedocs.io/): 基于 `asyncio` 构建的异步 [MongoDB](https://realpython.com/introduction-to-mongodb-and-python/) 驱动
+- 其他库
+  - [aiofiles](https://aiofiles.readthedocs.io/): 将 Python 的文件 API 封装为可与 `async` 和 `await` 一起使用的异步版本
+  - [aiocache](https://aiocache.readthedocs.io/): 支持 [Redis](https://realpython.com/python-redis/) 和 Memcached 的异步缓存库
+  - [APScheduler](https://apscheduler.readthedocs.io/): 支持异步任务的任务调度器
+  - [pytest-asyncio](https://pytest-asyncio.readthedocs.io/): 为 [pytest](https://realpython.com/pytest-python-testing/) 添加对异步函数测试的支持
 
-These libraries and frameworks help you write performant async Python applications. Whether you’re building a web server, fetching data over the network, or accessing a database, `asyncio` tools like these give you the power to handle many tasks concurrently with minimal overhead
+以上库和框架有助于构建高性能的 Python 异步应用。无论是搭建 Web 服务器、通过网络获取数据，还是访问数据库，此类基于 `asyncio` 的工具都能以极低的额外开销并发处理大量任务
 
 ## Conclusion
 
