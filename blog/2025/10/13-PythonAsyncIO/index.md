@@ -683,13 +683,12 @@ Both tasks done: True
 
 因此，更快的任务 (`task1`) 会先完成并更早打印结果，而耗时更长的任务 (`task2`) 随后才完成并打印。`asyncio.as_completed()` 适用于需要对每个任务及时响应的场景，它能显著提升并发工作流的响应能力
 
-### Async Exception Handling
+### 异步异常处理
 
-Starting with [Python 3.11](https://realpython.com/python311-new-features/), you can use the [ExceptionGroup](https://realpython.com/python311-exception-groups/) class to handle multiple unrelated exceptions that may occur concurrently. This is especially useful when running multiple coroutines that can raise different exceptions. Additionally, the new `except*` syntax helps you gracefully deal with several errors at once
+从 [Python 3.11](https://realpython.com/python311-new-features/) 开始，可以用 [ExceptionGroup](https://realpython.com/python311-exception-groups/) 类来处理可能同时发生的多个无关异常。当运行多个可能引发不同异常的协程时，此功能尤为有用。除此之外，新增的 `except*` 语法可以优雅的处理多异常：
 
-Here’s a quick demo of how to use this class in asynchronous code:
 
-```python title="3.11+" showLineNumbers
+```python title=" Python 3.11+" showLineNumbers
 >>> import asyncio
 
 >>> async def coro_a():
@@ -720,11 +719,11 @@ Here’s a quick demo of how to use this class in asynchronous code:
 ...
 ```
 
-In this example, you have three coroutines that raise three different types of [exceptions](https://realpython.com/python-built-in-exceptions/). In the `main()` function, you call `gather()` with the coroutines as arguments. You also set the `return_exceptions` argument to `True` so that you can grab the exceptions if they occur
+在上面的示例中，三个协程分别抛出了三种不同的[异常](https://realpython.com/python-built-in-exceptions/)(这要是真同时出现也太抽象了)。在主协程 `main()` 中用 `asyncio.gather()` 来等待这三个协程。同时需要将 `return_exceptions` 参数设置为`True`，才能捕获异常(而不是直接寄掉)
 
-Next, you use a list comprehension to store the exceptions in a new list. If the list contains at least one exception, then you create an `ExceptionGroup` for them
+接下来用列表推导式来把这些异常存起来，若该列表至少包含一个异常，则创建一个 `ExceptionGroup`
 
-To handle this exception group, you can use the following code:
+然后像下面这样处理异常:
 
 ```python title="python 3.11+" showLineNumbers
 >>> try:
@@ -741,7 +740,7 @@ To handle this exception group, you can use the following code:
 [IndexError handled] (IndexError('Error in coro C'),)
 ```
 
-In this code, you wrap the call to `asyncio.run()` in a [`try`](https://realpython.com/ref/keywords/try/) block. Then, you use the `except*` syntax to catch the expected exception separately. In each case, you print an error message to the screen
+上面的代码中把 `asyncio.run()` 的调用包裹在 [`try`](https://realpython.com/ref/keywords/try/) 代码块中。然后用之前提到的 `except*` 语法分别捕获预期的异常
 
 ## Async I/O in Context
 
