@@ -14,6 +14,7 @@ import Terminal from "./components/Terminal";
 import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
+import { RoughNotation } from "react-rough-notation";
 
 Python 的 `asyncio` 库允许使用 `async` 和 `await` 关键字来编写并发代码。其核心构件是可等待对象 (awaitable objects)，通常为**协程 (coroutines)**。这些可等待对象由事件循环 (event loop) 调度并以异步方式执行。这种编程模型能够在单线程环境下，高效地管理大量 I/O 密集型任务
 
@@ -850,6 +851,8 @@ Python 有很多高质量的第三方库支持 `asyncio`，或者就是完全基
 
 程序依赖事件循环来管理协程的调度与执行。每当协程执行到 `await` 或其 I/O 操作完成时，事件循环都会为相应协程安排运行机会
 </details>
+
+<RoughNotation type="highlight" show={true} color="rgba(255, 153, 0, 0.79)" strokeWidth={1} iterations={1} multiline={true} >**参加测验**</RoughNotation> 原文提供了课后小测验，用来自查: [Quiz](https://realpython.com/quizzes/async-io-python/)
 
 ## 附录
 
