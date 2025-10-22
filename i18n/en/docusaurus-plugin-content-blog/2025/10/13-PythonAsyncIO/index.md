@@ -15,6 +15,7 @@ import Terminal from "./components/Terminal";
 import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
+import { RoughNotation } from "react-rough-notation";
 
 Python’s `asyncio` library enables you to write concurrent code using the `async` and `await` keywords. The core building blocks of async I/O in Python are awaitable objects—most often coroutines—that an event loop schedules and executes asynchronously. This programming model lets you efficiently manage multiple I/O-bound tasks within a single thread of execution
 
@@ -837,3 +838,5 @@ You define a coroutine using the `async def` syntax. To run it, either pass it t
 
 You rely on the event loop to manage the scheduling and execution of your coroutines, giving each one a chance to run whenever it awaits or completes an I/O-bound operation
 </details>
+
+<RoughNotation type="highlight" show={true} color="rgba(255, 153, 0, 0.79)" strokeWidth={1} iterations={1} multiline={true} >**Take The Quiz**</RoughNotation> Test your knowledge with our interactive “Python's asyncio: A Hands-On Walkthrough” quiz. You’ll receive a score upon completion to help you track your learning progress: [Python's asyncio: A Hands-On Walkthrough](https://realpython.com/quizzes/async-io-python/)
