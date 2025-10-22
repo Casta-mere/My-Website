@@ -17,7 +17,7 @@ import Terminal3 from "./components/Terminal3";
 
 Python 的 `asyncio` 库允许使用 `async` 和 `await` 关键字来编写并发代码。其核心构件是可等待对象 (awaitable objects)，通常为**协程 (coroutines)**。这些可等待对象由事件循环 (event loop) 调度并以异步方式执行。这种编程模型能够在单线程环境下，高效地管理大量 I/O 密集型任务
 
-本教程将介绍 Python `asyncio` 的工作原理; 如何定义并运行协程; 以及在处理 I/O 密集型任务的应用中何时使用异步编程以获得更好的性能
+本教程将介绍 Python `asyncio` 的工作原理、如何定义并运行协程、 以及在处理 I/O 密集型任务的应用中何时使用异步编程以获得更好的性能
 
 **读完本文，你将了解**：
 
@@ -291,7 +291,7 @@ if __name__ == "__main__":
 loop = asyncio.get_running_loop()
 ```
 
-上述 `loop` 对象是程序内与事件循环交互的主要接口。我们可以使用 `.is_running()` 和 `.is_closed()` 来检查 `loop` 对象的状态。例如需要[调度一个回调](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-example-lowlevel-helloworld)时，可以把 `loop` 对象作为参数传入。注意：若当前没有正在运行的事件循环，调用 `get_running_loop()` 会抛 [`RuntimeError`](https://realpython.com/ref/builtin-exceptions/runtimeerror/)
+上述 `loop` 对象是程序内与事件循环交互的主要接口。可以使用 `.is_running()` 和 `.is_closed()` 来检查 `loop` 对象的状态。例如需要[调度一个回调](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-example-lowlevel-helloworld)时，可以把 `loop` 对象作为参数传入。注意：若当前没有正在运行的事件循环，调用 `get_running_loop()` 会抛 [`RuntimeError`](https://realpython.com/ref/builtin-exceptions/runtimeerror/)
 
 除此之外，更重要的是要理解事件循环的底层运转机制：
 
@@ -327,13 +327,13 @@ World!
 
 最后，事件循环的*可插拔性*意味着可以替换为任意兼容的实现，并且与协程完全解耦。事实上，仅 `asyncio` 包内就有两种[事件循环实现](https://docs.python.org/3/library/asyncio-eventloop.html#event-loop-implementations)
 
-默认事件循环实现取决于平台和Python版本。在Unix系统中，默认通常采用 [SelectorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.SelectorEventLoop)，而 Windows 则采用 [ProactorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.ProactorEventLoop) 以获得更优的子进程和 I/O 支持
+默认事件循环实现取决于平台和 Python 版本。在 Unix 系统中，默认通常采用 [SelectorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.SelectorEventLoop)，而 Windows 则采用 [ProactorEventLoop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.ProactorEventLoop) 以获得更优的子进程和 I/O 支持
 
 此外还可使用第三方的事件循环，比如 [uvloop](https://github.com/MagicStack/uvloop) 库也有自己的事件循环，而且号称比 `asyncio` 更快
 
 ### `asyncio` REPL
 
-从 [Python 3.8](https://realpython.com/python38-new-features/) 开始，`asyncio` 模块包含一个名为 [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli) 的专用交互环境。在这个环境中，可以直接用 `await` 关键字，不需要包装在 `asyncio.run()` 中。该环境一般用于测试、调试和单独学习 `asyncio`
+从 [Python 3.8](https://realpython.com/python38-new-features/) 开始，`asyncio` 模块包含一个名为 [asyncio REPL](https://docs.python.org/3/library/asyncio.html#asyncio-cli) 的专用交互环境。在这个环境中，可以直接用 `await` 关键字，不需要包装在 `asyncio.run()` 中。该环境一般用于测试、调试和学习 `asyncio`
 
 可以用如下命令进入 [`asyncio` REPL](https://realpython.com/ref/glossary/repl/)
 
@@ -601,7 +601,7 @@ https://realpython.com: status -> 200
 
 ### 其他 `asyncio` 工具
 
-除了 `asyncio.run()` 之外，上文已经用到了一些其他的 `asyncio` 包函数，比如 `asyncio。gather()` 和 `asyncio.get_event_loop`。除此之外还可以使用 [`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) 来安排协程对象的执行，随后再调用常规的 `asyncio.run()` 函数：
+除了 `asyncio.run()` 之外，上文已经用到了一些其他的 `asyncio` 包函数，比如 `asyncio.gather()` 和 `asyncio.get_event_loop()`。除此之外还可以使用 [`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) 来安排协程对象的执行，随后再调用常规的 `asyncio.run()` 函数：
 
 ```python title="asyncio" showLineNumbers
 >>> import asyncio
@@ -625,7 +625,7 @@ task.done() = False
 result: [1, 2, 3]
 ```
 
-使用 `asyncio.create_task()` 有一个小细节需要注意：如果创建了之后，不去等待它们，或者没有包装在 `gather()` 里面，那么当主协程  `main()` 结束时，事件循环随之收尾时，这些“无人等待”的任务会被统一取消。也就是说，想让它们真正跑完，，一定要 `await` 它们(或用 gather/TaskGroup 管起来)
+使用 `asyncio.create_task()` 有一个小细节需要注意：如果创建了之后，不去等待它们，或者没有包装在 `gather()` 里面，那么当主协程  `main()` 结束时，事件循环随之收尾时，这些“无人等待”的任务会被统一取消。也就是说，想让它们真正跑完，一定要 `await` 它们(或用 gather/TaskGroup 管起来)
 
 `asyncio.create_task()` 会把一个可等待对象包装为一个更高层次的 [`Task`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task) 对象，将其调度到事件循环中后台并发运行。相反地，直接对协程进行 `await` 会立即运行该协程，并暂停当前的调用者，直到被等待的协程完成
 
@@ -681,7 +681,7 @@ Both tasks done: True
 
 在这个示例中，`main()` 使用了 `asyncio.as_completed()`，它按任务完成的先后顺序产出任务，而不是按启动顺序。程序在事件循环中等待这些任务时，**每个任务一完成就能立刻被获取**
 
-因此，更快的任务 (`task1`) 会先完成并更早打印结果，而耗时更长的任务 (`task2`) 随后才完成并打印。`asyncio.as_completed()` 适用于需要对每个任务及时响应的场景，它能显著提升并发工作流的响应能力
+因此，更快的任务 (`task2`) 会先完成并更早打印结果，而耗时更长的任务 (`task1`) 随后才完成并打印。`asyncio.as_completed()` 适用于需要对每个任务及时响应的场景，它能显著提升并发工作流的响应能力
 
 ### 异步异常处理
 
@@ -760,7 +760,7 @@ Both tasks done: True
 
 - **网络 I/O**: 服务端和客户端
 - **无服务器架构 (Serverless)**: 类似群聊的 p2p 用户网络
-- **读/写操作**: 采用[发出即忘 (fire-and-forget)](https://en.wikipedia.org/wiki/Fire-and-forget)的方式，而不必担心占用资源锁
+- **读/写操作**: 采用[即发即忘 (fire-and-forget)](https://en.wikipedia.org/wiki/Fire-and-forget)的方式，而不必担心占用资源锁
 
 使用异步 I/O 的阻力在于，`await` 只支持实现特定方法集合的对象。比如，如果你想对某个[数据库管理系统 (DBMS)](https://en.wikipedia.org/wiki/Database#Database_management_system) 执行异步读操作，就需要找到一个支持 `async/await` 语法的该 DBMS 的 Python 封装
 
@@ -855,14 +855,14 @@ Python 有很多高质量的第三方库支持 `asyncio`，或者就是完全基
 
 ### 术语表
 
-| 术语            | 英文                   | 术语     | 英文                |
-| --------------- | ---------------------- | -------- | ------------------- |
-| 并发            | Concurrency/Concurrent | 并行     | Parallelism         |
-| 协程            | Coroutine              | 事件循环 | Event Loop          |
-| 线程            | Thread                 | 进程     | Process             |
-| 多线程          | Multithreading         | 多进程   | Multiprocessing     |
-| 同步            | Synchronous            | 异步     | Asynchronous(async) |
-| I/O 密集        | IO-bound               | CPU 密集 | CPU-bound           |
-| 协程链/串联协程 | Coroutine Chain        |          |                     |
+| 术语            | 英文                   | 术语         | 英文                          |
+| --------------- | ---------------------- | ------------ | ----------------------------- |
+| 并发            | Concurrency/Concurrent | 并行         | Parallelism                   |
+| 协程            | Coroutine              | 事件循环     | Event Loop                    |
+| 线程            | Thread                 | 进程         | Process                       |
+| 多线程          | Multithreading         | 多进程       | Multiprocessing               |
+| 同步            | Synchronous            | 异步         | Asynchronous(async)           |
+| I/O 密集型      | I/O-bound              | CPU 密集型   | CPU-bound                     |
+| 协程链/串联协程 | Coroutine Chain        | 全局解释器锁 | Global Interpreter Lock (GIL) |
 
 REPL: Read-Eval-Print-Loop 可译为`交互式解释器`
