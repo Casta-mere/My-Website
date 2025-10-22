@@ -34,7 +34,7 @@ Python 的 `asyncio` 库允许使用 `async` 和 `await` 关键字来编写并�
 # Python's AsyncIO 实践指南
 
 :::tip
-[点击这里](./demo/materials-python-asyncio-.zip)下载本篇中用到的代码
+[点击这里](./demo/materials-python-asyncio.zip)下载本篇中用到的代码
 :::
 
 ## 写在前面
@@ -795,62 +795,60 @@ Python 有很多高质量的第三方库支持 `asyncio`，或者就是完全基
 
 以上库和框架有助于构建高性能的 Python 异步应用。无论是搭建 Web 服务器、通过网络获取数据，还是访问数据库，此类基于 `asyncio` 的工具都能以极低的额外开销并发处理大量任务
 
-## Conclusion
+## 结论
 
-You’ve gained a solid understanding of Python’s `asyncio` library and the `async` and `await` syntax, learning how asynchronous programming enables efficient management of multiple I/O-bound tasks within a single thread
+本篇介绍了 Python 的 `asyncio` 库，`async`, `await` 语法，以及如何使用异步编程在单个线程中提高多个 I/O 密集型任务的效率
 
-Along the way, you explored the differences between concurrency, parallelism, threading, multiprocessing, and asynchronous I/O. You also worked through practical examples using coroutines, event loops, chaining, and queue-based concurrency. On top of that, you learned about advanced `asyncio` features, including async context managers, async iterators, comprehensions, and how to leverage third-party async libraries
+在这个过程中，介绍了并发、并行、多线程、多进程、异步 I/O 以及他们的区别与联系。还介绍了使用协程、事件循环、链式与队列式并发的示例。在此基础上，还学习了 `asyncio` 的高级技巧，例如：异步上下文管理器、异步迭代器、列表推导式，以及一些第三方库的用法
 
-Mastering `asyncio` is essential when building scalable network servers, web APIs, or applications that perform many simultaneous I/O-bound operations
+掌握 `asyncio` 对于搭建可拓展的网络服务、以及需要并发处理大量 I/O 密集型任务的程序都至关重要
 
-**In this tutorial, you’ve learned how to**:
+**在本教程中，介绍了**
 
-- **Distinguish** between concurrency models and identify when to use asyncio for I/O-bound tasks
-- **Write**, **run**, and **chain coroutines** using `async def` and `await`
-- **Manage the event loop** and schedule multiple tasks with `asyncio.run()`, `gather()`, and `create_task()`
-- Implement async patterns like **coroutine chaining** and **async queues** for producer–consumer workflows
-- **Use advanced async features** such as `async for` and `async with`, and integrate with **third-party async libraries**
+- **区别**多种并发模型，并判断何时使用 `asyncio` 处理 I/O 密集型任务
+- 使用 `async def` 和 `await` **编写**、**运行**和**串联协程**
+- **管理事件循环**，通过 `asyncio.run()`, `gather()` 和 `create_task()` 调度多任务
+- 实现异步模式：运用**串联协程**和**异步队列**构建生产者-消费者工作流
+- **运用高级异步特性**(如 `async for`, `async with`)，并集成**第三方异步库**
 
-With these skills, you’re ready to build high-performance, modern Python applications that can handle many operations asynchronously
+具备这些技能后，即可构建能够异步处理大量操作的高性能现代 Python 应用
 
 :::tip
-Get Your Code: [Click here to download the free sample code](./demo/materials-python-asyncio-.zip) that you’ll use to learn about async I/O in Python
+[点击这里](./demo/materials-python-asyncio.zip)下载本篇中用到的代码
 :::
 
-## Frequently Asked Questions
+## FAQ
 
-Now that you have some experience with `asyncio` in Python, you can use the questions and answers below to check your understanding and recap what you’ve learned
-
-These FAQs are related to the most important concepts you’ve covered in this tutorial. Click the *Show/Hide* toggle beside each question to reveal the answer
+下面这些常见问题涵盖了本教程中最重要的概念，读者可以通过这些 QA 来巩固一下上面学到的内容
 
 <details>
-<summary>What is `asyncio` in Python and why should you use it?</summary>
+<summary>Python `asyncio` 是什么，以及为什么要用它?</summary>
 
-You use `asyncio` to write concurrent code with the async and await keywords, allowing you to efficiently manage multiple I/O-bound tasks in a single thread without blocking your program
+使用 `asyncio` 的 async/await 关键字构建出来的并发程序可以在单线程中高效并发地管理多个 I/O 密集型任务，而不阻塞程序
 </details>
 
 <details>
-<summary>Is `asyncio` better than multithreading for I/O-bound tasks?</summary>
+<summary>对于 I/O 密集型任务，`asyncio` 一定比多进程更优吗?</summary>
 
-You typically get better performance from `asyncio` for I/O-bound work because it avoids the overhead and complexity of threads. This allows thousands of tasks to run concurrently without the limitations of Python’s GIL
+对于 I/O 密集型任务，`asyncio` 通常能提供更优的性能。它规避了线程带来的开销和复杂性，使得数千个任务能够并行运行，不受 Python 全局解释器锁 (GIL)的限制
 </details>
 
 <details>
-<summary>When should you use `asyncio` in your Python programs?</summary>
+<summary>在 Python 程序中，什么情况下应该使用 `asyncio`?</summary>
 
-Use `asyncio` when your program spends a significant amount of time waiting on I/O-bound operations—such as network requests or file access—and you want to run many of these tasks concurrently and efficiently
+当你的程序花费大量时间等待 I/O 密集型操作(比如网络请求，或者文件访问)时，并且希望高效且并发执行大量此类任务时，比较适合用 `asyncio`
 </details>
 
 <details>
-<summary>How do you define and run a coroutine with `asyncio`?</summary>
+<summary>如何用 `asyncio` 定义和运行协程?</summary>
 
-You define a coroutine using the `async def` syntax. To run it, either pass it to `asyncio.run()` or schedule it as a task with `asyncio.create_task()`
+可以使用 `async def` 语法定义协程。可以把协程传给 `asyncio.run()` 来运行它，或者通过 `asyncio.create_task()` 将其作为一个任务来调度
 </details>
 
 <details>
-<summary>What role does the event loop play in `asyncio`?</summary>
+<summary>`asyncio` 中的事件循环有什么作用?</summary>
 
-You rely on the event loop to manage the scheduling and execution of your coroutines, giving each one a chance to run whenever it awaits or completes an I/O-bound operation
+程序依赖事件循环来管理协程的调度与执行。每当协程执行到 `await` 或其 I/O 操作完成时，事件循环都会为相应协程安排运行机会
 </details>
 
 ## 附录

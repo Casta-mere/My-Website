@@ -36,7 +36,7 @@ This Article is a repost of [Python's asyncio: A Hands-On Walkthrough](https://r
 # Python's asyncio: A Hands-On Walkthrough
 
 :::tip
-Get Your Code: [Click here](./demo/materials-python-asyncio-.zip) to download the free sample code that you’ll use to learn about async I/O in Python
+Get Your Code: [Click here](./demo/materials-python-asyncio.zip) to download the free sample code that you’ll use to learn about async I/O in Python
 :::
 
 ## A First Look at Async I/O
@@ -790,7 +790,7 @@ Mastering `asyncio` is essential when building scalable network servers, web API
 
 **In this tutorial, you’ve learned how to**:
 
-- **Distinguish** between concurrency models and identify when to use asyncio for I/O-bound tasks
+- **Distinguish** between concurrency models and identify when to use **`asyncio`** for I/O-bound tasks
 - **Write**, **run**, and **chain coroutines** using `async def` and `await`
 - **Manage the event loop** and schedule multiple tasks with `asyncio.run()`, `gather()`, and `create_task()`
 - Implement async patterns like **coroutine chaining** and **async queues** for producer–consumer workflows
@@ -799,7 +799,7 @@ Mastering `asyncio` is essential when building scalable network servers, web API
 With these skills, you’re ready to build high-performance, modern Python applications that can handle many operations asynchronously
 
 :::tip
-Get Your Code: [Click here to download the free sample code](./demo/materials-python-asyncio-.zip) that you’ll use to learn about async I/O in Python
+Get Your Code: [Click here to download the free sample code](./demo/materials-python-asyncio.zip) that you’ll use to learn about async I/O in Python
 :::
 
 ## Frequently Asked Questions
@@ -811,7 +811,7 @@ These FAQs are related to the most important concepts you’ve covered in this t
 <details>
 <summary>What is `asyncio` in Python and why should you use it?</summary>
 
-You use `asyncio` to write concurrent code with the async and await keywords, allowing you to efficiently manage multiple I/O-bound tasks in a single thread without blocking your program
+You use `asyncio` to write concurrent code with the `async` and `await` keywords, allowing you to efficiently manage multiple I/O-bound tasks in a single thread without blocking your program
 </details>
 
 <details>
