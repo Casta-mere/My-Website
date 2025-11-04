@@ -1,3 +1,4 @@
+import { Highlight, themes as prismThemes } from "prism-react-renderer";
 import React from "react";
 import styles from "./styles.module.css";
 
@@ -109,6 +110,78 @@ export const MysqlLine = ({ children, linebreak = LINE_BREAK }) => {
     default:
       break;
   }
+};
+
+type REPLLineProps = {
+  text?: string;
+  children?: React.ReactNode;
+  prompt?: string;
+  noprompt?: boolean;
+};
+
+export const REPLLine = ({
+  children,
+  text,
+  prompt = ">>> ",
+  noprompt = false,
+}: REPLLineProps) => {
+  const flatten = (nodes: React.ReactNode): string => {
+    const out: string[] = [];
+    const walk = (n: React.ReactNode) => {
+      if (n === null || n === undefined || typeof n === "boolean") return;
+      if (typeof n === "string" || typeof n === "number") {
+        out.push(String(n));
+        return;
+      }
+      if (Array.isArray(n)) {
+        n.forEach(walk);
+        return;
+      }
+      if (React.isValidElement(n)) {
+        walk(n.props?.children);
+      }
+    };
+    walk(nodes);
+    return out.join("");
+  };
+
+  const raw = typeof text === "string" ? text : flatten(children ?? "");
+  const firstLine = raw.replace(/\r\n?/g, "\n").split("\n")[0] ?? "";
+  const leadingSpaces = firstLine.match(/^ +/)?.[0].length ?? 0;
+  const isContinuation = leadingSpaces >= 4 && leadingSpaces % 4 === 0;
+  const chosenPrompt = isContinuation ? "... " : prompt;
+
+  const promptStyle: React.CSSProperties = {
+    color: "rgb(214, 112, 214)",
+    whiteSpace: "pre",
+    userSelect: "none",
+    fontWeight: 700,
+  };
+
+  const lineContainerStyle: React.CSSProperties = {
+    lineHeight: "1.5rem",
+    alignItems: "",
+  };
+
+  return (
+    <div style={{ ...lineContainerStyle, whiteSpace: "pre" }}>
+      <Highlight theme={prismThemes.vsLight} code={firstLine} language="python">
+        {({ tokens, getLineProps, getTokenProps }) => {
+          const lineTokens = tokens[0] ?? [];
+          const lineProps = getLineProps({ line: lineTokens, key: 0 });
+          return (
+            <div {...lineProps}>
+              {!noprompt && <span style={promptStyle}>{chosenPrompt}</span>}
+              {lineTokens.map((token, key) => {
+                const tokenProps = getTokenProps({ token, key });
+                return <span key={key} {...tokenProps} />;
+              })}
+            </div>
+          );
+        }}
+      </Highlight>
+    </div>
+  );
 };
 
 export const TerminalResponse = ({
