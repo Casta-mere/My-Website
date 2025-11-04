@@ -14,6 +14,17 @@ import Terminal from "./components/Terminal";
 import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
+import Terminal4 from "./components/Terminal4";
+import Terminal5 from "./components/Terminal5";
+import Terminal6 from "./components/Terminal6";
+import Terminal7 from "./components/Terminal7";
+import Terminal8 from "./components/Terminal8";
+import Terminal9 from "./components/Terminal9";
+import Terminal10 from "./components/Terminal10";
+import Terminal11 from "./components/Terminal11";
+import Terminal12 from "./components/Terminal12";
+import Terminal13 from "./components/Terminal13";
+import Terminal14 from "./components/Terminal14";
 import { RoughNotation } from "react-rough-notation";
 
 Python 的 `asyncio` 库允许使用 `async` 和 `await` 关键字来编写并发代码。其核心构件是可等待对象 (awaitable objects)，通常为**协程 (coroutines)**。这些可等待对象由事件循环 (event loop) 调度并以异步方式执行。这种编程模型能够在单线程环境下，高效地管理大量 I/O 密集型任务
@@ -302,27 +313,11 @@ loop = asyncio.get_running_loop()
 
 对于上面的第一点，下面的代码很好地解释了：若协程需等待其他协程完成，则单独调用该协程几乎毫无意义
 
-```python
->>> import asyncio
-
->>> async def main():
-...     print("Hello...")
-...     await asyncio.sleep(1)
-...     print("World!")
-...
-
->>> routine = main()
->>> routine
-<coroutine object main at 0x1027a6150>
-```
+<Terminal4 />
 
 在这个例子中，直接调用 `main()` 函数会返回一个协程对象，该对象不能单独使用。需要用 `asyncio.run()` 将 `main()` 协程调度到事件循环中执行：
 
-```python
->>> asyncio.run(routine)
-Hello...
-World!
-```
+<Terminal5 />
 
 换句话说，本质上就是用一层 `asyncio.run()` 包装 `main()` 协程。当然，在协程中用 `await` 调用别的协程不需要考虑这个问题
 
@@ -338,30 +333,11 @@ World!
 
 可以用如下命令进入 [`asyncio` REPL](https://realpython.com/ref/glossary/repl/)
 
-```python
-$ python -m asyncio
-asyncio REPL 3.13.3 (main, Jun 25 2025, 17:27:59) ... on darwin
-Use "await" directly instead of "asyncio.run()".
-Type "help", "copyright", "credits" or "license" for more information.
->>> import asyncio
->>>
-```
+<Terminal6 />
 
 当出现 >>> 提示符后，即可在此处开始运行异步代码。参考下面的示例：
 
-```python title="asyncio repl"
->>> import asyncio
-
->>> async def main():
-...     print("Hello...")
-...     await asyncio.sleep(1)
-...     print("World!")
-...
-
->>> await main()
-Hello...
-World!
-```
+<Terminal7 />
 
 此示例与上一节中的示例功能相同。但区别在于，它不使用 `asyncio.run()` 来运行 `main()` 函数，而是直接使用 `await` 
 
@@ -528,30 +504,7 @@ Python 的异步 I/O 不仅仅包含 `async def` 和 `await` 结构，还有一�
 
 有异步迭代器，自然有[**异步生成器**](https://realpython.com/ref/glossary/asynchronous-generator/)。可以参考下面这个示例：异步生成 2 的幂
 
-```python title="asynchronous generator" showLineNumbers
->>> import asyncio
-
->>> async def powers_of_two(stop=10):
-...     exponent = 0
-...     while exponent < stop:
-...         yield 2**exponent
-...         exponent += 1
-...         await asyncio.sleep(0.2)  # Simulate some asynchronous work
-...
-
->>> async def main():
-...     g = []
-...     async for i in powers_of_two(5):
-...         g.append(i)
-...     print(g)
-...     f = [j async for j in powers_of_two(5) if not (j // 3 % 5)]
-...     print(f)
-...
-
->>> asyncio.run(main())
-[1, 2, 4, 8, 16]
-[1, 2, 16]
-```
+<Terminal8 />
 
 同步与异步的生成器、循环和列表推导式有本质区别：异步版本并不会让迭代天然并发。相反，只有在显式 `await` 让出控制权时，事件循环才会在两次迭代之间运行其他任务。**迭代本身仍然是顺序的**，除非使用 asyncio.gather() 等方式引入并发
 
@@ -569,30 +522,7 @@ Python 的异步 I/O 不仅仅包含 `async def` 和 `await` 结构，还有一�
 
 样例如下：
 
-```python title="async with" showLineNumbers
->>> import asyncio
->>> import aiohttp
-
->>> async def check(url):
-...     async with aiohttp.ClientSession() as session:
-...         async with session.get(url) as response:
-...             print(f"{url}: status -> {response.status}")
-...
-
->>> async def main():
-...     websites = [
-...         "https://realpython.com",
-...         "https://pycoders.com",
-...         "https://www.python.org",
-...     ]
-...     await asyncio.gather(*(check(url) for url in websites))
-...
-
->>> asyncio.run(main())
-https://www.python.org: status -> 200
-https://pycoders.com: status -> 200
-https://realpython.com: status -> 200
-```
+<Terminal9 />
 
 我们用 `asyncio` 和 `aiohttp` 来并发地对一系列网站进行 [GET](https://realpython.com/api-integration-in-python/#get) 请求。`check()` 协程会获取并打印网站的状态。`async with` 语句会在不阻塞事件循环的情况下打开和关闭连接，以确保 `ClientSession` 和每个 HTTP 响应能被正确、异步地管理
 
@@ -604,27 +534,7 @@ https://realpython.com: status -> 200
 
 除了 `asyncio.run()` 之外，上文已经用到了一些其他的 `asyncio` 包函数，比如 `asyncio.gather()` 和 `asyncio.get_event_loop()`。除此之外还可以使用 [`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) 来安排协程对象的执行，随后再调用常规的 `asyncio.run()` 函数：
 
-```python title="asyncio" showLineNumbers
->>> import asyncio
-
->>> async def coro(numbers):
-...     await asyncio.sleep(min(numbers))
-...     return list(reversed(numbers))
-...
-
->>> async def main():
-...     task = asyncio.create_task(coro([3, 2, 1]))
-...     print(f"{type(task) = }")
-...     print(f"{task.done() = }")
-...     return await task
-...
-
->>> result = asyncio.run(main())
-type(task) = <class '_asyncio.Task'>
-task.done() = False
->>> print(f"result: {result}")
-result: [1, 2, 3]
-```
+<Terminal10 />
 
 使用 `asyncio.create_task()` 有一个小细节需要注意：如果创建了之后，不去等待它们，或者没有包装在 `gather()` 里面，那么当主协程  `main()` 结束时，事件循环随之收尾时，这些“无人等待”的任务会被统一取消。也就是说，想让它们真正跑完，一定要 `await` 它们(或用 gather/TaskGroup 管起来)
 
@@ -634,51 +544,13 @@ result: [1, 2, 3]
 
 若调用 `asyncio.gather()` 并指定多个任务或协程，事件循环将等待所有任务完成。此时 `asyncio.gather()` 的返回值将是所有输入结果的集合：
 
-```python title="gather" showLineNumbers
->>> import time
-
->>> async def main():
-...     task1 = asyncio.create_task(coro([10, 5, 2]))
-...     task2 = asyncio.create_task(coro([3, 2, 1]))
-...     print("Start:", time.strftime("%X"))
-...     result = await asyncio.gather(task1, task2)
-...     print("End:", time.strftime("%X"))
-...     print(f"Both tasks done: {all((task1.done(), task2.done()))}")
-...     return result
-...
-
->>> result = asyncio.run(main())
-Start: 14:38:49
-End: 14:38:51
-Both tasks done: True
-
->>> print(f"result: {result}")
-result: [[2, 5, 10], [1, 2, 3]]
-```
+<Terminal11 />
 
 `asyncio.gather()` 会等待传入的整组协程**全部完成**后再返回。且结果顺序与传入顺序严格一致
 
 另外，可以通过遍历 `asyncio.as_completed()`，以按"完成先后"获取任务。该函数返回一个同步迭代器，会在各个任务完成时依次产出结果。下面这个例子中，`coro([3, 2, 1])` 的结果会先于 `coro([10, 5, 2])` 可用；而用 `asyncio.gather()` 时不是这样(`asyncio.gather` 按传入顺序给结果，并要等全部完成)
 
-```python title="asyncio.as_completed()" showLineNumbers
->>> async def main():
-...     task1 = asyncio.create_task(coro([10, 5, 2]))
-...     task2 = asyncio.create_task(coro([3, 2, 1]))
-...     print("Start:", time.strftime("%X"))
-...     for task in asyncio.as_completed([task1, task2]):
-...         result = await task
-...         print(f'result: {result} completed at {time.strftime("%X")}')
-...     print("End:", time.strftime("%X"))
-...     print(f"Both tasks done: {all((task1.done(), task2.done()))}")
-...
-
->>> asyncio.run(main())
-Start: 14:36:36
-result: [1, 2, 3] completed at 14:36:37
-result: [2, 5, 10] completed at 14:36:38
-End: 14:36:38
-Both tasks done: True
-```
+<Terminal12 />
 
 在这个示例中，`main()` 使用了 `asyncio.as_completed()`，它按任务完成的先后顺序产出任务，而不是按启动顺序。程序在事件循环中等待这些任务时，**每个任务一完成就能立刻被获取**
 
@@ -688,37 +560,7 @@ Both tasks done: True
 
 从 [Python 3.11](https://realpython.com/python311-new-features/) 开始，可以用 [ExceptionGroup](https://realpython.com/python311-exception-groups/) 类来处理可能同时发生的多个无关异常。当运行多个可能引发不同异常的协程时，此功能尤为有用。除此之外，新增的 `except*` 语法可以优雅的处理多异常：
 
-
-```python title=" Python 3.11+" showLineNumbers
->>> import asyncio
-
->>> async def coro_a():
-...     await asyncio.sleep(1)
-...     raise ValueError("Error in coro A")
-...
-
->>> async def coro_b():
-...     await asyncio.sleep(2)
-...     raise TypeError("Error in coro B")
-...
-
->>> async def coro_c():
-...     await asyncio.sleep(0.5)
-...     raise IndexError("Error in coro C")
-...
-
->>> async def main():
-...     results = await asyncio.gather(
-...         coro_a(),
-...         coro_b(),
-...         coro_c(),
-...         return_exceptions=True
-...     )
-...     exceptions = [e for e in results if isinstance(e, Exception)]
-...     if exceptions:
-...         raise ExceptionGroup("Errors", exceptions)
-...
-```
+<Terminal13 />
 
 在上面的示例中，三个协程分别抛出了三种不同的[异常](https://realpython.com/python-built-in-exceptions/)(这要是真同时出现也太抽象了)。在主协程 `main()` 中用 `asyncio.gather()` 来等待这三个协程。同时需要将 `return_exceptions` 参数设置为`True`，才能捕获异常(而不是直接寄掉)
 
@@ -726,20 +568,7 @@ Both tasks done: True
 
 然后像下面这样处理异常:
 
-```python title="python 3.11+" showLineNumbers
->>> try:
-...     asyncio.run(main())
-... except* ValueError as ve_group:
-...     print(f"[ValueError handled] {ve_group.exceptions}")
-... except* TypeError as te_group:
-...     print(f"[TypeError handled] {te_group.exceptions}")
-... except* IndexError as ie_group:
-...     print(f"[IndexError handled] {ie_group.exceptions}")
-...
-[ValueError handled] (ValueError('Error in coro A'),)
-[TypeError handled] (TypeError('Error in coro B'),)
-[IndexError handled] (IndexError('Error in coro C'),)
-```
+<Terminal14 />
 
 上面的代码中把 `asyncio.run()` 的调用包裹在 [`try`](https://realpython.com/ref/keywords/try/) 代码块中。然后用之前提到的 `except*` 语法分别捕获预期的异常
 

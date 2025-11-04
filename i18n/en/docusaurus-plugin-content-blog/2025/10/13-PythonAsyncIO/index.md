@@ -15,6 +15,17 @@ import Terminal from "./components/Terminal";
 import Terminal1 from "./components/Terminal1";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
+import Terminal4 from "./components/Terminal4";
+import Terminal5 from "./components/Terminal5";
+import Terminal6 from "./components/Terminal6";
+import Terminal7 from "./components/Terminal7";
+import Terminal8 from "./components/Terminal8";
+import Terminal9 from "./components/Terminal9";
+import Terminal10 from "./components/Terminal10";
+import Terminal11 from "./components/Terminal11";
+import Terminal12 from "./components/Terminal12";
+import Terminal13 from "./components/Terminal13";
+import Terminal14 from "./components/Terminal14";
 import { RoughNotation } from "react-rough-notation";
 
 Python’s `asyncio` library enables you to write concurrent code using the `async` and `await` keywords. The core building blocks of async I/O in Python are awaitable objects—most often coroutines—that an event loop schedules and executes asynchronously. This programming model lets you efficiently manage multiple I/O-bound tasks within a single thread of execution
@@ -291,27 +302,11 @@ What’s more important is understanding what goes on beneath the surface of the
 
 Regarding the first point, if you have a coroutine that awaits others, then calling it in isolation has little effect:
 
-```python
->>> import asyncio
-
->>> async def main():
-...     print("Hello...")
-...     await asyncio.sleep(1)
-...     print("World!")
-...
-
->>> routine = main()
->>> routine
-<coroutine object main at 0x1027a6150>
-```
+<Terminal4 />
 
 In this example, calling `main()` directly returns a coroutine object that you can’t use in isolation. You need to use `asyncio.run()` to schedule the `main()` coroutine for execution on the event loop:
 
-```python
->>> asyncio.run(routine)
-Hello...
-World!
-```
+<Terminal5 />
 
 You typically wrap your `main()` coroutine in an `asyncio.run()` call. You can execute lower-level coroutines with `await`
 
@@ -327,30 +322,11 @@ Starting with [Python 3.8](https://realpython.com/python38-new-features/), the `
 
 To start the [REPL](https://realpython.com/ref/glossary/repl/), you can run the following command:
 
-```
-$ python -m asyncio
-asyncio REPL 3.13.3 (main, Jun 25 2025, 17:27:59) ... on darwin
-Use "await" directly instead of "asyncio.run()".
-Type "help", "copyright", "credits" or "license" for more information.
->>> import asyncio
->>>
-```
+<Terminal6 />
 
 Once you get the >>> prompt, you can start running asynchronous code there. Consider the example below, where you reuse the code from the previous section:
 
-```python title="asyncio repl"
->>> import asyncio
-
->>> async def main():
-...     print("Hello...")
-...     await asyncio.sleep(1)
-...     print("World!")
-...
-
->>> await main()
-Hello...
-World!
-```
+<Terminal7 />
 
 This example works the same as the one in the previous section. However, instead of running `main()` using `asyncio.run()`, you use `await` directly
 
@@ -516,30 +492,7 @@ Note: To learn more about async iterators, check out the [Asynchronous Iterators
 
 A natural extension of this concept is an [**asynchronous generator**](https://realpython.com/ref/glossary/asynchronous-generator/). Here’s an example that generates powers of two and uses them in a loop and comprehension:
 
-```python title="asynchronous generator" showLineNumbers
->>> import asyncio
-
->>> async def powers_of_two(stop=10):
-...     exponent = 0
-...     while exponent < stop:
-...         yield 2**exponent
-...         exponent += 1
-...         await asyncio.sleep(0.2)  # Simulate some asynchronous work
-...
-
->>> async def main():
-...     g = []
-...     async for i in powers_of_two(5):
-...         g.append(i)
-...     print(g)
-...     f = [j async for j in powers_of_two(5) if not (j // 3 % 5)]
-...     print(f)
-...
-
->>> asyncio.run(main())
-[1, 2, 4, 8, 16]
-[1, 2, 16]
-```
+<Terminal8 />
 
 There’s a crucial distinction between synchronous and asynchronous generators, loops, and comprehensions. Their asynchronous counterparts don’t inherently make iteration concurrent. Instead, they allow the event loop to run other tasks between iterations when you explicitly yield control by using `await`. The iteration itself is still sequential unless you introduce concurrency by using `asyncio.gather()`
 
@@ -553,30 +506,7 @@ For example, say you need to write a coroutine to check whether some websites ar
 
 Here’s a quick example that implements the required functionality:
 
-```python title="async with" showLineNumbers
->>> import asyncio
->>> import aiohttp
-
->>> async def check(url):
-...     async with aiohttp.ClientSession() as session:
-...         async with session.get(url) as response:
-...             print(f"{url}: status -> {response.status}")
-...
-
->>> async def main():
-...     websites = [
-...         "https://realpython.com",
-...         "https://pycoders.com",
-...         "https://www.python.org",
-...     ]
-...     await asyncio.gather(*(check(url) for url in websites))
-...
-
->>> asyncio.run(main())
-https://www.python.org: status -> 200
-https://pycoders.com: status -> 200
-https://realpython.com: status -> 200
-```
+<Terminal9 />
 
 In this example, you use `aiohttp` and `asyncio` to perform concurrent [HTTP GET](https://realpython.com/api-integration-in-python/#get) requests to a list of websites. The `check()` coroutine fetches and prints the website’s status. The `async with` statement ensures that both `ClientSession` and the individual HTTP response are properly and asynchronously managed by opening and closing them without blocking the event loop
 
@@ -588,27 +518,7 @@ Finally, `main()` runs the `check()` coroutines concurrently, allowing you to fe
 
 In addition to `asyncio.run()`, you’ve used a few other package-level functions, such as `asyncio.gather()` and `asyncio.get_event_loop()`. You can use [`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) to schedule the execution of a coroutine object, followed by the usual call to the `asyncio.run()` function:
 
-```python title="asyncio" showLineNumbers
->>> import asyncio
-
->>> async def coro(numbers):
-...     await asyncio.sleep(min(numbers))
-...     return list(reversed(numbers))
-...
-
->>> async def main():
-...     task = asyncio.create_task(coro([3, 2, 1]))
-...     print(f"{type(task) = }")
-...     print(f"{task.done() = }")
-...     return await task
-...
-
->>> result = asyncio.run(main())
-type(task) = <class '_asyncio.Task'>
-task.done() = False
->>> print(f"result: {result}")
-result: [1, 2, 3]
-```
+<Terminal10 />
 
 This pattern includes a subtle detail you need to be aware of: if you create tasks with `create_task()` but don’t await them or wrap them in `gather()`, and your `main()` coroutine finishes, then those manually created tasks will be canceled when the event loop ends. You must await all tasks you want to complete
 
@@ -618,51 +528,13 @@ The `gather()` function is meant to neatly put a collection of coroutines into a
 
 If you await `gather()` and specify multiple tasks or coroutines, then the loop will wait for all the tasks to complete. The result of `gather()` will be a list of the results across the inputs:
 
-```python title="gather" showLineNumbers
->>> import time
-
->>> async def main():
-...     task1 = asyncio.create_task(coro([10, 5, 2]))
-...     task2 = asyncio.create_task(coro([3, 2, 1]))
-...     print("Start:", time.strftime("%X"))
-...     result = await asyncio.gather(task1, task2)
-...     print("End:", time.strftime("%X"))
-...     print(f"Both tasks done: {all((task1.done(), task2.done()))}")
-...     return result
-...
-
->>> result = asyncio.run(main())
-Start: 14:38:49
-End: 14:38:51
-Both tasks done: True
-
->>> print(f"result: {result}")
-result: [[2, 5, 10], [1, 2, 3]]
-```
+<Terminal11 />
 
 You probably noticed that `gather()` waits for the entire result of the whole set of coroutines that you pass it. The order of results from `gather()` is deterministic and corresponds to the order of awaitables originally passed to it
 
 Alternatively, you can loop over `asyncio.as_completed()` to get tasks as they complete. The function returns a synchronous iterator that yields tasks as they finish. Below, the result of `coro([3, 2, 1])` will be available before `coro([10, 5, 2])` is complete, which wasn’t the case with the `gather()` function:
 
-```python title="asyncio.as_completed()" showLineNumbers
->>> async def main():
-...     task1 = asyncio.create_task(coro([10, 5, 2]))
-...     task2 = asyncio.create_task(coro([3, 2, 1]))
-...     print("Start:", time.strftime("%X"))
-...     for task in asyncio.as_completed([task1, task2]):
-...         result = await task
-...         print(f'result: {result} completed at {time.strftime("%X")}')
-...     print("End:", time.strftime("%X"))
-...     print(f"Both tasks done: {all((task1.done(), task2.done()))}")
-...
-
->>> asyncio.run(main())
-Start: 14:36:36
-result: [1, 2, 3] completed at 14:36:37
-result: [2, 5, 10] completed at 14:36:38
-End: 14:36:38
-Both tasks done: True
-```
+<Terminal12 />
 
 In this example, the `main()` function uses `asyncio.as_completed()`, which yields tasks in the order they complete, not in the order they were started. As the program loops through the tasks, it awaits them, allowing the results to be available immediately upon completion
 
@@ -674,36 +546,7 @@ Starting with [Python 3.11](https://realpython.com/python311-new-features/), you
 
 Here’s a quick demo of how to use this class in asynchronous code:
 
-```python title="3.11+" showLineNumbers
->>> import asyncio
-
->>> async def coro_a():
-...     await asyncio.sleep(1)
-...     raise ValueError("Error in coro A")
-...
-
->>> async def coro_b():
-...     await asyncio.sleep(2)
-...     raise TypeError("Error in coro B")
-...
-
->>> async def coro_c():
-...     await asyncio.sleep(0.5)
-...     raise IndexError("Error in coro C")
-...
-
->>> async def main():
-...     results = await asyncio.gather(
-...         coro_a(),
-...         coro_b(),
-...         coro_c(),
-...         return_exceptions=True
-...     )
-...     exceptions = [e for e in results if isinstance(e, Exception)]
-...     if exceptions:
-...         raise ExceptionGroup("Errors", exceptions)
-...
-```
+<Terminal13 />
 
 In this example, you have three coroutines that raise three different types of [exceptions](https://realpython.com/python-built-in-exceptions/). In the `main()` function, you call `gather()` with the coroutines as arguments. You also set the `return_exceptions` argument to `True` so that you can grab the exceptions if they occur
 
@@ -711,20 +554,7 @@ Next, you use a list comprehension to store the exceptions in a new list. If the
 
 To handle this exception group, you can use the following code:
 
-```python title="python 3.11+" showLineNumbers
->>> try:
-...     asyncio.run(main())
-... except* ValueError as ve_group:
-...     print(f"[ValueError handled] {ve_group.exceptions}")
-... except* TypeError as te_group:
-...     print(f"[TypeError handled] {te_group.exceptions}")
-... except* IndexError as ie_group:
-...     print(f"[IndexError handled] {ie_group.exceptions}")
-...
-[ValueError handled] (ValueError('Error in coro A'),)
-[TypeError handled] (TypeError('Error in coro B'),)
-[IndexError handled] (IndexError('Error in coro C'),)
-```
+<Terminal14 />
 
 In this code, you wrap the call to `asyncio.run()` in a [`try`](https://realpython.com/ref/keywords/try/) block. Then, you use the `except*` syntax to catch the expected exception separately. In each case, you print an error message to the screen
 
