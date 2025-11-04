@@ -189,7 +189,6 @@ const config = {
         hideOnScroll: true,
       },
       footer: {
-        style: 'dark',
         links: [
           {
             title: '系列文章',
@@ -307,8 +306,8 @@ const config = {
         ],
       },
       colorMode: {
-        defaultMode: 'dark',
         disableSwitch: false,
+        respectPrefersColorScheme: true,
       },
       docs: {
         sidebar: {
