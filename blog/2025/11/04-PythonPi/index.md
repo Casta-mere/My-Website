@@ -9,7 +9,7 @@ references:
     time: 2025
     url: https://realpython.com/python314-new-features
   - author: Leodanis Pozo Ramos
-    title: Python 3.14 Preview：1REPL Autocompletion and Highlighting
+    title: Python 3.14 Preview：REPL Autocompletion & Highlighting
     time: 2025
     url: https://realpython.com/python-repl-autocompletion-highlighting/
   - author: Adam Turner and Hugo van Kemenade. Python.org
@@ -35,9 +35,14 @@ import Terminal8 from "./components/Terminal8";
 
 2025 年 10 月 7 日发布了 Python 3.14，今天来看看更新了什么
 
-本篇将介绍以下内容
+本篇介绍以下内容
 
-- template-string
+- [REPL 更新](/blog/PythonPi#repl)
+- [template-string](/blog/PythonPi#template-string)
+- [更好的报错](/blog/PythonPi#更好的报错)
+- [except & except*](/blog/PythonPi#except--except)
+- [try...finally 中的 warning](/blog/PythonPi#tryfinally-中的-warning)
+- [Free-threaded mode (No GIL)](/blog/PythonPi#free-threaded-mode-no-gil)
 
 <!-- truncate -->
 
