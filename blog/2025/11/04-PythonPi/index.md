@@ -8,6 +8,10 @@ references:
     title: Python 3.14：Cool New Features for You to Try
     time: 2025
     url: https://realpython.com/python314-new-features
+  - author: Leodanis Pozo Ramos
+    title: Python 3.14 Preview：1REPL Autocompletion and Highlighting
+    time: 2025
+    url: https://realpython.com/python-repl-autocompletion-highlighting/
   - author: Adam Turner and Hugo van Kemenade. Python.org
     title: What’s new in Python 3.14
     time: 2025
@@ -22,6 +26,10 @@ import Terminal from "./components/Terminal";
 import Terminal2 from "./components/Terminal2";
 import Terminal3 from "./components/Terminal3";
 import Terminal4 from "./components/Terminal4";
+import Terminal5 from "./components/Terminal5";
+import Terminal6 from "./components/Terminal6";
+import Terminal7 from "./components/Terminal7";
+import Terminal8 from "./components/Terminal8";
 
 # Python π
 
@@ -35,11 +43,52 @@ import Terminal4 from "./components/Terminal4";
 
 ## REPL
 
-终于支持 clear 清屏了
+- 终于支持 clear 清屏了
+- 跨行编辑更舒服了
+- 不需要 exit() 了，直接 exit 即可
+- [Python 语法高亮](/blog/PythonPi#语法高亮)
+- [import tab 补全](/blog/PythonPi#import-tab-补全)
+- 使用 `F1` 键可以打开帮助文档
+- 使用 `F2` 键可以打开历史记录
+- 使用 `F3` 键可以进入粘贴模式
 
-跨行编辑更舒服了
+### 语法高亮
 
-不需要 exit() 了，直接 exit 即可
+REPL 现在支持 python 语法高亮
+
+![REPL Highlight](image/REPL_color.png)
+
+而且部分标准库也添加了语法高亮，比如：
+
+- help 文档也有高亮
+
+![REPL Help](image/REPL_help.png)
+
+- 报错也可以高亮
+
+![REPL Error](image/REPL_Error.png)
+
+- 一些 print 也有高亮
+
+![REPL print](image/REPL_print.png)
+
+:::tip
+可以通过设定如下环境变量来关闭语法高亮:
+
+> NO_COLOR=1
+> 
+> PYTHON_COLORS=0
+
+设定如下环境变量来还原默认设置:
+
+> PYTHON_BASIC_REPL=1
+:::
+
+### import tab 补全
+
+在 import 和 from ... import 语句中，REPL 现在支持模块名的 tab 补全，类似 zsh 的路径补全
+
+![REPL import](image/REPL_import.gif)
 
 ## template-string
 
@@ -185,3 +234,63 @@ def render(template: Template) -> str:
 > 有了 t-字符串，开发者可以编写专用系统来无害化 SQL，执行安全的 shell 操作，改进日志记录，处理 Web 开发中的现代概念(HTML, CSS 等等)，以及实现轻量级的自定义业务 DSL
 
 参考 [t-string 的应用场景](https://www.cnblogs.com/pythonista/p/18852424)
+
+## 更好的报错
+
+现在的报错会显示更多有用的信息
+
+<Terminal5 />
+
+旧版本的报错相比之下就有点逆天，只会告诉你 `invalid syntax`:
+
+<Terminal6 />
+
+## except & except*
+
+except 多个异常时，可以不用加括号了
+
+```python title="except.py"
+try:
+    ...
+except ValueError, TypeError:
+    print("Caught ValueError or TypeError") 
+```
+
+但是如果要使用 as 的话，还是需要加括号
+
+```python title="except_as.py"
+try:
+    ...
+except (ValueError, TypeError) as e:
+    print(f"Caught an exception: {e}")
+```
+
+## try...finally 中的 warning
+
+python 的 try...except...finally `语句中，finally` 一般用于清理资源，比如关闭文件、释放锁等。看一下下面这个例子：如果我们在 `try` 块中抛出一个异常，然后在 `finally` 块中使用 `return`，此时异常就被吞掉了，调用这个函数永远不会看到这个异常，debug 时将十分痛苦
+
+<Terminal7 />
+
+在 Python 3.14 中，如果在 `finally` 块中使用了 `return`, `break`, `continue`。解释器会发出一个 `SyntaxWarning`，提醒开发者注意这种潜在的问题
+
+<Terminal8 />
+
+切换解释器后，vscode 里也会有这个 warning
+
+3.13:
+
+![python 3.13](image/tryfin13.png)
+
+3.14:
+
+![python 3.14](image/tryfin14.png)
+
+可以用这个 warning 来改旧代码，把 `return`, `break`, `continue` 从 `finally` 块中移到后面即可
+
+## Free-threaded mode (No GIL)
+
+Python 3.14 正式引入了无 GIL 版本，给 Python 带来了真正的多线程支持，对于之前用 multiprocessing 模块来实现多进程的场景，现在有了新的方式。但真正用起来怎么样，还是得以后找合适的机会研究了
+
+## 后记
+
+在 [improved modules](https://docs.python.org/3.14/whatsnew/3.14.html#improved-modules) 一节，还提到了很多更新了的内置模块，感兴趣的可以去看看官方文档
