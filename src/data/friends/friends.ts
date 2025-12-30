@@ -84,6 +84,20 @@ const friendList: FriendItem[] = [
     avatar: "https://lailai.one/img/logo.png",
     tags: [],
   },
+  {
+    title: "Evilrabbit Blog",
+    description: "爱 Coding 爱生活",
+    url: "https://blog.yujiay.wang/link/",
+    avatar: "https://blog.yujiay.wang/images/site/BlogHsvg.png",
+    tags: [],
+  },
+  {
+    title: "内密心書",
+    description: "喜欢捣鼓的博主",
+    url: "https://oortaka.top/",
+    avatar: "https://oortaka.top/upload/10-tuya.png",
+    tags: [],
+  },
 ];
 
 export default friendList;
