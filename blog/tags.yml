@@ -244,6 +244,11 @@ Windows:
   label: Windows
   permalink: /Windows
 
+Work:
+  description: Work
+  label: Work
+  permalink: /Work
+
 Zsh:
   description: Zsh
   label: Zsh
