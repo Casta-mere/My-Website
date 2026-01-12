@@ -64,6 +64,11 @@ Crontab:
   label: Crontab
   permalink: /Crontab
 
+Distributed Systems:
+  description: Distributed Systems
+  label: Distributed Systems
+  permalink: /Distributed-Systems
+
 Docusaurus:
   description: Docusaurus
   label: Docusaurus
@@ -103,6 +108,11 @@ Love Story:
   description: Love Story
   label: Love Story
   permalink: /Love-Story
+
+Middleware:
+  description: Middleware
+  label: Middleware
+  permalink: /Middleware
 
 MiniConda:
   description: MiniConda
