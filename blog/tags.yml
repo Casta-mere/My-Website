@@ -149,6 +149,11 @@ Python:
   label: Python
   permalink: /Python
 
+RPC:
+  description: RPC
+  label: RPC
+  permalink: /RPC
+
 React:
   description: React
   label: React
@@ -263,3 +268,8 @@ Zsh:
   description: Zsh
   label: Zsh
   permalink: /Zsh
+
+gRPC:
+  description: gRPC
+  label: gRPC
+  permalink: /gRPC
