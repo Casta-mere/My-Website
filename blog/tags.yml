@@ -1,4 +1,9 @@
 ---
+AI:
+  description: AI
+  label: AI
+  permalink: /AI
+
 Asian Games:
   description: Asian Games
   label: Asian Games
@@ -63,6 +68,11 @@ Crontab:
   description: Crontab
   label: Crontab
   permalink: /Crontab
+
+Discord:
+  description: Discord
+  label: Discord
+  permalink: /Discord
 
 Distributed Systems:
   description: Distributed Systems
@@ -143,6 +153,11 @@ Open Stack:
   description: Open Stack
   label: Open Stack
   permalink: /Open-Stack
+
+Openclaw:
+  description: openclaw
+  label: openclaw
+  permalink: /openclaw
 
 Python:
   description: Python
