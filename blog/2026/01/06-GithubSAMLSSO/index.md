@@ -57,3 +57,11 @@ Please make sure you have the correct access rights and the repository exists.
 2. 在此处为对应 SSH 添加 SSO 权限
 ![Authorize](image/authorize.png)
 3. 再回到本地，即可成功 clone
+
+## 后记
+
+使用如下命令，可以在全局范围内将 https 的 github 地址替换为 ssh 地址，如 `go mod download` 也能用 ssh 拉取代码
+
+```bash
+git config --global url."git@github.com:".insteadOf "https://github.com/"
+```
