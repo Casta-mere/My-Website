@@ -2,7 +2,7 @@
 slug: RPC
 title:  Remote Procedure Call
 authors: [Castamere]
-tags: [Computer Networks, Distributed Systems, Middleware]
+tags: [RPC, Computer Networks, Distributed Systems, Middleware]
 references:
   - author: 科控物联
     title: RPC框架：从原理到选型，一文带你搞懂RPC
@@ -23,6 +23,11 @@ import Terminal from "./components/Terminal";
 远程过程调用, 可以理解为让调用远端服务"像调用本地函数一样"
 
 本篇介绍以下内容：
+
+- [RPC 的基本概念](/blog/RPC#简介)
+- [简单的 RPC 示例](/blog/RPC#简介)
+- [RPC 与 REST 的对比](/blog/RPC#RPC-vs-REST)
+- [RPC 的适用场景](/blog/RPC#适用场景)
 
 <!-- truncate -->
 
@@ -152,6 +157,6 @@ REST API (通常基于 HTTP + JSON) 完全可以实现相同的功能。实际�
 - **资源密集型服务**：简单的 CRUD 操作，REST 的语义非常直观
 - **需要极高灵活性**：服务端修改不希望强制客户端更新 SDK
 
-## 应用
-
 ## 后记
+
+接下来研究 [gRPC](/blog/gRPC)
