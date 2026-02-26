@@ -19,11 +19,6 @@ Daisy UI:
   label: Daisy UI
   permalink: /DaisyUI
 
-Steam:
-  description: Steam
-  label: Steam
-  permalink: /Steam
-
 Database:
   description: Database
   label: Database
@@ -43,6 +38,11 @@ Gisus:
   description: Gisus
   label: Gisus
   permalink: /Gisus
+
+Golang:
+  description: Golang
+  label: Golang
+  permalink: /Golang
 
 IndexNow:
   description: IndexNow
@@ -148,6 +148,11 @@ Snippet:
   description: Snippet
   label: Snippet
   permalink: /Snippet
+
+Steam:
+  description: Steam
+  label: Steam
+  permalink: /Steam
 
 Tailwind CSS:
   description: Tailwind CSS

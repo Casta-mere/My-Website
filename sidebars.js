@@ -97,6 +97,15 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Golang",
+      link: {
+        type: "doc",
+        id: "Golang/README",
+      },
+      items: ["Golang/Basic"],
+    },
+    {
+      type: "category",
       label: "SQL",
       link: {
         type: "doc",
