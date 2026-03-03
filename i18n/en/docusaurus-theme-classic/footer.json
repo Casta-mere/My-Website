@@ -35,10 +35,6 @@
     "message": "Stastics",
     "description": "The label of footer link with label=数据统计 linking to https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com"
   },
-  "copyright": {
-    "message": "Copyright © 2022-2025 Castamere <Br/>",
-    "description": "The footer copyright"
-  },
   "link.item.label.Blogs.cn": {
     "message": "Blogs.cn",
     "description": "The label of footer link with label=Blogs.cn linking to https://blogscn.fun"
