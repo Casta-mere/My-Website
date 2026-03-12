@@ -11,6 +11,12 @@ tags: [Git, Github]
 
 # Git & Github
 
+## Git 常用命令
+
+```bash
+git checkout -b new-branch # 创建并切换到新分支 
+```
+
 ## Tag
 
 使用 Git 的 `tag` 和 Github Actions 可以形成很好的自动化
@@ -24,7 +30,7 @@ git push origin Vx.x.x
 
 ```bash
 git tag -d Vx.x.x
-git push origin :refs/tags/V0.2
+git push origin :refs/tags/Vx.x.x
 ```
 
 ## Github 回滚
@@ -84,3 +90,16 @@ Host github.com
 ```bash
 git remote set-url origin git@github.com:Casta-mere/repo-name.git
 ```
+
+## Cherry-pick
+
+Cherry-pick 是 Git 中一个非常有用的命令，可以将特定的提交从一个分支应用到另一个分支，而不需要合并整个分支。这对于修复错误、引入特定功能或在**不同分支之间共享代码**非常有帮助
+
+遇到的一个场景是：在某个分支上创建了一个新的分支，在新分支上做了一些修改后，发现原有分支已经有了新的提交，并且已经合并了。在代码不冲突的情况下，我们可以这样做：
+
+```bash
+git checkout original-branch
+git branch new-branch
+git checkout new-branch
+git cherry-pick <commit-hash>
+``` 
