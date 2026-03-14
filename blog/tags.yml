@@ -139,6 +139,11 @@ Neutron:
   label: Neutron
   permalink: /Neutron
 
+Nix:
+  description: Nix
+  label: Nix
+  permalink: /Nix
+
 Nohup:
   description: Nohup
   label: Nohup
