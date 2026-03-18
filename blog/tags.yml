@@ -119,6 +119,11 @@ Love Story:
   label: Love Story
   permalink: /Love-Story
 
+MacOS:
+  description: MacOS
+  label: MacOS
+  permalink: /MacOS
+
 Middleware:
   description: Middleware
   label: Middleware
