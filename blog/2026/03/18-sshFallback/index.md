@@ -5,6 +5,9 @@ authors: [Castamere]
 tags: [SSH]
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 # SSH 自动匹配多个 IP
 
 同一台机器同时有局域网 IP 和 Tailscale IP 时，可以让 SSH 先试本地地址，失败后自动回退到 Tailscale
@@ -24,8 +27,12 @@ tags: [SSH]
 
 可以用 SSH 的 `Match exec` 做一次预检查：如果本地 IP 能连通，就临时把 `HostName` 改成局域网地址；否则继续使用后面的 Tailscale 地址
 
+<Tabs>
+
+<TabItem value="MacOS" label="MacOS" default>
+
 ```config title="~/.ssh/config"
-Match host nas exec "nc -z -w 1 192.168.50.71 22 2>/dev/null"
+Match host nas exec "nc -z -G 1 192.168.50.71 22 2>/dev/null"
     HostName 192.168.50.71
 
 Host nas
@@ -33,6 +40,26 @@ Host nas
     User root
     IdentityFile ~/.ssh/id_rsa_nas
 ```
+
+</TabItem>
+
+<TabItem value="Linux" label="Linux">
+
+```config title="~/.ssh/config"
+Match host nas exec "timeout 1 nc -z 192.168.50.71 22 2>/dev/null"
+    HostName 192.168.50.71
+
+Host nas
+    HostName 100.92.232.30
+    User root
+    IdentityFile ~/.ssh/id_rsa_nas
+```
+
+</TabItem>
+
+</Tabs>
+
+
 
 ## 原理
 
