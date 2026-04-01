@@ -100,28 +100,90 @@ alias tree='eza -T -L'
  
 ## lazygit
 
-[lazygit](https://github.com/jesseduffield/lazygit)
+[lazygit](https://github.com/jesseduffield/lazygit) 
 
+![lazygit demo](lazygit-demo.png)
+
+
+<Tabs groupId="operating-systems">
+  <TabItem value="MacOS" label="MacOS">
+  
 ```bash
 brew install lazygit
 ```
+
+  </TabItem>
+  <TabItem value="Linux" label="Linux">
+  
+```bash
+sudo apt install lazygit
+```
+
+  </TabItem>
+</Tabs>
+
+
 
 ## btop
 
 [btop](https://github.com/aristocratos/btop)
 
+<Tabs groupId="operating-systems">
+  <TabItem value="MacOS" label="MacOS">
+
 ```bash
 brew install btop
 ```
+
+  </TabItem>
+  <TabItem value="Linux" label="Linux">
+
+```bash
+sudo apt install btop
+```
+
+  </TabItem>
+</Tabs>
+
 
 ## Glow
 
 [Glow](https://github.com/charmbracelet/glow)
 
+<Tabs groupId="operating-systems">
+  <TabItem value="MacOS" label="MacOS">
+
 ```bash
 brew install glow
 ```
 
+  </TabItem>
+  <TabItem value="Linux" label="Linux">
+
+```bash
+sudo apt install glow
+```
+
+  </TabItem>
+</Tabs>
+
 ## Ranger
 
 [Ranger](https://github.com/ranger/ranger)
+
+<Tabs groupId="operating-systems">
+  <TabItem value="MacOS" label="MacOS">
+
+```bash
+brew install Ranger
+```
+
+  </TabItem>
+  <TabItem value="Linux" label="Linux">
+
+```bash
+sudo apt install Ranger
+``` 
+
+  </TabItem>
+</Tabs>
