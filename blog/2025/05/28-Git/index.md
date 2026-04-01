@@ -3,6 +3,11 @@ slug: Git
 title: Git & Github
 authors: [Castamere]
 tags: [Git, Github]
+references:
+  - author: Nishant Aanjaney Jalan
+    title: Git Rebase like a Professional
+    time: 2025
+    url: https://medium.com/codex/git-rebase-like-a-professional-1d75929ce69d
 ---
 
 记录一些常用的 Git 和 Github 操作
@@ -15,6 +20,22 @@ tags: [Git, Github]
 
 ```bash
 git checkout -b new-branch # 创建并切换到新分支 
+```
+
+## Git Rebase
+
+> rebasing is the process of moving or combining a sequence of commits to a new base commit
+
+在工作中常遇到的一个场景是：我们在某个分支上创建了一个分支，在经过几天的修改、commit 后，发现原分支上已经有了新的 commit。此时我们想保持工作环境整洁，以及确保用的是最新的代码，就会用到 `git rebase`，来看下面这个例子
+
+在 `main` 分支中，我们在 C2 commit 后创建了新分支 `feature`，在 `feature` 分支上又做了两个 commit F1 和 F2。此时，我们想让我们的分支也和 main 分支保持最新，就可以在 `feature` 分支上执行 `git rebase main`，这样就会把 F1 和 F2 这两个 commit 移动到 C4 后面，保持了提交历史的整洁
+
+![git rebase demo](git_rebase_before_after.svg)
+
+在 `rebase` 之后，你会发现你的 commit hash 发生了变化(上图 F1 和 F2 变成了 F1' 和 F2')，也就是说 `rebase` 是通过创建新的 commit 来实现的。这也导致了一个问题：如果你的分支已经 `push` 到远程的话，那么本地和远程就会有冲突，此时使用下面的命令来强制推送
+
+```bash
+git push --force-with-lease
 ```
 
 ## Tag
