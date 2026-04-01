@@ -1,0 +1,7 @@
+{
+  "cSpell.words": ["Castamere"],
+  "markdown.copyFiles.destination": {
+    "blog/**": "${documentDirName}/image/${fileName}",
+    "docs/**": "${documentDirName}/image/${fileName}"
+  }
+}
