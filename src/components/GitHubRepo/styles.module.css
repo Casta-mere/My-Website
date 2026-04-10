@@ -1,6 +1,8 @@
 /* ========== Glass + Tilt Card ========== */
 .wrapper {
-  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 38rem;
+  margin: 0 auto 1rem;
 }
 
 .card {
@@ -12,7 +14,10 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -20,7 +25,9 @@
 .card:hover {
   background: rgba(255, 255, 255, 0.75);
   border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="dark"] .card {
@@ -32,7 +39,9 @@
 [data-theme="dark"] .card:hover {
   background: rgba(15, 23, 42, 0.65);
   border-color: rgba(148, 163, 184, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(162, 89, 230, 0.1);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(162, 89, 230, 0.1);
 }
 
 /* Glare overlay that follows cursor */
