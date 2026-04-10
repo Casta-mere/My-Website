@@ -484,5 +484,8 @@
   },
   "站内资源": {
     "message": "Internal Resource"
+  },
+  "仓库信息暂不可用，点击前往 GitHub 查看": {
+    "message": "Repository information is temporarily unavailable. Click to view on GitHub."
   }
 }
