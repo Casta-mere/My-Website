@@ -1,5 +1,6 @@
 import DocusaurusLink from "@docusaurus/Link";
 import { useColorMode } from "@docusaurus/theme-common";
+import GithubRepo from "@site/src/components/GitHubRepo";
 import Link from "@site/src/components/Link/Link";
 import RecentGames from "@site/src/components/Steam/RecentGames";
 import Typewriter from "@site/src/components/TypeWriter";
@@ -48,6 +49,11 @@ const Components: ComponentItem[] = [
     name: "Steam 最近游玩",
     component: <RecentGames />,
     link: "/docs/Snippets/Components/Steam",
+  },
+  {
+    name: "Github Repo",
+    component: <GithubRepo owner="Casta-mere" repo="My-Website" />,
+    link: "/docs/Snippets/Components/GithubRepo",
   },
 ];
 
