@@ -39,6 +39,11 @@ Clash:
   label: Clash
   permalink: /Clash
 
+Claude:
+  description: Claude
+  label: Claude
+  permalink: /Claude
+
 Computer Networks:
   description: Computer Networks
   label: Computer Networks
