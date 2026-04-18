@@ -6,14 +6,38 @@
 }
 
 .card {
+  --repo-card-bg: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.94),
+    rgba(248, 250, 252, 0.82)
+  );
+  --repo-card-bg-hover: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(248, 250, 252, 0.9)
+  );
+  --repo-card-border: rgba(148, 163, 184, 0.28);
+  --repo-card-border-hover: rgba(46, 133, 85, 0.26);
+  --repo-card-shadow:
+    0 14px 34px rgba(15, 23, 42, 0.08),
+    0 4px 12px rgba(15, 23, 42, 0.05);
+  --repo-card-shadow-hover:
+    0 22px 48px rgba(15, 23, 42, 0.12),
+    0 8px 20px rgba(46, 133, 85, 0.08);
+  --repo-card-icon: rgba(15, 23, 42, 0.62);
+  --repo-card-muted: rgba(15, 23, 42, 0.68);
+  --repo-card-description: rgba(15, 23, 42, 0.8);
+  --repo-card-meta: rgba(15, 23, 42, 0.74);
+  --repo-card-glare: rgba(255, 255, 255, 0.36);
   position: relative;
+  overflow: hidden;
   border-radius: 0.75rem;
   padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--repo-card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--repo-card-border);
+  box-shadow: var(--repo-card-shadow);
   transition:
     box-shadow 0.3s ease,
     background 0.3s ease,
@@ -22,26 +46,63 @@
   will-change: transform;
 }
 
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(0.75rem - 1px);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.18) 34%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
 .card:hover {
-  background: rgba(255, 255, 255, 0.75);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.08),
-    0 8px 16px rgba(0, 0, 0, 0.04);
+  background: var(--repo-card-bg-hover);
+  border-color: var(--repo-card-border-hover);
+  box-shadow: var(--repo-card-shadow-hover);
 }
 
 [data-theme="dark"] .card {
-  background: rgba(15, 23, 42, 0.5);
-  border-color: rgba(148, 163, 184, 0.15);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --repo-card-bg: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.56),
+    rgba(15, 23, 42, 0.42)
+  );
+  --repo-card-bg-hover: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.66),
+    rgba(15, 23, 42, 0.5)
+  );
+  --repo-card-border: rgba(148, 163, 184, 0.18);
+  --repo-card-border-hover: rgba(148, 163, 184, 0.32);
+  --repo-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --repo-card-shadow-hover:
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(162, 89, 230, 0.1);
+  --repo-card-icon: rgba(226, 232, 240, 0.64);
+  --repo-card-muted: rgba(226, 232, 240, 0.68);
+  --repo-card-description: rgba(226, 232, 240, 0.8);
+  --repo-card-meta: rgba(226, 232, 240, 0.76);
+  --repo-card-glare: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="dark"] .card::before {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.04) 34%,
+    transparent 72%
+  );
 }
 
 [data-theme="dark"] .card:hover {
-  background: rgba(15, 23, 42, 0.65);
-  border-color: rgba(148, 163, 184, 0.3);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.35),
-    0 4px 12px rgba(162, 89, 230, 0.1);
+  background: var(--repo-card-bg-hover);
+  border-color: var(--repo-card-border-hover);
+  box-shadow: var(--repo-card-shadow-hover);
 }
 
 /* Glare overlay that follows cursor */
@@ -52,7 +113,7 @@
   pointer-events: none;
   background: radial-gradient(
     circle at var(--glare-x, 50%) var(--glare-y, 50%),
-    rgba(255, 255, 255, 0.18) 0%,
+    var(--repo-card-glare) 0%,
     transparent 60%
   );
   opacity: 0;
@@ -69,6 +130,44 @@
   z-index: 1;
   transform: translateZ(20px);
   transform-style: preserve-3d;
+}
+
+.repoIcon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: var(--repo-card-icon);
+}
+
+.ownerText {
+  font-size: 0.875rem;
+  color: var(--repo-card-muted);
+}
+
+.repoName {
+  color: var(--ifm-font-color-base);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.description {
+  margin-bottom: 0.75rem;
+  color: var(--repo-card-description);
+  font-size: 0.875rem;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  color: var(--repo-card-meta);
+  font-size: 0.875rem;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 /* Language dot with glow */

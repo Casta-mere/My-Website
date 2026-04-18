@@ -73,12 +73,12 @@ export default function GitHubRepo({ owner, repo }: GitHubRepoProps) {
           <div className={styles.card}>
             <div className={styles.content}>
               <div className="flex items-center gap-2 mb-2">
-                <FaGithub className="text-xl opacity-50" />
-                <span className="text-sm opacity-50">{owner} /</span>
-                <span className="font-semibold text-base">{repo}</span>
+                <FaGithub className={styles.repoIcon} />
+                <span className={styles.ownerText}>{owner} /</span>
+                <span className={styles.repoName}>{repo}</span>
               </div>
 
-              <p className="text-sm opacity-40 mb-3">
+              <p className={styles.description}>
                 <Translate>仓库信息暂不可用，点击前往 GitHub 查看</Translate>
               </p>
             </div>
@@ -111,18 +111,18 @@ export default function GitHubRepo({ owner, repo }: GitHubRepoProps) {
           <div ref={glareRef} className={styles.glare} />
           <div className={styles.content}>
             <div className="flex items-center gap-2 mb-2">
-              <FaGithub className="text-xl opacity-50" />
-              <span className="text-sm opacity-50">{ownerLogin} /</span>
-              <span className="font-semibold text-base">{data.name}</span>
+              <FaGithub className={styles.repoIcon} />
+              <span className={styles.ownerText}>{ownerLogin} /</span>
+              <span className={styles.repoName}>{data.name}</span>
             </div>
 
             {data.description && (
-              <p className="text-sm opacity-65 mb-3 line-clamp-2">
+              <p className={`${styles.description} line-clamp-2`}>
                 {data.description}
               </p>
             )}
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm opacity-75">
+            <div className={styles.metaRow}>
               {data.language && langColor && (
                 <span className="flex items-center gap-1.5">
                   <span
@@ -137,20 +137,20 @@ export default function GitHubRepo({ owner, repo }: GitHubRepoProps) {
                   {data.language}
                 </span>
               )}
-              <span className="flex items-center gap-1">
+              <span className={styles.metaItem}>
                 <FaStar className="text-yellow-500" />
                 <AnimatedNumber value={data.stargazers_count} />
               </span>
-              <span className="flex items-center gap-1">
+              <span className={styles.metaItem}>
                 <FaCodeBranch />
                 <AnimatedNumber value={data.forks_count} />
               </span>
-              <span className="flex items-center gap-1">
+              <span className={styles.metaItem}>
                 <VscIssues />
                 <AnimatedNumber value={data.open_issues_count} />
               </span>
               {data.license && (
-                <span className="flex items-center gap-1">
+                <span className={styles.metaItem}>
                   <FaBalanceScale />
                   {data.license.spdx_id}
                 </span>
