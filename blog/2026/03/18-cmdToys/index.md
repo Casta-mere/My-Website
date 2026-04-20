@@ -4,12 +4,15 @@ title: 命令行工具 2.0
 authors: [Castamere]
 tags: [Zsh, MacOS, Terminal]
 recommended: true
+references:
+  - author: 大迁世界
+    title: 6 个命令行工具
+    time: 2026
+    url: https://blog.csdn.net/qq449245884/article/details/159041526
 ---
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
-
-续上集 [配置 Linux 终端 (zsh)](/blog/LinuxTerminal)
 
 <!--truncate-->
 
@@ -45,11 +48,6 @@ sudo apt install -y eza
 ```
 
   </TabItem>
-</Tabs>
-
-<Tabs groupId="operating-systems">
-  <TabItem value="MacOS" label="MacOS">Use Ctrl + C to copy.</TabItem>
-  <TabItem value="Linux" label="Linux">Use Command + C to copy.</TabItem>
 </Tabs>
 
 ### 参数
@@ -102,7 +100,7 @@ alias tree='eza -T -L'
 
 [lazygit](https://github.com/jesseduffield/lazygit) 
 
-![lazygit demo](lazygit-demo.png)
+![lazygit demo](./image/lazygit-demo.png)
 
 
 <Tabs groupId="operating-systems">
@@ -128,6 +126,8 @@ sudo apt install lazygit
 
 [btop](https://github.com/aristocratos/btop)
 
+![btop demo](image/btop-demo.png)
+
 <Tabs groupId="operating-systems">
   <TabItem value="MacOS" label="MacOS">
 
@@ -150,6 +150,8 @@ sudo apt install btop
 
 [Glow](https://github.com/charmbracelet/glow)
 
+![glow demo](image/glow-demo.png)
+
 <Tabs groupId="operating-systems">
   <TabItem value="MacOS" label="MacOS">
 
@@ -171,6 +173,8 @@ sudo apt install glow
 
 [Ranger](https://github.com/ranger/ranger)
 
+![ranger demo](image/ranger-demo.png)
+
 <Tabs groupId="operating-systems">
   <TabItem value="MacOS" label="MacOS">
 
@@ -187,3 +191,11 @@ sudo apt install Ranger
 
   </TabItem>
 </Tabs>
+
+### 个人预设
+
+使用 `rg` 命令可以快速打开 Ranger ，并可以在退出后自动切换到 Ranger 打开的目录
+
+```bash title="~/.zshrc"
+alias rg='ranger --choosedir=$HOME/.rangerdir && cd "$(cat $HOME/.rangerdir)"'
+```
