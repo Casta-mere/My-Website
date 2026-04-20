@@ -92,6 +92,7 @@ Scaffold a new docs page. The user provides a topic/category and a description (
     - Print the created/modified file paths.
     - Show the exact sidebar line inserted.
     - Flag placeholders (reference titles, intro) for the user to fill in.
+    - Suggest `/writing-style <path>` as the next step if the user wants help drafting the body in the repo's voice.
     - Do not stage or commit.
 
 ## Guardrails

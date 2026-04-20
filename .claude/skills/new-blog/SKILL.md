@@ -86,6 +86,7 @@ Scaffold a new blog post. The user provides a topic (and optionally references, 
 11. **Report.**
     - Print the created file paths.
     - Call out anything that needs the user's attention (placeholder reference titles, suggested tags that may be off, etc.).
+    - Suggest `/writing-style <path>` as the next step if the user wants help drafting the body in the repo's voice.
     - Do not stage or commit anything.
 
 ## Guardrails
