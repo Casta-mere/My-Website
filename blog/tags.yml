@@ -124,6 +124,11 @@ Love Story:
   label: Love Story
   permalink: /Love-Story
 
+MCP:
+  description: MCP
+  label: MCP
+  permalink: /MCP
+
 MacOS:
   description: MacOS
   label: MacOS
