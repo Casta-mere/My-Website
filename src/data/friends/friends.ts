@@ -98,6 +98,13 @@ const friendList: FriendItem[] = [
     avatar: "https://oortaka.top/upload/10-tuya.png",
     tags: [],
   },
+  {
+    title: "Carm's Home",
+    avatar: "https://github.com/CarmJos.png",
+    url: "https://www.carm.cc/",
+    description: "热爱生活中的点滴美好，追寻万物中的无尽创造。",
+    tags: ["全栈开发", "运维", "摄影"],
+  },
 ];
 
 export default friendList;
