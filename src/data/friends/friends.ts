@@ -105,6 +105,13 @@ const friendList: FriendItem[] = [
     description: "热爱生活中的点滴美好，追寻万物中的无尽创造。",
     tags: ["全栈开发", "运维", "摄影"],
   },
+  {
+    title: "idreamshen",
+    description: "ChenHsingYu",
+    url: "https://blog.idreamshen.com/",
+    avatar: "https://github.com/idreamshen.png",
+    tags: [],
+  },
 ];
 
 export default friendList;
