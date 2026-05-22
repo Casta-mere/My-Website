@@ -4,6 +4,11 @@ AI:
   label: AI
   permalink: /AI
 
+Android:
+  description: Android
+  label: Android
+  permalink: /Android
+
 Asian Games:
   description: Asian Games
   label: Asian Games
