@@ -2,6 +2,7 @@
 title: 关于本站
 ---
 
+import BuildTimestamp from "@site/src/components/BuildTimestamp";
 import Comment from "@site/src/components/Comment/Comment";
 import DaysCounter from "@site/src/components/DaysCounter";
 import UmamiTotalViewCounter from "@site/src/components/PageViewCounter/UmamiTotalViewCounter";
@@ -16,6 +17,7 @@ import { RoughNotation } from "react-rough-notation";
 若其中的只言片语能为读者带来些许启发或帮助，那这个站点的存在便又多了一重意义
 
 小站已运行 <RoughNotation type="underline" show={true} color="#32CD32"  strokeWidth={2} animationDelay={2000} ><DaysCounter startDate="2023-09-21"/></RoughNotation> 天，累计获得了 <RoughNotation type="underline" show={true} color="#FFD700"  strokeWidth={2} animationDelay={3000} ><UmamiTotalViewCounter /></RoughNotation> 次访问
+，最后构建于 <BuildTimestamp />
 
 ## ⚙️ 技术栈
 

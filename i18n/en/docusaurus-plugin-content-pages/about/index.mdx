@@ -2,6 +2,7 @@
 title: 关于本站
 ---
 
+import BuildTimestamp from "@site/src/components/BuildTimestamp";
 import Comment from "@site/src/components/Comment/Comment";
 import DaysCounter from "@site/src/components/DaysCounter";
 import UmamiTotalViewCounter from "@site/src/components/PageViewCounter/UmamiTotalViewCounter";
@@ -17,11 +18,11 @@ I do hope this corner of the web can hold some of my thoughts and learnings, thu
 
 If any words here can bring some inspiration or help to readers, then this site's existence would carry even greater meaning
 
-This site has been running for <RoughNotation type="underline" show={true} color="#32CD32"  strokeWidth={2} animationDelay={2000} ><DaysCounter startDate="2023-09-21"/></RoughNotation> days, and has received a total of <RoughNotation type="underline" show={true} color="#FFD700"  strokeWidth={2} animationDelay={3000} ><UmamiTotalViewCounter /></RoughNotation> visits
+This site has been running for <RoughNotation type="underline" show={true} color="#32CD32"  strokeWidth={2} animationDelay={2000} ><DaysCounter startDate="2023-09-21"/></RoughNotation> days, and has received a total of <RoughNotation type="underline" show={true} color="#FFD700"  strokeWidth={2} animationDelay={3000} ><UmamiTotalViewCounter /></RoughNotation> visits, last built at <BuildTimestamp />.
 
 ## ⚙️ Tech Stack
 
-This site is built with [Docusaurus](https://docusaurus.io/) , currently running Docusaurus [V3.9.1](https://docusaurus.io/blog/releases/3.9).
+This site is built with [Docusaurus](https://docusaurus.io/) , currently running Docusaurus [V3.9.1](https://docusaurus.io/blog/releases/3.9)
 This site have <RoughNotation type="highlight" show={true} color="rgba(255, 241, 118, 0.6)"  strokeWidth={2} animationDelay={5000} iterations={1} >integrated following features</RoughNotation>. You may refer to this article I wrote: [Docusaurus Themes](/docs/Server/) to apply these features to your own Docusaurus site
 
 - 💬 Comments with [giscus](https://giscus.app/zh-CN)
