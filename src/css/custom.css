@@ -98,3 +98,9 @@
     var(--ifm-color-emphasis-100) 100%
   );
 }
+
+/* Image zoom: ensure overlay and zoomed image appear above the navbar */
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 9999;
+}
