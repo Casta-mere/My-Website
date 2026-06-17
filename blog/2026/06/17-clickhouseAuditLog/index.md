@@ -1,0 +1,31 @@
+---
+slug: clickhouseAuditLog
+title: ClickHouse：Audit Log 的存储革命
+authors: [Castamere]
+tags: [ClickHouse, Work, Talk, Distributed Systems]
+references:
+  - title: ClickHouse for Observability
+    url: https://clickhouse.com/docs/use-cases/observability
+  - title: KEEPING SUFFICIENT RECORDS (COMPANIES & CO-OPERATIVES)
+    url: https://phl.hasil.gov.my/pdf/pdfam/PR4_2000_Rev.pdf
+recommended: true
+draft: true
+---
+
+import Terminal from "./components/Terminal";
+
+# ClickHouse：Audit Log 的存储革命
+
+一次排班的修改、一次权限的开关，当下不过是系统里再普通不过的一条记录；可几个月后，它可能突然成为所有人都在追问的问题——「三个月前这家店的菜单是谁改的？」。审计日志（audit log）里有答案，但要把它留得住、查得动，背后是一次存储与查询的革命
+
+<!--truncate-->
+
+## 缘起
+
+笔者目前在 FeedMe 负责 hrm-service。FeedMe 是餐饮行业的 operating system——从前台点单到后厨出餐，从排班到结算，整套系统每天要承载约 300 万次操作：订单、支付、菜单变更、员工操作、库存变动、报表生成，最终全都沉淀在这里
+
+hrm-service 管的是其中和「人」有关的那部分：员工、角色、权限、passcode、排班（timesheet）。这里的每一个敏感动作，都要先过一道权限校验——后端用 CASL 定义能力，每个接口挂上 `@Action({ operationLabel })` 注解，再由 `ActionGuard` 拦下来判断这个人能不能做这件事。而判断的结果，无论 `allowed`、`denied` 还是 `skipped`，连同是谁（`userId`）、对什么（`subject`）、做了什么（`action`），都会被原样写进一张审计表。换句话说，审计不是某个角落里的附加功能，它缝在了每一个受保护的接口上
+
+这些记录平时是隐形的，淹没在每天数以万计的校验里，没人会多看一眼。直到某一天，它们中的某一条突然成为会议室里最重要的问题：谁在三个月前改了这家店的权限？那次排班调整是谁批的、改之前是什么？这类问题从不提前打招呼，等它出现时，答案要么在，要么不在
+
+## 后记

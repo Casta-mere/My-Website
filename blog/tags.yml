@@ -49,6 +49,11 @@ Claude:
   label: Claude
   permalink: /Claude
 
+ClickHouse:
+  description: ClickHouse
+  label: ClickHouse
+  permalink: /ClickHouse
+
 Computer Networks:
   description: Computer Networks
   label: Computer Networks
