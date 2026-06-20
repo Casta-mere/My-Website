@@ -15,6 +15,10 @@ references:
     author: ClickHouse, Inc.
     time: 2026
     url: https://clickhouse.com/docs/data-compression/compression-in-clickhouse
+  - title: ClickHouse Primary Keys
+    time: 2017
+    author: Yegor Andreenko
+    url: https://medium.com/@f1yegor/clickhouse-primary-keys-2cf2a45d7324
 
 recommended: true
 draft: true
@@ -28,17 +32,22 @@ import Dictionary from "./components/Dictionary";
 
 一次排班的修改, 一次权限的开关, 当下不过是系统里再普通不过的一条记录；可几个月后, 它可能突然成为所有人都在追问的问题——「三个月前这家店的菜单是谁改的？」。审计日志(audit log)里有答案, 但要把它留得住, 查得动, 背后是一次存储与查询的革命
 
+本篇包括以下内容：
+
+- ClickHouse 和 Audit Log 
+- 两个笔者在生产实践中遇到的问题
+
 <!--truncate-->
 
 ## 缘起
 
 笔者目前在 FeedMe 负责 hrm-service。FeedMe 是餐饮行业的 operating system——从前台点单到后厨出餐, 从排班到结算, 整套系统每天要承载约 300 万次操作：订单, 支付, 菜单变更, 员工操作, 库存变动, 报表生成, 最终全都沉淀在这里
 
-hrm-service 管的是其中和「人」有关的那部分：员工, 角色, 权限, passcode, 排班(timesheet)。这里的每一个敏感动作, 都要先过一道权限校验——后端用 CASL 定义能力, 每个接口挂上 `@Action({ operationLabel })` 装饰器, 再由 `ActionGuard` 拦下来判断这个人能不能做这件事。而判断的结果, 无论 `allowed`, `denied` 还是 `skipped`, 连同是谁(`userId`), 对什么(`subject`), 做了什么(`action`), 都会被原样写进一张审计表。换句话说, 审计不是某个角落里的附加功能, 它缝在了每一个受保护的接口上
+hrm-service 管的是其中和「人」有关的那部分：员工, 角色, 权限, passcode, 排班(timesheet)。这里的每一个敏感动作, 都要先过一道权限校验——后端用 CASL 定义能力, 每个接口挂上 `@Action({action, subject, condition, operationLabel})` 装饰器, 再由 `ActionGuard` 拦下来判断这个人能不能做这件事。而判断的结果, 无论 `allowed`, `denied` 还是 `skipped`, 连同是谁(`userId`), 对什么(`subject`), 做了什么(`action`), 都会被原样写进一张审计表。换句话说, 审计不是某个角落里的附加功能, 它缝在了每一个受保护的接口上
 
 这些记录平时是隐形的, 淹没在每天数以万计的校验里, 没人会多看一眼。直到某一天, 它们中的某一条突然成为会议室里最重要的问题：谁在三个月前改了这家店的权限？那次排班调整是谁批的, 改之前是什么？这类问题从不提前打招呼, 等它出现时, 答案要么在, 要么不在
 
-### 最大的挑战不是流量, 是时间
+**最大的挑战不是流量, 是时间**
 
 300 万次操作听上去不少, 但拆到每秒, 再配合现代数据库的吞吐, 这个量级其实并不可怕。真正改变一切的, 从来不是峰值流量。**The challenge is not extreme traffic. The challenge is time.**
 
@@ -69,11 +78,19 @@ ClickHouse 恰好是为打破这个二选一而生的。把审计日志的特征
 
 <Compression />
 
-在自动压缩之上, 还有两层可以手动加的杠杆。第一层是 `LowCardinality(String)`, 思路是字典编码(哈希表)：把一列里反复出现的字符串收进一张小字典, 行里只存指向字典的整数下标。审计日志几乎每一列都像是为它量身定做的——`action` 死死锁在 CASL 的 `manage / create / read / update / delete` 五个动作上, `subject` 是 `::` 分层的资源名(`business::hrm::teamMember`, `business::menu::item`, ...), `country` 是 ISO 国家码, 来回也就那几十个取值。把这些列从裸 `String` 换成 `LowCardinality(String)`, 再叠一层 `ZSTD`, 几乎是白捡的压缩
+在自动压缩之上, 还有两层可以手动加的杠杆
+
+第一层是 `LowCardinality(String)`, 思路是字典编码(哈希表)：把一列里反复出现的字符串收进一张小字典, 行里只存指向字典的整数下标。审计日志几乎每一列都像是为它量身定做的
+
+- `action` 死死锁在 CASL 的 `manage / create / read / update / delete` 五个动作上, 
+- `subject` 是 `::` 分层的资源名(`business::hrm::teamMember`, `business::menu::item`, ...)
+- `country` 是 ISO 国家码, 来回也就那几十个取值
+
+把这些列从裸 `String` 换成 `LowCardinality(String)`, 再叠一层 `ZSTD`, 几乎是白捡的压缩
 
 <Dictionary />
 
-第二层是给特定形状的列挑专门的 `CODEC` (coder/decoder)。最典型的是时间戳：`timestamp` 是单调递增的序列, 相邻两条记录的差值往往只有几秒, 存差值远比存绝对值划算——这正是 `Delta` 编码的用武之地, 它先把序列转成一串小差值, 再交给 `ZSTD`([*Zstandard*](https://github.com/facebook/zstd)) 去压。官方对可观测性数据的建议很直白：「`ZSTD` all the way」, 字符串, 数值列统统上 `ZSTD`, 时间戳再额外加一层 `Delta`。几样叠起来, 同一份审计数据的落盘体积能压到行式存储的零头
+第二层是给特定形状的列挑专门的 **CODEC** (coder/decoder)。最典型的是时间戳：`timestamp` 是单调递增的序列, 相邻两条记录的差值往往只有几秒, 存差值远比存绝对值划算——这正是 `Delta` 编码的用武之地, 它先把序列转成一串小差值, 再交给 `ZSTD`([*Zstandard*](https://github.com/facebook/zstd)) 去压。官方对可观测性数据的建议很直白：「`ZSTD` all the way」, 字符串, 数值列统统上 `ZSTD`, 时间戳再额外加一层 `Delta`。几样叠起来, 同一份审计数据的落盘体积能压到行式存储的零头
 
 ### MergeTree
 
@@ -115,3 +132,98 @@ ORDER BY timestamp DESC
 运行结果如下：
 
 <Terminal />
+
+## 审计日志
+
+### 日志的生成
+
+先来介绍一下审计日志, 它的入口是一个装饰器——每个受保护的接口都挂着 `@Action`, 声明这次操作的 `level`（`0/1/2`, 对应 FeedMe / Business / Restaurant 三个层级）、`subject`、`action`, `condition` 以及一个 `operationLabel`：
+
+```ts title="timesheet.controller.ts"
+@Action({
+  level: Permission.Level.restaurant,
+  subject: Permission.Subject.Business.hrm_employee,
+  action: Permission.Action.read,
+  operationLabel: 'View timesheets',
+})
+```
+
+除了静态的 Str, `operationLabel` 还可以传入函数, 按请求体动态生成——portal-user 接口上就写着 `Add new team member: {email}`, pos-role 上是 `Add new employee role: {name}`, 运行时把真实的邮箱、角色名填进去, 各个使用者可以根据业务需求定制自己的 `operationLabel` 模板, 让审计日志里记录的操作更具可读性, 也更方便后续调查时的搜索和过滤
+
+请求进来, `ActionGuard` 读出 `@Action` 元数据, 连同 `userId`、`businessId`、`restaurantId`、请求路径与方法, 一起发送给后端。真正干活, 也真正写审计的, 是另一头那个独立的 permission-check gRPC 服务——它用 `constructAbility` 重建这个人的 CASL 规则, 跑 `checkAccess` 得出 `granted`/`denied`, 再调 `buildPermissionLog` 把结果打包成一条 `AuditLogEntry`, 最后写进 ClickHouse
+
+```mermaid
+flowchart LR
+  AG["请求 → <br/> ActionGuard"]
+  AG -->|"gRPC"| CA
+  subgraph Svc["permission-check gRPC"]
+    direction TB
+    CA["constructAbility<br/>重建 CASL 规则"] --> CK{{"checkAccess<br/>granted?"}}
+  end
+  CK -->|"判定"| Resp["放行 / 拒绝"]
+  CK -->|"留痕 · 同一结果"| BL["buildPermissionLog → AuditLogEntry<br/>写入 ClickHouse 审计表"]
+  classDef src fill:#d3f9d8,stroke:#2f9e44,color:#1b1b1b;
+  class CK src;
+```
+
+**判定与留痕同源**：放行与否的那次计算, 和写进审计表的那条记录, 出自同一份 `checkAccess` 结果, 不存在「日志和实际行为对不上」的缝隙
+
+### 日志的内容
+
+最初版本的日志表如下：
+
+```sql title="hrm_audit_log Clickhouse DB schema"
+CREATE TABLE default.hrm_audit_log (
+  `timestamp` DateTime,
+  `userId` String,
+  `subject` String,
+  `action` String,
+  `field` Nullable(String),
+  `businessId` Nullable(String),
+  `restaurantId` Nullable(String),
+  `country` Nullable(String),
+  `outcome` Enum8('allowed' = 1, 'denied' = 2, 'skipped' = 3),
+-- highlight-next-line
+  `metadata` String
+)
+ENGINE = MergeTree
+ORDER BY (timestamp, userId)
+SETTINGS index_granularity = 8192
+```
+
+值得单独说一句的，是 `metadata` 里装的东西。它不只记下「结果是 allowed 还是 denied」，更记下**为什么**：`resolvedFrom` 标明这次判定是被哪一类规则命中的（`admin`、`staff`、`permissionSet`、`systemPermissionSet`，或者干脆 `no-match`），`decisiveRule` 和 `decisivePermission` 钉住那条起决定作用的具体规则，`trace` 留下推导的面包屑，外加 `requestPath`、`requestMethod`、`operationLabel`。普通日志告诉你「门没开」，这条记录能告诉你「是哪把锁、按的哪条规矩没开」——这正是审计区别于排障日志的地方
+
+比如下面就是一个样例：
+
+![metadata](image/metadata.png)
+
+```sql
+  CREATE TABLE default.hrm_audit_log (
+    `timestamp` DateTime,
+    `userId` String,
+    `subject` String,
+    `action` String,
+    `field` Nullable(String),
+    `businessId` Nullable(String),
+    `restaurantId` Nullable(String),
+    `country` Nullable(String),
+    `outcome` Enum8('allowed' = 1, 'denied' = 2, 'skipped' = 3),
+-- git-remove-next-line
+-   `metadata` String
+-- git-add-next-line
++   `metadata` String, INDEX idx_userId userId TYPE bloom_filter GRANULARITY 4, INDEX idx_subject subject TYPE set(100) GRANULARITY 4
+  )
+  ENGINE = MergeTree
+-- git-add-next-line
++ PARTITION BY toYYYYMM(timestamp)
+
+-- git-remove-next-line
+- ORDER BY (timestamp, userId)
+-- git-add-next-line
++ ORDER BY (businessId, toDate(timestamp), action, subject, userId, timestamp)
+
+-- git-remove-next-line
+- SETTINGS index_granularity = 8192
+-- git-add-next-line
++ SETTINGS index_granularity = 8192, allow_nullable_key = 1
+```
