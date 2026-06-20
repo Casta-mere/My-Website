@@ -2,7 +2,7 @@
 slug: clickhouseAuditLog
 title: ClickHouse：Audit Log 的存储革命
 authors: [Castamere]
-tags: [ClickHouse, Work, Talk, Distributed Systems]
+tags: [ClickHouse]
 references:
   - title: ClickHouse for Observability
     author: ClickHouse, Inc.
@@ -27,7 +27,6 @@ draft: true
 import Terminal from "./components/Terminal";
 import Compression from "./components/Compression";
 import Dictionary from "./components/Dictionary";
-import Parts from "./components/Parts";
 
 # ClickHouse：Audit Log 的存储革命
 
@@ -36,7 +35,7 @@ import Parts from "./components/Parts";
 本篇包括以下内容：
 
 - ClickHouse 和 Audit Log 
-- 两个笔者在生产实践中遇到的问题，以及引发的思考
+- 两个笔者在生产实践中遇到的问题, 以及引发的思考
 
 <!--truncate-->
 
@@ -136,7 +135,7 @@ ORDER BY timestamp DESC
 
 ## 审计日志
 
-### 日志的生成
+### 日志的生成过程
 
 先来介绍一下审计日志, 它的入口是一个装饰器——每个受保护的接口都挂着 `@Action`, 声明这次操作的 `level`（`0/1/2`, 对应 FeedMe / Business / Restaurant 三个层级）、`subject`、`action`, `condition` 以及一个 `operationLabel`：
 
@@ -192,7 +191,7 @@ ORDER BY (timestamp, userId)
 SETTINGS index_granularity = 8192
 ```
 
-值得单独说一句的是 `metadata` 里装的东西。它不只记下「结果是 allowed 还是 denied」，更记下**为什么**：`resolvedFrom` 标明这次判定是被哪一类规则命中的（`admin`、`staff`、`permissionSet`、`systemPermissionSet`，或者干脆 `no-match`），`decisiveRule` 和 `decisivePermission` 钉住那条起决定作用的具体规则，`trace` 留下推导的面包屑，外加 `requestPath`、`requestMethod`、`operationLabel`。普通日志告诉你「门没开」，这条记录能告诉你「是哪把锁、按的哪条规矩没开」——这正是审计区别于排障日志的地方
+值得单独说一句的是 `metadata` 里装的东西。它不只记下「结果是 allowed 还是 denied」, 更记下**为什么**：`resolvedFrom` 标明这次判定是被哪一类规则命中的（`admin`、`staff`、`permissionSet`、`systemPermissionSet`, 或者干脆 `no-match`）, `decisiveRule` 和 `decisivePermission` 钉住那条起决定作用的具体规则, `trace` 留下推导的面包屑, 外加 `requestPath`、`requestMethod`、`operationLabel`。普通日志告诉你「门没开」, 这条记录能告诉你「是哪把锁、按的哪条规矩没开」——这正是审计区别于排障日志的地方
 
 比如下面就是一个样例：
 
@@ -203,6 +202,8 @@ Permission Granted:
 Permission Denied:
 
 ![metadata-denied](image/metadata-denied.png)
+
+接下来讲两个实际遇到的 bug
 
 ## Bug 1 - Order By 导致的性能问题
 
@@ -286,3 +287,8 @@ WHERE table = 'hrm_audit_log' AND active
 ```
 
 ![parts](image/parts.png)
+
+
+## 后记
+
+把 audit log 当成产品基础设施, 意味着它的 schema、留存策略、查询接口, 都要按「会被产品直接消费」的标准来设计, 而不再只是工程师私下约定的格式。这件事一旦想清楚, 往后很多决策都会不一样
