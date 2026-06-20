@@ -205,6 +205,44 @@ Permission Denied:
 
 ## Bug 1 - Order By 导致的性能问题
 
-## Bug 2 - 合并策略
+第一版 schema 是在还没真正想清楚「这张表会被怎么查」的时候定下的——`ORDER BY (timestamp, userId)`, 单纯按时间和用户排序。这在 ClickHouse 里是个代价很大的疏忽, 因为 `ORDER BY` 在 `MergeTree` 里不只决定数据在磁盘上的物理顺序, 它同时就是主键, 决定了那份稀疏索引能帮查询跳过多少数据。换句话说, 排序键选得对不对, 直接决定了一条查询是「跳到几个 granule」还是「翻遍整张表」
 
-## Bug 3 - metadata 字段过大
+而我们真实的查询模式, 和这个排序键几乎是错位的。审计日志的入口是一个后台界面, 用户第一步永远是「选一家商户、圈一段日期」——也就是先按 `businessId` 过滤, 再按 `toDate(timestamp)` 圈定天级范围:
+
+![HRM filter](image/HRM.png)
+
+在这之上, 才是各种次级过滤: 按 `subject` 看某类资源, 按 `action` 看某种操作, 按 `userId` 锁定某个人, 按 `outcome` 只看被拒绝的:
+
+![HRM secondary filter](image/HRM_2.png)
+
+问题就出在这里。`businessId` 是每条查询都必带的第一过滤维度, 却压根不在排序键里; 而排在键首位的 `timestamp` 是秒级精度, 基数高到几乎每行都不一样, 对「圈一段日期」这种范围过滤也帮不上多少忙。结果是, 哪怕只查一家商户一周的数据, ClickHouse 也只能近乎全表扫描, 再把不匹配的行一行行丢掉——表越大, 这一刀砍得越疼
+
+修复的方向很直接: 让排序键照着真实的过滤顺序来排。把每条查询都必带的 `businessId` 提到最前, 紧接着是对应日期范围过滤的 `toDate(timestamp)`(用 `toDate` 而非裸 `timestamp`, 是因为查询按天圈定, 天级基数远低于秒级, 前缀跳过更高效), 再把 `action`、`subject`、`userId` 这些次级过滤维度依次跟上, 最后才补一个原始 `timestamp` 收尾排序:
+
+```sql title="Fix Order By"
+  CREATE TABLE default.hrm_audit_log (
+    `timestamp` DateTime,
+    `userId` String,
+    `subject` String,
+    `action` String,
+    `field` Nullable(String),
+    `businessId` Nullable(String),
+    `restaurantId` Nullable(String),
+    `country` Nullable(String),
+    `outcome` Enum8('allowed' = 1, 'denied' = 2, 'skipped' = 3),
+    `metadata` String
+  )
+  ENGINE = MergeTree
+
+-- git-remove-next-line
+- ORDER BY (timestamp, userId)
+-- git-add-next-line
++ ORDER BY (businessId, toDate(timestamp), action, subject, userId, timestamp)
+  SETTINGS index_granularity = 8192
+```
+
+这样一来, 「某个商户、某段日期、某类操作」这类查询, 从排序键的最左前缀就能一路命中, ClickHouse 直接定位到相关的 granule, 跳过绝大部分无关数据。改完之后, 同样的查询不必再扫全表, 延迟肉眼可见地降了下来
+
+这背后其实是 ClickHouse 选 `ORDER BY` 的一条通用准则: 把查询里最常用、最能缩小范围的过滤列放在排序键的最左边。这里也有一个需要诚实交代的取舍——官方建议排序键尽量按基数升序排列, 而 `businessId` 的基数并不算低, 把它强行提到首位, 是用一点压缩率和理论上的最优, 去换「几乎每条查询都按 business 过滤」这个真实访问模式下的数据跳过。排序键的价值, 永远是相对访问模式而言的, 脱离查询谈排序键没有意义
+
+## Bug 2 - 合并策略
