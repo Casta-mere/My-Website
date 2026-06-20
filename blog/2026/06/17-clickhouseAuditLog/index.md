@@ -133,9 +133,9 @@ ORDER BY timestamp DESC
 
 <Terminal />
 
-## 审计日志
+## 拆开一条审计日志
 
-### 日志的生成过程
+### 从 @Action 到落库
 
 先来介绍一下审计日志, 它的入口是一个装饰器——每个受保护的接口都挂着 `@Action`, 声明这次操作的 `level`（`0/1/2`, 对应 FeedMe / Business / Restaurant 三个层级）, `subject`, `action`, `condition` 以及一个 `operationLabel`：
 
@@ -168,7 +168,7 @@ flowchart LR
 
 **判定与留痕同源**：放行与否的那次计算, 和写进审计表的那条记录, 出自同一份 `checkAccess` 结果, 不存在「日志和实际行为对不上」的缝隙
 
-### 日志的内容
+### 日志里装了什么
 
 最初版本的日志表如下：
 
