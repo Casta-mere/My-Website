@@ -249,6 +249,11 @@ TTY:
   label: TTY
   permalink: /TTY
 
+Talk:
+  description: Talk
+  label: Talk
+  permalink: /Talk
+
 Terminal:
   description: Terminal
   label: Terminal
