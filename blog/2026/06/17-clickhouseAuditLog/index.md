@@ -22,6 +22,7 @@ draft: true
 
 import Terminal from "./components/Terminal";
 import Compression from "./components/Compression";
+import Dictionary from "./components/Dictionary";
 
 # ClickHouse：Audit Log 的存储革命
 
@@ -68,15 +69,31 @@ ClickHouse 恰好是为打破这个二选一而生的。把审计日志的特征
 
 <Compression />
 
-在自动压缩之上, 还有两层可以手动加的杠杆。第一层是 `LowCardinality(String)`, 思路是字典编码：把一列里反复出现的字符串收进一张小字典, 行里只存指向字典的整数下标。审计日志几乎每一列都像是为它量身定做的——`action` 死死锁在 CASL 的 `manage / create / read / update / delete` 五个动作上, `subject` 是 `::` 分层的资源名(`business::hrm::teamMember`, `business::menu::item`, ...), `country` 是 ISO 国家码, 来回也就那几十个取值。把这些列从裸 `String` 换成 `LowCardinality(String)`, 再叠一层 `ZSTD`, 几乎是白捡的压缩
+在自动压缩之上, 还有两层可以手动加的杠杆。第一层是 `LowCardinality(String)`, 思路是字典编码(哈希表)：把一列里反复出现的字符串收进一张小字典, 行里只存指向字典的整数下标。审计日志几乎每一列都像是为它量身定做的——`action` 死死锁在 CASL 的 `manage / create / read / update / delete` 五个动作上, `subject` 是 `::` 分层的资源名(`business::hrm::teamMember`, `business::menu::item`, ...), `country` 是 ISO 国家码, 来回也就那几十个取值。把这些列从裸 `String` 换成 `LowCardinality(String)`, 再叠一层 `ZSTD`, 几乎是白捡的压缩
 
-第二层是给特定形状的列挑专门的 `CODEC`。最典型的是时间戳：`timestamp` 是单调递增的序列, 相邻两条记录的差值往往只有几秒, 存差值远比存绝对值划算——这正是 `Delta` 编码的用武之地, 它先把序列转成一串小差值, 再交给 `ZSTD` 去压。官方对可观测性数据的建议很直白：「`ZSTD` all the way」, 字符串, 数值列统统上 `ZSTD`, 时间戳再额外加一层 `Delta`。几样叠起来, 同一份审计数据的落盘体积能压到行式存储的零头
+<Dictionary />
+
+第二层是给特定形状的列挑专门的 `CODEC` (coder/decoder)。最典型的是时间戳：`timestamp` 是单调递增的序列, 相邻两条记录的差值往往只有几秒, 存差值远比存绝对值划算——这正是 `Delta` 编码的用武之地, 它先把序列转成一串小差值, 再交给 `ZSTD`([*Zstandard*](https://github.com/facebook/zstd)) 去压。官方对可观测性数据的建议很直白：「`ZSTD` all the way」, 字符串, 数值列统统上 `ZSTD`, 时间戳再额外加一层 `Delta`。几样叠起来, 同一份审计数据的落盘体积能压到行式存储的零头
 
 ### MergeTree
 
 写入模式也契合。审计日志本质上是 immutable 的——一条记录一旦落库就**不该**再改, 它不像业务表那样有「更新某个字段」的需求, 只会随着时间不断追加新行。这种「只增不改」的形式, 恰好是 ClickHouse `MergeTree` 引擎的设计理念
 
 `MergeTree` 的工作方式简单说就是「先快写, 再慢合」。每一批写入都按排序键(`ORDER BY`)排好序, 落成磁盘上一个独立的, 不可变的 part——这一步是纯顺序写, 极快。之后后台再异步地把小 part 合并成大 part, 顺手做整理与压缩。查询时它靠的是一份稀疏主键索引(默认 `index_granularity = 8192`, 每 8192 行才留一个标记), 配合排序键快速跳过整段无关数据, 而不必像 B-Tree 那样为每一行维护索引。对一张只增不改, 按时间和 `businessId` 天然有序的审计表来说, 这套机制几乎不费力
+
+```mermaid
+flowchart LR
+  b1["写入批次 1"] --> p1["part_1<br/>小·不可变"]
+  b2["写入批次 2"] --> p2["part_2<br/>小·不可变"]
+  b3["写入批次 3"] --> p3["part_3<br/>小·不可变"]
+  p1 -. 后台异步合并 .-> M["part_merged<br/>大·有序·已压缩"]
+  p2 -. 后台异步合并 .-> M
+  p3 -. 后台异步合并 .-> M
+  classDef small fill:#fff3bf,stroke:#f08c00,color:#1b1b1b;
+  classDef big fill:#d3f9d8,stroke:#2f9e44,color:#1b1b1b;
+  class p1,p2,p3 small;
+  class M big;
+```
 
 ### OLAP
 
