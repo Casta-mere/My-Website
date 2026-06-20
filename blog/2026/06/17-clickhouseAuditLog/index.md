@@ -35,7 +35,7 @@ import Dictionary from "./components/Dictionary";
 本篇包括以下内容：
 
 - ClickHouse 和 Audit Log 
-- 两个笔者在生产实践中遇到的问题
+- 三个笔者在生产实践中遇到的问题，以及引发的思考
 
 <!--truncate-->
 
@@ -191,39 +191,20 @@ ORDER BY (timestamp, userId)
 SETTINGS index_granularity = 8192
 ```
 
-值得单独说一句的，是 `metadata` 里装的东西。它不只记下「结果是 allowed 还是 denied」，更记下**为什么**：`resolvedFrom` 标明这次判定是被哪一类规则命中的（`admin`、`staff`、`permissionSet`、`systemPermissionSet`，或者干脆 `no-match`），`decisiveRule` 和 `decisivePermission` 钉住那条起决定作用的具体规则，`trace` 留下推导的面包屑，外加 `requestPath`、`requestMethod`、`operationLabel`。普通日志告诉你「门没开」，这条记录能告诉你「是哪把锁、按的哪条规矩没开」——这正是审计区别于排障日志的地方
+值得单独说一句的是 `metadata` 里装的东西。它不只记下「结果是 allowed 还是 denied」，更记下**为什么**：`resolvedFrom` 标明这次判定是被哪一类规则命中的（`admin`、`staff`、`permissionSet`、`systemPermissionSet`，或者干脆 `no-match`），`decisiveRule` 和 `decisivePermission` 钉住那条起决定作用的具体规则，`trace` 留下推导的面包屑，外加 `requestPath`、`requestMethod`、`operationLabel`。普通日志告诉你「门没开」，这条记录能告诉你「是哪把锁、按的哪条规矩没开」——这正是审计区别于排障日志的地方
 
 比如下面就是一个样例：
 
+Permission Granted:
+
 ![metadata](image/metadata.png)
 
-```sql
-  CREATE TABLE default.hrm_audit_log (
-    `timestamp` DateTime,
-    `userId` String,
-    `subject` String,
-    `action` String,
-    `field` Nullable(String),
-    `businessId` Nullable(String),
-    `restaurantId` Nullable(String),
-    `country` Nullable(String),
-    `outcome` Enum8('allowed' = 1, 'denied' = 2, 'skipped' = 3),
--- git-remove-next-line
--   `metadata` String
--- git-add-next-line
-+   `metadata` String, INDEX idx_userId userId TYPE bloom_filter GRANULARITY 4, INDEX idx_subject subject TYPE set(100) GRANULARITY 4
-  )
-  ENGINE = MergeTree
--- git-add-next-line
-+ PARTITION BY toYYYYMM(timestamp)
+Permission Denied:
 
--- git-remove-next-line
-- ORDER BY (timestamp, userId)
--- git-add-next-line
-+ ORDER BY (businessId, toDate(timestamp), action, subject, userId, timestamp)
+![metadata-denied](image/metadata-denied.png)
 
--- git-remove-next-line
-- SETTINGS index_granularity = 8192
--- git-add-next-line
-+ SETTINGS index_granularity = 8192, allow_nullable_key = 1
-```
+## Bug 1 - Order By 导致的性能问题
+
+## Bug 2 - 合并策略
+
+## Bug 3 - metadata 字段过大
