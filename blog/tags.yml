@@ -89,6 +89,11 @@ Discord:
   label: Discord
   permalink: /Discord
 
+Distributed Systems:
+  description: Distributed Systems
+  label: Distributed Systems
+  permalink: /Distributed-Systems
+
 Docker:
   description: Docker
   label: Docker
