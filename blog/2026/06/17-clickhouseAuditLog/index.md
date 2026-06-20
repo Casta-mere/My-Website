@@ -27,6 +27,7 @@ draft: true
 import Terminal from "./components/Terminal";
 import Compression from "./components/Compression";
 import Dictionary from "./components/Dictionary";
+import Parts from "./components/Parts";
 
 # ClickHouse：Audit Log 的存储革命
 
@@ -35,7 +36,7 @@ import Dictionary from "./components/Dictionary";
 本篇包括以下内容：
 
 - ClickHouse 和 Audit Log 
-- 三个笔者在生产实践中遇到的问题，以及引发的思考
+- 两个笔者在生产实践中遇到的问题，以及引发的思考
 
 <!--truncate-->
 
@@ -246,3 +247,42 @@ Permission Denied:
 这背后其实是 ClickHouse 选 `ORDER BY` 的一条通用准则: 把查询里最常用、最能缩小范围的过滤列放在排序键的最左边。这里也有一个需要诚实交代的取舍——官方建议排序键尽量按基数升序排列, 而 `businessId` 的基数并不算低, 把它强行提到首位, 是用一点压缩率和理论上的最优, 去换「几乎每条查询都按 business 过滤」这个真实访问模式下的数据跳过。排序键的价值, 永远是相对访问模式而言的, 脱离查询谈排序键没有意义
 
 ## Bug 2 - 合并策略
+
+上一个 bug 是「数据怎么排」, 这一个是「数据怎么写进去」。我们拿到一条判定结果后, 写入 ClickHouse 用的是官方的 `@clickhouse/client`, 调用长这样：
+
+```ts title="permission-check-grpc.controller.ts"
+this.auditLogService
+  .insertLogs([
+    {
+      timestamp: logEntry.timestamp.toISOString(),
+      userId: logEntry.userId,
+      subject: logEntry.subject,
+      action: logEntry.action,
+      outcome: logEntry.outcome,
+      metadata: JSON.stringify(logEntry.metadata),
+      // ...businessId / restaurantId / country / field
+    },
+  ])
+  .catch((err) => this.logger.error('Failed to insert audit log', err));
+```
+
+这里埋了一个坑：每过一次权限校验, 就单独 `insertLogs()`, 而且是 fire-and-forget——不 `await`, 错误也只是catch 进了日志。功能上没毛病, 性能上却正好踩在 ClickHouse 最忌讳的地方：逐行写入是它的头号反模式
+
+要理解为什么, 得先看一次 insert 在 `MergeTree` 里到底发生了什么。每一次 insert, 不管写的是一行还是一百万行, 都会生成一个独立的 part——一个实打实的磁盘目录, 带着自己的列文件、稀疏索引、min/max 标记和一堆元数据。一行一个 part, 等于用一整套目录结构去包一行数据, 开销比数据本身还大。更要命的是后台那些 merge 线程：它们要不停地把小 part 两两合并成大 part, 而逐行写入制造 part 的速度, 远比合并消化它们的速度快——part 越堆越多, 合并越来越喘
+
+到了我们这个量级, 这就不是「慢一点」, 而是「会炸」。ClickHouse 对每个分区的活跃 part 数有硬上限(`parts_to_throw_insert`, 默认 300), 一旦越过, 新的写入会被直接拒绝, 抛出 `TOO_MANY_PARTS`。每天 300 万次校验、每次一个 part, 这个上限根本撑不了多久; 而且 part 越多, 查询要打开、扫描的文件也越多, 读和写会一起被拖慢。
+
+修复的核心思路就是攒。把零散的逐行写入, 拢成「大批量、少批次」, 正好顺着 ClickHouse 喜欢的方向。具体有两层做法
+
+一是应用侧攒批：在内存里把多条日志缓冲起来, 凑够一定行数、或隔一小段时间, 再一次性 insert
+
+二是更省事的服务端方案——打开 `async_insert = 1`, 让 ClickHouse 自己在服务端缓冲收到的行, 到达阈值(`async_insert_max_data_size` 或 `async_insert_busy_timeout_ms`)再统一刷成一个 part。客户端可以照旧一行一行地发, 攒批这件脏活全交给服务端; 再配合 `wait_for_async_insert = 0`, 还能保留原来那种 fire-and-forget 的手感。官方的 OpenTelemetry exporter 默认走的就是 async_insert, 对我们这种「只追加、能容忍秒级延迟」的审计写入再合适不过
+
+改前改后, 用 `system.parts` 一查活跃 part 数, 差距一目了然：
+
+```sql
+SELECT count() AS parts FROM system.parts
+WHERE table = 'hrm_audit_log' AND active
+```
+
+![parts](image/parts.png)
