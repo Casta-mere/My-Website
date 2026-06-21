@@ -38,24 +38,26 @@ This article covers the following topics:
 
 ## Origins
 
-I am currently working on the hrm-service at FeedMe. FeedMe is an **operating system** for the F&B Industry: from ordering to kitchen, from scheduling to settlement, the entire system handles approximately 3 million operations every day: orders, payments, menu changes, employee actions, inventory changes, and report generation—all of which are ultimately recorded here
+### Auditing is wired into every endpoint
 
-Hrm-service handles all the aspects related to 'people': employees, roles, permissions, passcodes, and scheduling (timesheets). Every sensitive action here must first pass an authorization check: the backend defines capabilities using CASL, each API endpoint is annotated with the `@Action({action, subject, condition, operationLabel})` decorator, and then `ActionGuard` intercepts the request to determine whether the user is authorized to perform the action. The result of this check—whether `allowed`, `denied`, or `skipped`—along with who (`userId`), what (`subject`), and what action (`action`) was taken, is recorded verbatim in an audit log. In other words, **auditing is not a bolted-on feature; it is baked into every protected interface**
+I am currently working on hrm-service at FeedMe. FeedMe is an **operating system** for the F&B industry: from ordering to kitchen, from scheduling to settlement, the entire system handles approximately 3 million operations every day: orders, payments, menu changes, employee actions, inventory changes, and report generation—all of which are ultimately recorded here
 
-These records are usually invisible, buried among the tens of thousands of daily audits, and no one ever gives them a second glance. Until one day, one of them suddenly becomes the most pressing issue in the conference room: Who changed this store’s permissions three months ago? Who approved that schedule adjustment, and what was it before the change? Questions like these never come with warning; when they arise, the answer is either there or it isn’t.
+Within FeedMe, hrm-service handles everything related to 'people': employees, roles, permissions, passcodes, and scheduling (timesheets). Every sensitive action here must first pass an authorization check: the backend defines capabilities using CASL, each API endpoint is annotated with the `@Action({action, subject, condition, operationLabel})` decorator, and then `ActionGuard` intercepts the request to determine whether the user is authorized to perform the action. The result of this check—whether `allowed`, `denied`, or `skipped`—along with who (`userId`), what (`subject`), and what action (`action`) was taken, is recorded verbatim in an audit log. In other words, **auditing is not a bolted-on feature; it is baked into every protected interface**
 
-3 million operations may sound like a lot, but when broken down to operations per second and considered alongside the throughput of modern databases, this volume isn’t actually that daunting. **What truly changes everything is never peak traffic. The challenge is time**
+These records are usually invisible, buried among the tens of thousands of daily checks, and no one ever gives them a second glance. Until one day, one of them suddenly becomes the most pressing issue in the conference room: Who changed this restaurant’s permissions three months ago? Who approved that schedule adjustment, and what was it before the change? Questions like these never come with warning; when they arise, the answer is either there or it isn’t.
 
-Relevant regulations in Malaysia generally require that sales and audit-related data be retained for seven years. Anyone can keep a month’s worth of data, but retaining every single transaction exactly as it was for seven full years—and ensuring it can be retrieved and audited on any given day during that period—is a matter of an entirely different magnitude.
+### The seven-year problem
+
+3 million operations may sound like a lot, but when broken down to operations per second and considered alongside the throughput of modern databases, this volume isn’t actually that daunting. **The challenge is never peak traffic. The challenge is time**
+
+Relevant regulations in Malaysia generally require that sales and audit-related data be retained for seven years. Anyone can keep a month’s worth of data, but retaining every single operation exactly as it was for seven full years—and ensuring it can be retrieved and audited on any given day during that period—is a matter of an entirely different magnitude.
 
 Here comes the dilemma:
 
 - **Data is too expensive to hoard**: Storage costs scale linearly over time. A seven-year retention requirement will bankrupt any "store now, ask questions later" architecture, inevitably forcing a painful purge of historical data
-- **Cold data is too slow to query**: Even if you manage to retain all that data, traditional row-based storage chokes on queries like "show me all permission changes for Store X from three years ago," grinding down to speeds no one is willing to wait for
+- **Cold data is too slow to query**: Even if you manage to retain all that data, traditional row-based storage chokes on queries like "show me all permission changes for Restaurant X from three years ago," grinding down to speeds no one is willing to wait for
  
 Lose history, or lose its usefulness—take your pick.
-
-失去历史, 或失去用处, 二选一
 
 ## ClickHouse & Audit Log
 
