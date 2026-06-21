@@ -10,7 +10,9 @@ import React from "react";
 
 export default function Compression({}) {
   return (
-    <TerminalRoot title={"列存的红利：逐列压缩比"}>
+    <TerminalRoot
+      title={"The Benefits of Columnar Storage: Compression Ratio by Column"}
+    >
       <TerminalLine dir="">
         <Cmd text="clickhouse-client --queries-file compression-by-column.sql" />
       </TerminalLine>

@@ -10,9 +10,9 @@ import React from "react";
 
 export default function Dictionary({}) {
   return (
-    <TerminalRoot title={"字典编码：裸 String vs LowCardinality"}>
+    <TerminalRoot title={"Dictionary: Bare String vs LowCardinality"}>
       <TerminalLine dir="">
-        <Cmd text="# 裸 String：每一行都把整个字符串原样存一遍" />
+        <Cmd text="# Bare String: each row stores the entire string as-is" />
       </TerminalLine>
 
       <TerminalResponse dir="" response_style="NEWLINE">
@@ -29,16 +29,16 @@ export default function Dictionary({}) {
       </TerminalResponse>
 
       <TerminalLine dir="">
-        <Cmd text="# LowCardinality(String)：字典只存一次 + 整数下标" />
+        <Cmd text="# LowCardinality(String): dictionary stores each unique string once + integer indices" />
       </TerminalLine>
 
       <TerminalResponse dir="" response_style="NEWLINE">
         <Line text="dict:  0 = ...::teamMember   1 = ...::item   2 = ...::auditLog" />
-        <Emph text="data:  [0, 1, 0, 2, 1, 0]   ← 每行仅 1 字节" />
+        <Emph text="data:  [0, 1, 0, 2, 1, 0]   ← each row only 1 byte" />
       </TerminalResponse>
 
       <TerminalResponse dir="" response_style="NEWLINE" dim={true}>
-        <Line text="dict ~40 B + 6 B ≈ 46 B   (~3× 更小, 之上还能再叠 ZSTD)" />
+        <Line text="dict ~40 B + 6 B ≈ 46 B   (~3× smaller, can further apply ZSTD on top)" />
       </TerminalResponse>
     </TerminalRoot>
   );
