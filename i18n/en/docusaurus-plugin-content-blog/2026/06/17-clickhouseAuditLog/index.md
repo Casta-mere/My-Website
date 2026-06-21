@@ -1,6 +1,6 @@
 ---
 slug: clickhouseAuditLog
-title: ClickHouse：Audit Log 的存储革命
+title: ClickHouse：Mission Critical Audit Logs
 authors: [Castamere]
 tags: [ClickHouse]
 references:
@@ -25,18 +25,18 @@ import Terminal from "./components/Terminal";
 import Compression from "./components/Compression";
 import Dictionary from "./components/Dictionary";
 
-# ClickHouse：Audit Log 的存储革命
+# ClickHouse：Mission Critical Audit Logs
 
-一次排班的修改, 一次权限的开关, 当下不过是系统里再普通不过的一条记录；可几个月后, 它可能突然成为所有人都在追问的问题——「三个月前这家店的菜单是谁改的？」。审计日志(audit log)里有答案, 但要把它留得住, 查得动, 背后是一次存储与查询的革命
+A single change to a schedule, a single toggle of permissions—at the moment, it’s just another ordinary entry in the system; but a few months later, it might suddenly become the question everyone is asking: “Who changed this restaurant’s menu three months ago?” The answer lies in the audit log, but ensuring that it’s preserved and retrievable requires a revolution in storage and querying
 
-本篇包括以下内容：
+This article covers the following topics:
 
-- ClickHouse 和 Audit Log
-- 两个笔者在生产实践中遇到的问题, 以及引发的思考
+- ClickHouse and Audit Log
+- Two issues I ran into in production, and the thinking they prompted
 
 <!--truncate-->
 
-## 缘起
+## Origins
 
 笔者目前在 FeedMe 负责 hrm-service。FeedMe 是餐饮行业的 operating system——从前台点单到后厨出餐, 从排班到结算, 整套系统每天要承载约 300 万次操作：订单, 支付, 菜单变更, 员工操作, 库存变动, 报表生成, 最终全都沉淀在这里
 
