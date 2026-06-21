@@ -38,23 +38,23 @@ This article covers the following topics:
 
 ## Origins
 
-笔者目前在 FeedMe 负责 hrm-service。FeedMe 是餐饮行业的 operating system——从前台点单到后厨出餐, 从排班到结算, 整套系统每天要承载约 300 万次操作：订单, 支付, 菜单变更, 员工操作, 库存变动, 报表生成, 最终全都沉淀在这里
+I am currently working on the hrm-service at FeedMe. FeedMe is an **operating system** for the F&B Industry: from ordering to kitchen, from scheduling to settlement, the entire system handles approximately 3 million operations every day: orders, payments, menu changes, employee actions, inventory changes, and report generation—all of which are ultimately recorded here
 
-hrm-service 管的是其中和「人」有关的那部分：员工, 角色, 权限, passcode, 排班(timesheet)。这里的每一个敏感动作, 都要先过一道权限校验——后端用 CASL 定义能力, 每个接口挂上 `@Action({action, subject, condition, operationLabel})` 装饰器, 再由 `ActionGuard` 拦下来判断这个人能不能做这件事。而判断的结果, 无论 `allowed`, `denied` 还是 `skipped`, 连同是谁(`userId`), 对什么(`subject`), 做了什么(`action`), 都会被原样写进一张审计表。换句话说, 审计不是某个角落里的附加功能, 它缝在了每一个受保护的接口上
+Hrm-service handles all the aspects related to 'people': employees, roles, permissions, passcodes, and scheduling (timesheets). Every sensitive action here must first pass an authorization check: the backend defines capabilities using CASL, each API endpoint is annotated with the `@Action({action, subject, condition, operationLabel})` decorator, and then `ActionGuard` intercepts the request to determine whether the user is authorized to perform the action. The result of this check—whether `allowed`, `denied`, or `skipped`—along with who (`userId`), what (`subject`), and what action (`action`) was taken, is recorded verbatim in an audit log. In other words, **auditing is not a bolted-on feature; it is baked into every protected interface**
 
-这些记录平时是隐形的, 淹没在每天数以万计的校验里, 没人会多看一眼。直到某一天, 它们中的某一条突然成为会议室里最重要的问题：谁在三个月前改了这家店的权限？那次排班调整是谁批的, 改之前是什么？这类问题从不提前打招呼, 等它出现时, 答案要么在, 要么不在
+These records are usually invisible, buried among the tens of thousands of daily audits, and no one ever gives them a second glance. Until one day, one of them suddenly becomes the most pressing issue in the conference room: Who changed this store’s permissions three months ago? Who approved that schedule adjustment, and what was it before the change? Questions like these never come with warning; when they arise, the answer is either there or it isn’t.
 
-**最大的挑战不是流量, 是时间**
+3 million operations may sound like a lot, but when broken down to operations per second and considered alongside the throughput of modern databases, this volume isn’t actually that daunting. **What truly changes everything is never peak traffic. The challenge is time**
 
-300 万次操作听上去不少, 但拆到每秒, 再配合现代数据库的吞吐, 这个量级其实并不可怕。真正改变一切的, 从来不是峰值流量。**The challenge is not extreme traffic. The challenge is time.**
+Relevant regulations in Malaysia generally require that sales and audit-related data be retained for seven years. Anyone can keep a month’s worth of data, but retaining every single transaction exactly as it was for seven full years—and ensuring it can be retrieved and audited on any given day during that period—is a matter of an entirely different magnitude.
 
-马来西亚的相关法规通常要求销售及审计相关的数据保留 7 年。留一个月的数据谁都做得到, 但要把每一条操作原封不动地留够七年, 并且这七年里的任何一天都能被翻出来追查, 是另一个完全不同量级的问题
+Here comes the dilemma:
 
-矛盾就摆在这里：
-
-- 数据太贵, 留不住——存储成本随时间线性累积, 七年足以让任何「先存着再说」的方案破产, 最后只能忍痛丢掉历史
-- 数据太冷, 查不动——就算咬牙全留下来, 传统行式存储面对「三年前某家店的全部权限变更」这类查询时, 也慢到没人愿意等
+- **Data is too expensive to hoard**: Storage costs scale linearly over time. A seven-year retention requirement will bankrupt any "store now, ask questions later" architecture, inevitably forcing a painful purge of historical data
+- **Cold data is too slow to query**: Even if you manage to retain all that data, traditional row-based storage chokes on queries like "show me all permission changes for Store X from three years ago," grinding down to speeds no one is willing to wait for
  
+Lose history, or lose its usefulness—take your pick.
+
 失去历史, 或失去用处, 二选一
 
 ## ClickHouse & Audit Log
