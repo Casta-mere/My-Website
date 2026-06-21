@@ -44,52 +44,52 @@ I am currently working on hrm-service at FeedMe. FeedMe is an **operating system
 
 Within FeedMe, hrm-service handles everything related to 'people': employees, roles, permissions, passcodes, and scheduling (timesheets). Every sensitive action here must first pass an authorization check: the backend defines capabilities using CASL, each API endpoint is annotated with the `@Action({action, subject, condition, operationLabel})` decorator, and then `ActionGuard` intercepts the request to determine whether the user is authorized to perform the action. The result of this check—whether `allowed`, `denied`, or `skipped`—along with who (`userId`), what (`subject`), and what action (`action`) was taken, is recorded verbatim in an audit log. In other words, **auditing is not a bolted-on feature; it is baked into every protected interface**
 
-These records are usually invisible, buried among the tens of thousands of daily checks, and no one ever gives them a second glance. Until one day, one of them suddenly becomes the most pressing issue in the conference room: Who changed this restaurant’s permissions three months ago? Who approved that schedule adjustment, and what was it before the change? Questions like these never come with warning; when they arise, the answer is either there or it isn’t.
+These records are usually invisible, buried among the tens of thousands of daily checks, and no one ever gives them a second glance. Until one day, one of them suddenly becomes the most pressing issue in the conference room: Who changed this restaurant’s permissions three months ago? Who approved that schedule adjustment, and what was it before the change? Questions like these never come with warning; when they arise, the answer is either there or it isn’t
 
 ### The seven-year problem
 
 3 million operations may sound like a lot, but when broken down to operations per second and considered alongside the throughput of modern databases, this volume isn’t actually that daunting. **The challenge is never peak traffic. The challenge is time**
 
-Relevant regulations in Malaysia generally require that sales and audit-related data be retained for seven years. Anyone can keep a month’s worth of data, but retaining every single operation exactly as it was for seven full years—and ensuring it can be retrieved and audited on any given day during that period—is a matter of an entirely different magnitude.
+Relevant regulations in Malaysia generally require that sales and audit-related data be retained for seven years. Anyone can keep a month’s worth of data, but retaining every single operation exactly as it was for seven full years—and ensuring it can be retrieved and audited on any given day during that period—is a matter of an entirely different magnitude
 
 Here comes the dilemma:
 
 - **Data is too expensive to hoard**: Storage costs scale linearly over time. A seven-year retention requirement will bankrupt any "store now, ask questions later" architecture, inevitably forcing a painful purge of historical data
 - **Cold data is too slow to query**: Even if you manage to retain all that data, traditional row-based storage chokes on queries like "show me all permission changes for Restaurant X from three years ago," grinding down to speeds no one is willing to wait for
  
-Lose history, or lose its usefulness—take your pick.
+Lose history, or lose its usefulness—take your pick
 
 ## ClickHouse & Audit Log
 
-ClickHouse 恰好是为打破这个二选一而生的。把审计日志的特征摊开来看, 会发现它和 ClickHouse 的设计几乎严丝合缝
+ClickHouse was created precisely to break this “either-or” dilemma. When you examine the characteristics of audit logs, you’ll find that they align almost perfectly with ClickHouse’s design
 
-| 审计日志特点               | ClickHouse 优势                                |
-| -------------------------- | ---------------------------------------------- |
-| 字段重复率高               | 列式存储 + 压缩                                |
-| 不可变, 仅追加写入         | MergeTree 引擎                                 |
-| 临时查询为主, 难以预建索引 | 原生 OLAP 查询能力/可以对原始数据执行 SQL 操作 |
+| Audit Log          characteristics     | ClickHouse Advantage                              |
+| -------------------------------------- | ------------------------------------------------- |
+| Highly repetitive fields               | Columnar storage + compression                    |
+| Immutable, append-only                 | MergeTree engine                                  |
+| Ad-hoc queries, difficult to pre-index | Native OLAP capabilities / Direct SQL on raw data |
 
-### 列式存储 & 压缩
+### Columnar storage & compression
 
-最直接的红利来自列式存储。要理解它为什么对审计日志这么关键, 得先看一次典型的审计查询要查询什么——「过去一个月这家店的权限变更」, 它过滤的是 `businessId`, `subject`, `timestamp`, 最后也只取这么几列。传统行式存储把一整行的所有字段连续摆在一起, 哪怕只问三列, 磁盘也得把每一行整条读出来再丢掉大半；列式存储反过来, 把同一列的值连续排布, 查询几列就只读几列, 其余字段安安静静躺在磁盘上不被打扰
+The most immediate payoff comes from columnar storage. To understand why this is such a game-changer for audit logs, you have to look at the anatomy of a typical query: *Show me the permission changes for Restaurant X over the past month*: It filters by `businessId`, `subject`, and `timestamp`, and **ultimately retrieves only these few columns**. Traditional row-based storage arranges all fields of an entire row consecutively. Even if only three columns are requested, the disk **must read the entire row and then discard most of it**. Columnar storage, on the other hand, arranges values of the same column consecutively. When querying a few columns, **only those columns are read**, while the remaining fields remain untouched on the disk
 
-而列式存储真正的杠杆在压缩。同一列的值连续排布, 排序之后, 相同的值彼此相邻——审计日志的字段重复率又高得惊人：`subject`, `action`, `outcome`, `country` 这些字段, 在几百万行里翻来覆去也就那么几十个取值。这种连续的重复模式, 正是压缩算法最爱啃的骨头。ClickHouse 官方 docs 里跑过一份 Stack Overflow `posts` 表的基准：低基数列的压缩比能冲到 27 倍(`PostTypeId`), 甚至上千倍(`FavoriteCount` 高达 1853 倍)。审计日志的形状比那还要规整, 压缩空间只多不少
+**The real leverage of columnar storage, however, is compression.** Because values within a column are stored contiguously, once sorted, identical values are adjacent to one another, and the repetition rate of fields in audit logs is astonishingly high: fields like `subject`, `action`, `outcome`, and `country` typically take only a few dozen values across millions of rows. This pattern of consecutive repetition is exactly the kind of data that compression algorithms thrive on. The official ClickHouse docs feature a benchmark on the Stack Overflow posts table showing that compression ratios for low-cardinality columns can shoot up to 27x (PostTypeId), and sometimes even over a thousandfold (FavoriteCount hit an incredible 1853x). The 'shape' of audit log data is even more uniform than that, meaning the ceiling for compression is only higher
 
 <Compression />
 
-在自动压缩之上, 还有两层可以手动加的杠杆
+Upon this automatic compression, there are two more layers of manual levers
 
-第一层是 `LowCardinality(String)`, 思路是字典编码(哈希表)：把一列里反复出现的字符串收进一张小字典, 行里只存指向字典的整数下标。审计日志几乎每一列都像是为它量身定做的
+The first layer is `LowCardinality(String)`, which uses dictionary encoding (hash table): it collects the repeatedly occurring strings in a column into a small dictionary, and the rows only store integer indices pointing to the dictionary. Almost every column in the audit log is tailor-made for this
 
-- `action` 死死锁在 CASL 的 `manage / create / read / update / delete` 五个动作上
-- `subject` 是 `::` 分层的资源名(`business::hrm::teamMember`, `business::menu::item`, ...)
-- `country` 是 ISO 国家码, 来回也就那几十个取值
+- `action` is locked into the five CASL actions: `manage / create / read / update / delete`
+- `subject` is a `::`-delimited hierarchical resource name (`business::hrm::teamMember`, `business::menu::item`, ...)
+- `country` is an ISO country code, with only a few dozen possible values
 
-把这些列从裸 `String` 换成 `LowCardinality(String)`, 再叠一层 `ZSTD`, 几乎是白捡的压缩
+Swapping these columns from bare `String` types to `LowCardinality(String)` and apply ZSTD([*Zstandard*](https://github.com/facebook/zstd)) on top gives you massive compression
 
 <Dictionary />
 
-第二层是给特定形状的列挑专门的 **CODEC** (coder/decoder)。最典型的是时间戳：`timestamp` 是单调递增的序列, 相邻两条记录的差值往往只有几秒, 存差值远比存绝对值划算——这正是 `Delta` 编码的用武之地, 它先把序列转成一串小差值, 再交给 `ZSTD`([*Zstandard*](https://github.com/facebook/zstd)) 去压。官方对可观测性数据的建议很直白：「`ZSTD` all the way」, 字符串, 数值列统统上 `ZSTD`, 时间戳再额外加一层 `Delta`。几样叠起来, 同一份审计数据的落盘体积能压到行式存储的零头
+The second layer is picking specific **CODECs** (coder/decoder) for columns with particular shapes. The most typical example is timestamps: `timestamp` is a monotonically increasing sequence, and the difference between adjacent records is often just a few seconds. Storing the difference (delta) is much more efficient than storing the absolute value—that's where `Delta` encoding comes in. It first converts the sequence into a series of small deltas, and then applies `ZSTD` for compression. The official recommendation for observability data is straightforward: *`ZSTD` all the way*: apply `ZSTD` to strings and numeric columns, and add an extra layer of `Delta` encoding for timestamps. With these layers combined, the on-disk size of the same audit data can be reduced to a fraction of what it would be with row-based storage
 
 ### MergeTree
 
