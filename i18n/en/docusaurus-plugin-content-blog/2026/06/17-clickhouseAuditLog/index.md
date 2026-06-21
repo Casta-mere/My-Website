@@ -71,13 +71,13 @@ ClickHouse was created precisely to break this “either-or” dilemma. When you
 
 ### Columnar storage & compression
 
-The most immediate payoff comes from columnar storage. To understand why this is such a game-changer for audit logs, you have to look at the anatomy of a typical query: *Show me the permission changes for Restaurant X over the past month*: It filters by `businessId`, `subject`, and `timestamp`, and **ultimately retrieves only these few columns**. Traditional row-based storage arranges all fields of an entire row consecutively. Even if only three columns are requested, the disk **must read the entire row and then discard most of it**. Columnar storage, on the other hand, arranges values of the same column consecutively. When querying a few columns, **only those columns are read**, while the remaining fields remain untouched on the disk
+The most immediate payoff comes from columnar storage. To understand why this is such a game-changer for audit logs, you have to look at the anatomy of a typical query: *Show me the permission changes for Restaurant X over the past month*: It filters by `businessId`, `subject`, and `timestamp`, and **ultimately retrieves only these few columns**. Traditional row-based storage arranges all fields of an entire row consecutively. Even if only three columns are requested, the disk **must read the entire row and then discard most of it**. Columnar storage, on the other hand, arranges values of the same column consecutively. When querying a few columns, **only those columns are read**, while the rest stay untouched on disk
 
-**The real leverage of columnar storage, however, is compression.** Because values within a column are stored contiguously, once sorted, identical values are adjacent to one another, and the repetition rate of fields in audit logs is astonishingly high: fields like `subject`, `action`, `outcome`, and `country` typically take only a few dozen values across millions of rows. This pattern of consecutive repetition is exactly the kind of data that compression algorithms thrive on. The official ClickHouse docs feature a benchmark on the Stack Overflow posts table showing that compression ratios for low-cardinality columns can shoot up to 27x (PostTypeId), and sometimes even over a thousandfold (FavoriteCount hit an incredible 1853x). The 'shape' of audit log data is even more uniform than that, meaning the ceiling for compression is only higher
+**The real leverage of columnar storage, however, is compression.** Because values within a column are stored contiguously, once sorted, identical values are adjacent to one another, and the repetition rate of fields in audit logs is astonishingly high: fields like `subject`, `action`, `outcome`, and `country` typically take only a few dozen values across millions of rows. This pattern of consecutive repetition is exactly the kind of data that compression algorithms thrive on. The official ClickHouse docs feature a benchmark on the Stack Overflow `posts` table showing that compression ratios for low-cardinality columns can shoot up to 27x (`PostTypeId`), and sometimes even over a thousandfold (`FavoriteCount` hit an incredible 1853x). The 'shape' of audit log data is even more uniform than that, meaning the ceiling for compression is only higher
 
 <Compression />
 
-Upon this automatic compression, there are two more layers of manual levers
+On top of this automatic compression, there are two more layers of manual levers
 
 The first layer is `LowCardinality(String)`, which uses dictionary encoding (hash table): it collects the repeatedly occurring strings in a column into a small dictionary, and the rows only store integer indices pointing to the dictionary. Almost every column in the audit log is tailor-made for this
 
@@ -85,7 +85,7 @@ The first layer is `LowCardinality(String)`, which uses dictionary encoding (has
 - `subject` is a `::`-delimited hierarchical resource name (`business::hrm::teamMember`, `business::menu::item`, ...)
 - `country` is an ISO country code, with only a few dozen possible values
 
-Swapping these columns from bare `String` types to `LowCardinality(String)` and apply ZSTD([*Zstandard*](https://github.com/facebook/zstd)) on top gives you massive compression
+Swapping these columns from bare `String` types to `LowCardinality(String)` and applying `ZSTD` ([*Zstandard*](https://github.com/facebook/zstd)) on top gives you compression almost for free
 
 <Dictionary />
 
