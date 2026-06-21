@@ -19,9 +19,6 @@ references:
     time: 2017
     author: Yegor Andreenko
     url: https://medium.com/@f1yegor/clickhouse-primary-keys-2cf2a45d7324
-
-recommended: true
-draft: true
 ---
 
 import Terminal from "./components/Terminal";
