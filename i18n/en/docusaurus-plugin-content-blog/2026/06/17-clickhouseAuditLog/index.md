@@ -93,18 +93,20 @@ The second layer is picking specific **CODECs** (coder/decoder) for columns with
 
 ### MergeTree
 
-写入模式也契合。审计日志本质上是 immutable 的——一条记录一旦落库就**不该**再改, 它不像业务表那样有「更新某个字段」的需求, 只会随着时间不断追加新行。这种「只增不改」的形式, 恰好是 ClickHouse `MergeTree` 引擎的设计理念
+The write pattern is also a perfect match. Audit logs are inherently immutable—once a record hits the database, it **should never** be altered. Unlike standard operational tables, there is no need to ever *update a specific field*; the data simply grows by appending new rows over time. This strictly *append-only* paradigm embodies the exact design philosophy behind ClickHouse's `MergeTree` engine
 
-`MergeTree` 的工作方式简单说就是「先快写, 再慢合」。每一批写入都按排序键(`ORDER BY`)排好序, 落成磁盘上一个独立的, 不可变的 part——这一步是纯顺序写, 极快。之后后台再异步地把小 part 合并成大 part, 顺手做整理与压缩。查询时它靠的是一份稀疏主键索引(默认 `index_granularity = 8192`, 每 8192 行才留一个标记), 配合排序键快速跳过整段无关数据, 而不必像 B-Tree 那样为每一行维护索引。对一张只增不改, 按时间和 `businessId` 天然有序的审计表来说, 这套机制几乎不费力
+Simply put, `MergeTree` operates on a *write fast, merge later* philosophy. Each batch of incoming data is sorted by the `ORDER BY` key and flushed to disk as an independent, immutable part. Because this relies entirely on sequential I/O, it is blazingly fast. Later on, background threads asynchronously merge these small parts into larger ones, seamlessly handling cleanup and compression along the way. 
+
+When it comes to querying, it utilizes a sparse primary index (with a default index_granularity = 8192, dropping a single marker only once every 8,192 rows). Combined with the sorting key, this allows the engine to instantly skip massive chunks of irrelevant data, entirely avoiding the heavy overhead of maintaining a per-row B-Tree index. For an append-only audit table that is naturally ordered by time and `businessId`, this entire mechanism operates with virtually zero friction
 
 ```mermaid
 flowchart LR
-  b1["写入批次 1"] --> p1["part_1<br/>小·不可变"]
-  b2["写入批次 2"] --> p2["part_2<br/>小·不可变"]
-  b3["写入批次 3"] --> p3["part_3<br/>小·不可变"]
-  p1 -. 后台异步合并 .-> M["part_merged<br/>大·有序·已压缩"]
-  p2 -. 后台异步合并 .-> M
-  p3 -. 后台异步合并 .-> M
+  b1["Write batch 1"] --> p1["part_1<br/>small · immutable"]
+  b2["Write batch 2"] --> p2["part_2<br/>small · immutable"]
+  b3["Write batch 3"] --> p3["part_3<br/>small · immutable"]
+  p1 -. async background merge .-> M["part_merged<br/>large · sorted · compressed"]
+  p2 -. async background merge .-> M
+  p3 -. async background merge .-> M
   classDef small fill:#fff3bf,stroke:#f08c00,color:#1b1b1b;
   classDef big fill:#d3f9d8,stroke:#2f9e44,color:#1b1b1b;
   class p1,p2,p3 small;
