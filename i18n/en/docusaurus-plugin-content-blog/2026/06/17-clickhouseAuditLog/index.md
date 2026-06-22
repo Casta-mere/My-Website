@@ -95,9 +95,9 @@ The second layer is picking specific **CODECs** (coder/decoder) for columns with
 
 The write pattern is also a perfect match. Audit logs are inherently immutable—once a record hits the database, it **should never** be altered. Unlike standard operational tables, there is no need to ever *update a specific field*; the data simply grows by appending new rows over time. This strictly *append-only* paradigm embodies the exact design philosophy behind ClickHouse's `MergeTree` engine
 
-Simply put, `MergeTree` operates on a *write fast, merge later* philosophy. Each batch of incoming data is sorted by the `ORDER BY` key and flushed to disk as an independent, immutable part. Because this relies entirely on sequential I/O, it is blazingly fast. Later on, background threads asynchronously merge these small parts into larger ones, seamlessly handling cleanup and compression along the way. 
+Simply put, `MergeTree` operates on a *write fast, merge later* philosophy. Each batch of incoming data is sorted by the `ORDER BY` key and flushed to disk as an independent, immutable part. Because this relies entirely on sequential I/O, it is blazingly fast. Later on, background threads asynchronously merge these small parts into larger ones, seamlessly handling cleanup and compression along the way.
 
-When it comes to querying, it utilizes a sparse primary index (with a default index_granularity = 8192, dropping a single marker only once every 8,192 rows). Combined with the sorting key, this allows the engine to instantly skip massive chunks of irrelevant data, entirely avoiding the heavy overhead of maintaining a per-row B-Tree index. For an append-only audit table that is naturally ordered by time and `businessId`, this entire mechanism operates with virtually zero friction
+When it comes to querying, it utilizes a sparse primary index (with a default `index_granularity = 8192`, dropping a single marker only once every 8,192 rows). Combined with the sort key, this allows the engine to instantly skip massive chunks of irrelevant data, entirely avoiding the heavy overhead of maintaining a per-row B-Tree index. For an append-only audit table that is naturally ordered by time and `businessId`, this entire mechanism operates with virtually zero friction
 
 ```mermaid
 flowchart LR
