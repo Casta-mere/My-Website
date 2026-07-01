@@ -249,6 +249,11 @@ TTY:
   label: TTY
   permalink: /TTY
 
+Tailscale:
+  description: Tailscale
+  label: Tailscale
+  permalink: /Tailscale
+
 Talk:
   description: Talk
   label: Talk
@@ -313,6 +318,11 @@ Windows:
   description: Windows
   label: Windows
   permalink: /Windows
+
+Work:
+  description: Work
+  label: Work
+  permalink: /Work
 
 Zsh:
   description: Zsh
