@@ -129,6 +129,15 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Emacs",
+      link: {
+        type: "doc",
+        id: "Emacs/README",
+      },
+      items: ["Emacs/FirstSteps"],
+    },
+    {
+      type: "category",
       label: "总结与计划",
       link: {
         type: "doc",
