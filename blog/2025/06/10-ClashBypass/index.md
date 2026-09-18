@@ -3,6 +3,7 @@ slug: ClashBypass
 title: Clash 配置特定网站不走代理
 authors: [Castamere]
 tags: [Clash, VPN]
+draft: true
 ---
 
 Clash 配置特定网站不走代理
