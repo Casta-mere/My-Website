@@ -1,7 +1,6 @@
 ---
 name: writing-style
 description: Draft, revise, or lint blog/doc body content in Castamere's voice. Auto-detects blog vs doc from the path. Use after new-blog/new-doc has scaffolded the file, or to polish an existing draft.
-disable-model-invocation: true
 allowed-tools: Read Write Edit Grep Glob Bash
 argument-hint: "<path-to-file> [--mode draft|revise|lint] [--shape fix|concept|roundup|tutorial|snippet]"
 ---

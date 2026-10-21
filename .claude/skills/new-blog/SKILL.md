@@ -1,7 +1,6 @@
 ---
 name: new-blog
 description: Scaffold a new blog post under blog/YYYY/MM/DD-slug/index.md with today's date, a slug and title in the repo's style, frontmatter, and any new tags added to blog/tags.yml.
-disable-model-invocation: true
 allowed-tools: Bash Read Write Edit Grep Glob
 argument-hint: "<topic description and optional refs/tags/slug/title hints>"
 ---

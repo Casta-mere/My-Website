@@ -1,7 +1,6 @@
 ---
 name: git-commit-message
 description: Analyze staged changes in this repo and propose a repo-style commit subject with the right scope, action, and version.
-disable-model-invocation: true
 allowed-tools: Bash Read Grep Glob
 argument-hint: "[optional focus]"
 ---

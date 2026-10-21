@@ -1,7 +1,6 @@
 ---
 name: new-doc
 description: Scaffold a new docs page under docs/<Topic>/<PageName>.md with proper frontmatter, add the doc ID to the correct category in sidebars.js, and add any new tags to docs/tags.yml.
-disable-model-invocation: true
 allowed-tools: Bash Read Write Edit Grep Glob
 argument-hint: "<topic/page description and optional tag/ref hints>"
 ---

@@ -1,7 +1,6 @@
 ---
 name: update-release
 description: Analyze git changes since the last release-page update and propose new entries for both src/pages/release/index.mdx (zh) and i18n/en/docusaurus-plugin-content-pages/release/index.mdx (en), including draft handling.
-disable-model-invocation: true
 allowed-tools: Bash Read Write Edit Grep Glob
 argument-hint: "[optional: date range or scope hints]"
 ---
