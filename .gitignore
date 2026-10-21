@@ -23,3 +23,5 @@ yarn-error.log*
 
 # Data
 src/data/github
+# Git worktrees (local only)
+.worktrees
