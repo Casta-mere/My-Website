@@ -11,6 +11,10 @@ tags: [Docusaurus, Umami]
 
 在上方应该可以看到成品的效果
 
+:::warning 2026-10 更新
+本文基于 Umami v2 的 API（`url` 参数、`pageviews.value`、登录 token）。Umami v3 已更改接口，且文中的 token 早已失效。现行方案改用 share token，无需任何密钥，请阅读 [新文章](/blog/PageViewCounterV2) 与 [Docusaurus Umami](/docs/Server/Docusaurus-Umami)。
+:::
+
 <!--truncate-->
 
 ## 缘起
