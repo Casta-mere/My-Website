@@ -42,7 +42,7 @@ Umami v3 只支持 PostgreSQL，官方同时提供了现成的 Docker 镜像。�
 docker compose version
 ```
 
-内存方面，笔者的服务器只有 1.6 GB，稳定运行时 Umami 容器约 230 MB，PostgreSQL 约 50 MB，够用。第一次启动要跑数据库迁移，从 v2 迁移时还要跑 Prisma，内存会紧一些，可以加一个 2 GB 的 swap 当保险（可选）：
+内存方面，笔者的服务器只有 1.6 GB。2026 年 10 月 21 日在这台机器上用 `docker stats` 实测，Umami 容器在 230 到 310 MiB 之间浮动（同一晚的两次读数是 232 MiB 和 311 MiB），PostgreSQL 约 46 到 52 MiB；整机 `free -m` 显示已用 1177 MB，available 287 MB，swap 一点没用到，这台机器上还跑着 MySQL 等其他服务。够用，但不宽裕。第一次启动要跑数据库迁移，从 v2 迁移时还要跑 Prisma，内存会更紧一些，可以加一个 2 GB 的 swap 当保险（可选）：
 
 ```bash
 fallocate -l 2G /swapfile
@@ -409,7 +409,7 @@ module.exports = umamiPlugin;
 
 ### 文章阅读量
 
-文章和文档页面上的阅读次数，读取的是上一节开启的共享链接，浏览器里不放任何 token 或密码，同一套代码兼容 Umami v2 和 v3。具体的原理和组件见 [Umami v3 下的文章阅读次数](/blog/PageViewCounterV2)
+文章和文档页面上的阅读次数，读取的是上一节开启的共享链接，浏览器里不放任何 token 或密码。请求和返回的格式兼容 Umami v2 和 v3，但要在浏览器里用，服务端必须是 v3：v2.13 的 `/api/share` 不返回 CORS 头，浏览器会拦下请求，v3 对所有 `/api/*` 都返回 `Access-Control-Allow-Origin: *`。具体的原理和组件见 [Umami v3 下的文章阅读次数](/blog/PageViewCounterV2)
 
 ## 从 v2（MySQL）迁移
 
@@ -473,7 +473,7 @@ mv "$tmp" "$out"
 find "$dir" -name 'umami-*.sql.gz' -mtime +14 -delete
 ```
 
-dump 先写进 `.tmp` 文件，`gzip -t` 校验通过之后才改成带日期的正式名字。这样 `pg_dump` 中途失败不会留下一个残缺却像备份的文件，同一天重跑也不会覆盖掉好的备份。`umask 077` 则让备份只有 root 能读，里面有访客数据和 admin 的密码哈希
+dump 先写进 `.tmp` 文件，`gzip -t` 校验通过之后才改成带日期的正式名字。这样 `pg_dump` 中途失败不会留下一个残缺却像备份的文件，失败的重跑也动不了已有的好备份。同一天重跑成功的话，当天的文件会被原子地替换成新的。`umask 077` 则让备份只有 root 能读，里面有访客数据和 admin 的密码哈希
 
 把它加到 root 的 crontab 里，每天凌晨 4 点跑（错开 acme.sh 在 3:30 的证书续期）：
 
@@ -485,7 +485,27 @@ chmod 755 /root/umami-v3/backup.sh
 
 `mkdir` 不能省，cron 命令里的日志重定向发生在脚本启动之前，目录不存在就根本跑不起来。
 
-dump 是纯文本的 SQL，恢复时把它灌回一个全新的空库即可：`gunzip -c umami-<日期>.sql.gz | docker compose exec -T db psql -U umami umami`。备份和数据库在同一块盘上，最好再用 `scp` 或 `rsync` 拉一份到别的机器
+笔者在服务器上装好之后验证了一遍：
+
+- crontab 里是 `0 4 * * * /root/umami-v3/backup.sh >> /root/backup/umami/backup.log 2>&1`，原来的几行（`steam.py` 和 acme.sh 的）原样保留
+- 手动跑一次 `backup.sh`，生成了 6.27 MB 的 `umami-2026-10-21.sql.gz`，`gzip -t` 通过，权限是 600，目录里没有残留的 `.tmp`
+- 故意让 `pg_dump` 失败一次，脚本退出码为 1，目录里没有多出任何文件
+
+dump 是纯文本的 SQL，只能灌进一个**空库**，而且灌的时候只能有 `db` 在运行：`umami` 容器一启动就会建表，之后再灌会报 `relation "..." already exists`。所以恢复要先停掉 `umami`，把库删掉重建，再灌回去：
+
+```bash
+cd /root/umami-v3
+docker compose stop umami
+docker compose exec -T db psql -U umami -d postgres -c 'DROP DATABASE umami WITH (FORCE)' -c 'CREATE DATABASE umami OWNER umami'
+gunzip -c /root/backup/umami/umami-<日期>.sql.gz | docker compose exec -T db psql -U umami -d umami -v ON_ERROR_STOP=1 -q -o /dev/null
+docker compose start umami
+```
+
+:::warning
+`DROP DATABASE` 会删掉当前库里的所有数据，执行之前先确认备份文件是好的。这套「停服务、删库重建、灌回」的流程，笔者在本地的 `postgres:16-alpine` 上验证过，在 Umami 自己的库上没有真的跑过
+:::
+
+备份和数据库在同一块盘上，最好再用 `scp` 或 `rsync` 拉一份到别的机器
 
 ### 自启动
 
@@ -500,7 +520,11 @@ docker compose -f /root/umami-v3/compose.yml ps
 curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3030/api/heartbeat
 ```
 
-两个服务都变回 `healthy`，heartbeat 返回 `200`，就说明自启动没问题。
+两个服务都变回 `healthy`，heartbeat 返回 `200`，就说明自启动没问题。笔者在服务器上实测的结果是：重启 Docker 之后，`db` 约 16 秒变成 `healthy`，`umami` 约 60 秒，公网的 `https://umami.castamerego.com/api/heartbeat` 约 66 秒返回 `200`，所以 `sleep 90` 够用。
+
+:::warning
+`systemctl restart docker` 会重启这台主机上**所有**的容器，不只是 Umami，同一台机器上的其他服务也会中断一分钟左右，要挑一个没人用的时间来测
+:::
 
 :::tip
 `unless-stopped` 的意思是：手动 `docker compose stop` 过的容器，重启 Docker 之后不会再起来，只有意外退出和宿主机重启才会自动拉起。
@@ -533,7 +557,7 @@ curl -s "$HOST/api/websites/$WEBSITE_ID/stats?startAt=0&endAt=$(date +%s000)&pat
 # {"pageviews":54,"visitors":51,...}
 ```
 
-插件里的 `useUmamiStats` 就是把这个流程封装好了，v2 和 v3 都能用，见 [Umami v3 下的文章阅读次数](/blog/PageViewCounterV2)
+插件里的 `useUmamiStats` 就是把这个流程封装好了。请求和返回的格式 v2、v3 都兼容，不过放进浏览器里用，需要服务端是 v3（v2.13 的 `/api/share` 没有 CORS 头），见 [Umami v3 下的文章阅读次数](/blog/PageViewCounterV2)
 
 ### 获取不到国家(一直是 unknown)
 
