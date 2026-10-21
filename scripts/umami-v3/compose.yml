@@ -14,6 +14,7 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    mem_limit: 256m
   umami:
     image: ghcr.io/umami-software/umami:3.4.0
     ports:
@@ -24,6 +25,7 @@ services:
       APP_SECRET: ${APP_SECRET}
       TWO_FACTOR_ENCRYPTION_KEY: ${TWO_FACTOR_ENCRYPTION_KEY}
       DISABLE_TELEMETRY: "1"
+      NODE_OPTIONS: "--max-old-space-size=384"
     depends_on:
       db:
         condition: service_healthy
@@ -34,5 +36,6 @@ services:
       retries: 5
       start_period: 90s
     restart: unless-stopped
+    mem_limit: 512m
 volumes:
   umami-db-data:

@@ -111,6 +111,8 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    # highlight-next-line
+    mem_limit: 256m
   umami:
     image: ghcr.io/umami-software/umami:3.4.0
     ports:
@@ -122,6 +124,8 @@ services:
       APP_SECRET: ${APP_SECRET}
       TWO_FACTOR_ENCRYPTION_KEY: ${TWO_FACTOR_ENCRYPTION_KEY}
       DISABLE_TELEMETRY: "1"
+      # highlight-next-line
+      NODE_OPTIONS: "--max-old-space-size=384"
     depends_on:
       db:
         condition: service_healthy
@@ -132,9 +136,13 @@ services:
       retries: 5
       start_period: 90s
     restart: unless-stopped
+    # highlight-next-line
+    mem_limit: 512m
 volumes:
   umami-db-data:
 ```
+
+`mem_limit` 和 `NODE_OPTIONS` 是给容器加的内存上限：`umami` 最多 512 MB，Node 堆限制在 384 MB，`db` 最多 256 MB。小服务器上，容器失控时应该让 Docker 把它杀掉重启，而不是拖着整台机器一起卡死，笔者的服务器在 2026-10-22 就卡死过一次，当时还没有这几行限制
 
 几个地方简单说明一下：
 
