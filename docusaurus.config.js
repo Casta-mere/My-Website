@@ -50,7 +50,15 @@ const config = {
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
     "./src/plugins/plugin-tailwind",
-    "./src/plugins/plugin-umami",
+    [
+      "./src/plugins/plugin-umami",
+      {
+        host: "https://umami.castamerego.com",
+        websiteId: "e993a914-0864-4b88-a53c-75e46dc174d7",
+        shareId: "EplxZVQRe6OkyBt3",
+        startAt: 1727427048000,
+      },
+    ],
     [
       "./src/plugins/plugin-blog-enhance.js",
       {

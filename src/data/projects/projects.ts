@@ -33,9 +33,10 @@ export const projectList: ProjectItem[] = [
   },
   {
     title: "Docusaurus-Plugin-Umami",
-    description: "在 Docusaurus 中集成 Umami 数据统计与解析",
+    description:
+      "在 Docusaurus 中集成 Umami 数据统计，并通过 share token 免密钥展示文章阅读量（v2，支持 Umami v3）",
     description_en:
-      "Integrate Umami data statistics and analysis into Docusaurus",
+      "Integrate Umami analytics into Docusaurus, with secret-free page view counters via share tokens (v2, Umami v3 ready)",
     github: "https://github.com/Casta-mere/Docusaurus-Plugin-Umami",
     img: "/img/projects/Umami.png",
     url: "https://umami.castamerego.com/share/EplxZVQRe6OkyBt3/castamerego.com",
