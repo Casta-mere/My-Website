@@ -1,0 +1,56 @@
+# Rehearsal stack for migrate.sh on a workstation (see ../README.md).
+# db and umami are copied from ../compose.yml (keep them in sync by hand);
+# mysql stands in for the server's MySQL 8.0, seeded from a mysqldump of my-website-umami.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: UTC
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+  umami:
+    image: ghcr.io/umami-software/umami:3.4.0
+    ports:
+      - "127.0.0.1:${UMAMI_PORT:-3030}:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:${POSTGRES_PASSWORD}@db:5432/umami
+      DATABASE_TYPE: postgresql
+      APP_SECRET: ${APP_SECRET}
+      TWO_FACTOR_ENCRYPTION_KEY: ${TWO_FACTOR_ENCRYPTION_KEY}
+      DISABLE_TELEMETRY: "1"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/api/heartbeat || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      # The server's MySQL runs time_zone=SYSTEM on an Asia/Shanghai host, and Umami v2 wrote
+      # its TIMESTAMP columns through such sessions. Same zone here, or the rehearsal cannot
+      # catch an 8-hour shift.
+      TZ: Asia/Shanghai
+    volumes:
+      - /tmp/umami-rehearsal/all.sql.gz:/docker-entrypoint-initdb.d/00-all.sql.gz:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+volumes:
+  umami-db-data:

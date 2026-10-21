@@ -1,3 +1,24 @@
 # Umami v3 deployment
 
 Compose project for the self-hosted Umami v3 (PostgreSQL) behind the nginx reverse proxy on the ECS box, installed on the server at `/root/umami-v3/`. `compose.yml` defines the `db` (postgres:16-alpine, named volume `umami-db-data`) and `umami` (ghcr.io/umami-software/umami:3.4.0, published on `127.0.0.1:${UMAMI_PORT}`, default 3030) services; `.env.example` lists the variables it reads, and the real `.env` (mode 600, never committed) lives only on the server next to `compose.yml` with generated secrets; `backup.sh` is the daily `pg_dump` script (gzipped to `/root/backup/umami/`, 14-day retention) that cron runs from `/root/umami-v3/backup.sh`.
+
+## Migration from v2 (MySQL)
+
+`migrate.sh` moves Umami v2.13 data from MySQL into this project's PostgreSQL along the official v2.19 path. It upgrades the MySQL schema to v2.19, creates the v2.19 schema in PostgreSQL, imports a data-only `mysqldump` in one transaction, verifies the copy, then starts v3, which runs its own migrations (26 rows). It is driven only by environment variables and never pulls images. Server values: `MYSQL_HOST=127.0.0.1 MYSQL_NET=host MYSQL_DB=my-website-umami PG_PROJECT=umami-v3 PG_PROJECT_DIR=/root/umami-v3 PG_COMPOSE_FILE=compose.yml PG_ENV_FILE=/root/umami-v3/.env PG_NET=umami-v3_default UMAMI_PORT=3030`, plus `MYSQL_PASSWORD`, `POSTGRES_PASSWORD` (must equal the `.env` value) and `DUMP_DIR`. It refuses to start while anything answers on `127.0.0.1:$UMAMI_PORT`, and refuses to import into a non-empty database (to retry, `docker compose down -v` the PostgreSQL project; step 2 is idempotent on MySQL). Its last line is `MIGRATION OK` or `MIGRATION FAILED at step N`.
+
+Rehearsal on a workstation (`rehearsal/compose.rehearsal.yml` adds a `mysql` service seeded from a dump): put `mysqldump --databases my-website-umami | gzip` at `/tmp/umami-rehearsal/all.sql.gz`, write `/tmp/umami-rehearsal/.env` with `MYSQL_PASSWORD=rehearsal`, `POSTGRES_PASSWORD=rehearsal`, `APP_SECRET`, `TWO_FACTOR_ENCRYPTION_KEY` (`openssl rand -hex 32`) and `UMAMI_PORT=3031`, then from the repo root:
+
+```bash
+docker compose -p umami-rehearsal -f scripts/umami-v3/rehearsal/compose.rehearsal.yml --env-file /tmp/umami-rehearsal/.env up -d --wait mysql db
+MYSQL_HOST=mysql MYSQL_PASSWORD=rehearsal MYSQL_DB=my-website-umami MYSQL_NET=umami-rehearsal_default PG_PROJECT=umami-rehearsal PG_PROJECT_DIR=scripts/umami-v3/rehearsal PG_COMPOSE_FILE=compose.rehearsal.yml PG_ENV_FILE=/tmp/umami-rehearsal/.env PG_NET=umami-rehearsal_default UMAMI_PORT=3031 DUMP_DIR=/tmp/umami-rehearsal POSTGRES_PASSWORD=rehearsal bash scripts/umami-v3/migrate.sh
+docker compose -p umami-rehearsal -f scripts/umami-v3/rehearsal/compose.rehearsal.yml down -v && rm -rf /tmp/umami-rehearsal
+```
+
+Deviations from the plan's mechanics, each found in the rehearsal:
+
+- `pnpm update-db` (`prisma migrate deploy`) instead of `pnpm check-db`: `check-db.js` cannot start in the v2.19 images (`chalk` and `semver` are not installed). Prisma 6.7 in those images downloads its engines from `binaries.prisma.sh` on every run (about 16 MB), so the server needs that host reachable.
+- `mysqldump --skip-tz-utc`: the server's MySQL runs `time_zone=SYSTEM` (Asia/Shanghai), and Umami v2 wrote the `TIMESTAMP` columns through such sessions. The default `--tz-utc` dumps them 8 hours early. The rehearsal `mysql` service sets `TZ=Asia/Shanghai` so it can catch this, and it did.
+- `--no-tablespaces` (the ANSI sql_mode breaks mysqldump's tablespace query, which prints a harmless `Error:`), `--set-gtid-purged=OFF`, and `SET client_encoding = 'UTF8'` in the import preamble.
+- `team_website` is not in the verified table list: v2 migration 04 dropped it.
+- The stats API check uses `endAt` = the moment v3 was started, not "now", so live traffic reaching v3 after the switch cannot skew the comparison.
+- Passwords reach containers by variable name (`-e MYSQL_PWD`, `-e DATABASE_URL`), never on a command line. Besides the plan's checks, step 6 compares whole-row fingerprints of `user`, `website`, `session` and `website_event`.
