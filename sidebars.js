@@ -5,7 +5,6 @@ const sidebars = {
     {
       type: "category",
       label: "前端",
-      collapsible: false,
       items: [
         {
           type: "category",
@@ -65,7 +64,6 @@ const sidebars = {
     {
       type: "category",
       label: "编程语言",
-      collapsible: false,
       items: [
         {
           type: "category",
@@ -99,7 +97,6 @@ const sidebars = {
     {
       type: "category",
       label: "工具",
-      collapsible: false,
       items: [
         {
           type: "category",
@@ -152,7 +149,6 @@ const sidebars = {
     {
       type: "category",
       label: "杂项",
-      collapsible: false,
       items: [
         {
           type: "category",
