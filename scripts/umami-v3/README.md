@@ -1,0 +1,3 @@
+# Umami v3 deployment
+
+Compose project for the self-hosted Umami v3 (PostgreSQL) behind the nginx reverse proxy on the ECS box, installed on the server at `/root/umami-v3/`. `compose.yml` defines the `db` (postgres:16-alpine, named volume `umami-db-data`) and `umami` (ghcr.io/umami-software/umami:3.4.0, published on `127.0.0.1:${UMAMI_PORT}`, default 3030) services; `.env.example` lists the variables it reads, and the real `.env` (mode 600, never committed) lives only on the server next to `compose.yml` with generated secrets; `backup.sh` is the daily `pg_dump` script (gzipped to `/root/backup/umami/`, 14-day retention) that cron runs from `/root/umami-v3/backup.sh`.
