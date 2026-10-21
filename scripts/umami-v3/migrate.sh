@@ -4,9 +4,11 @@
 # variable (values for both places are in README.md):
 #   MYSQL_HOST MYSQL_PASSWORD MYSQL_DB MYSQL_NET
 #   PG_PROJECT PG_PROJECT_DIR PG_COMPOSE_FILE PG_ENV_FILE PG_NET POSTGRES_PASSWORD
-#   UMAMI_PORT DUMP_DIR
-# Needs docker (+ compose v2), curl, python3. Never pulls images: all of them must be local.
+#   UMAMI_PORT DUMP_DIR [HEARTBEAT_TIMEOUT, seconds, default 300]
+# Needs docker (+ compose v2), curl, python3, gzip. Never pulls images: all of them must be local.
 # Prints "== step N: <name>" per step; last line is "MIGRATION OK" or "MIGRATION FAILED at step N".
+# Order: everything PostgreSQL-side (including the steps that download Prisma engines) runs before
+# step 4, the MySQL schema bump after which Umami v2.13 can no longer start.
 set -Eeuo pipefail
 umask 077
 
@@ -18,6 +20,7 @@ WEBSITE_ID=e993a914-0864-4b88-a53c-75e46dc174d7
 SHARE_SLUG=EplxZVQRe6OkyBt3
 # Every data table of the v2.19 schema (team_website was dropped in v2 migration 04).
 TABLES="user session website website_event event_data team team_user session_data report segment revenue"
+PREAMBLE="SET client_encoding = 'UTF8'; SET standard_conforming_strings = off; SET escape_string_warning = off; SET TIME ZONE 'UTC';"
 
 STEP=0
 DONE=0
@@ -47,9 +50,15 @@ mysql_run() { docker run --rm -i --pull never --network "$MYSQL_NET" -e MYSQL_PW
 mysql_q() { mysql_run mysql -h "$MYSQL_HOST" -uroot --default-character-set=utf8mb4 -N -B "$MYSQL_DB"; }
 # SQL on stdin; '|'-separated rows, no headers.
 pg_q() { dc exec -T db psql -X -q -v ON_ERROR_STOP=1 -U umami -d umami -A -t -F '|'; }
+env_file_keys() { awk '/^[A-Za-z_][A-Za-z0-9_]*=/ { sub(/=.*/, ""); print }' "$PG_ENV_FILE"; }
 env_file_value() {
   awk -v k="$1" 'index($0, k "=") == 1 { v = substr($0, length(k) + 2); sub(/\r$/, "", v);
     if (v ~ /^".*"$/ || v ~ /^'\''.*'\''$/) v = substr(v, 2, length(v) - 2); print v; exit }' "$PG_ENV_FILE"
+}
+port_taken() { # exit 0 when anything accepts a TCP connection on 127.0.0.1:$1
+  P="$1" python3 -I -c 'import os, socket, sys
+s = socket.socket(); s.settimeout(3)
+sys.exit(0 if s.connect_ex(("127.0.0.1", int(os.environ["P"]))) == 0 else 1)'
 }
 
 # ---------------------------------------------------------------------------------------------
@@ -58,61 +67,85 @@ for v in MYSQL_HOST MYSQL_PASSWORD MYSQL_DB MYSQL_NET PG_PROJECT PG_PROJECT_DIR 
          PG_ENV_FILE PG_NET POSTGRES_PASSWORD UMAMI_PORT DUMP_DIR; do
   [ -n "${!v:-}" ] || fail "environment variable $v is not set"
 done
-for c in docker curl python3; do command -v "$c" >/dev/null || fail "$c not found"; done
+HEARTBEAT_TIMEOUT=${HEARTBEAT_TIMEOUT:-300}
+case $HEARTBEAT_TIMEOUT in ''|*[!0-9]*) fail "HEARTBEAT_TIMEOUT must be a number of seconds" ;; esac
+for c in docker curl python3 gzip; do command -v "$c" >/dev/null || fail "$c not found"; done
 echo "docker server $(docker version --format '{{.Server.Version}}')"
 docker compose version
+[ "$PG_NET" = "${PG_PROJECT}_default" ] || fail "PG_NET must be ${PG_PROJECT}_default"
 [ -f "$PG_PROJECT_DIR/$PG_COMPOSE_FILE" ] || fail "$PG_PROJECT_DIR/$PG_COMPOSE_FILE not found"
 [ -f "$PG_ENV_FILE" ] || fail "$PG_ENV_FILE not found"
-# Compose lets the shell override the env file; they must agree, or the database would be
-# initialised with a password the next plain "docker compose up" does not know.
-[ "$(env_file_value POSTGRES_PASSWORD)" = "$POSTGRES_PASSWORD" ] || fail "POSTGRES_PASSWORD differs from $PG_ENV_FILE"
-[ "$(env_file_value UMAMI_PORT)" = "$UMAMI_PORT" ] || fail "UMAMI_PORT differs from $PG_ENV_FILE"
-for img in $MYSQL_IMAGE $UMAMI_MYSQL_V219 $UMAMI_PG_V219 \
-           $(dc config --images); do
+# Compose lets exported variables override the env file. Every key must agree, or the containers
+# would be created with values the next plain "docker compose up" does not know.
+for k in POSTGRES_PASSWORD UMAMI_PORT; do
+  [ -n "$(env_file_value "$k")" ] || fail "$k is missing from $PG_ENV_FILE"
+done
+env_keys=$(env_file_keys)
+for k in $env_keys; do
+  if val=$(printenv "$k"); then
+    [ "$val" = "$(env_file_value "$k")" ] || fail "exported $k differs from $PG_ENV_FILE"
+  fi
+done
+echo "environment agrees with $PG_ENV_FILE ($(echo "$env_keys" | wc -w | tr -d ' ') keys)"
+compose_images=$(dc config --images)
+[ -n "$compose_images" ] || fail "docker compose config --images printed nothing"
+for img in $MYSQL_IMAGE $UMAMI_MYSQL_V219 $UMAMI_PG_V219 $compose_images; do
   docker image inspect "$img" >/dev/null 2>&1 || fail "image $img is not present locally (this script never pulls)"
   echo "image ok: $img"
 done
-if curl -s -o /dev/null --max-time 3 "http://127.0.0.1:${UMAMI_PORT}/"; then
-  fail "something already answers on 127.0.0.1:${UMAMI_PORT} (Umami v2, or v3 from an earlier run); stop it first"
+if docker volume inspect "${PG_PROJECT}_umami-db-data" >/dev/null 2>&1; then
+  fail "volume ${PG_PROJECT}_umami-db-data already exists; remove it (docker compose down -v) for a fresh import"
+fi
+echo "no ${PG_PROJECT}_umami-db-data volume yet"
+if port_taken "$UMAMI_PORT"; then
+  fail "something listens on 127.0.0.1:${UMAMI_PORT} (Umami v2, or v3 from an earlier run); stop it first"
 fi
 echo "port ${UMAMI_PORT} is free"
 export MYSQL_PWD="$MYSQL_PASSWORD"
 expect "mysql select 1" 1 "$(echo 'select 1' | mysql_q)"
+read -r my_mig_total my_mig_done <<< "$(echo 'select count(*), coalesce(sum(finished_at is not null and rolled_back_at is null), 0) from _prisma_migrations' | mysql_q)"
+case "$my_mig_total/$my_mig_done" in
+  6/6|13/13) echo "mysql _prisma_migrations: $my_mig_total, all finished" ;;
+  *) fail "mysql _prisma_migrations: expected 6 or 13 finished rows, got $my_mig_total rows ($my_mig_done finished)" ;;
+esac
 mkdir -p "$DUMP_DIR"
-probe="$DUMP_DIR/.migrate-write-test.$$"
-: > "$probe" || fail "$DUMP_DIR is not writable"
-rm -f "$probe"
-echo "dump dir writable: $DUMP_DIR"
+free_kb=$(df -Pk "$DUMP_DIR" | awk 'NR == 2 { print $4 }')
+[ "${free_kb:-0}" -ge 1048576 ] || fail "less than 1 GB free in $DUMP_DIR"
+RUN_DIR="$DUMP_DIR/migrate-$(date +%Y%m%d-%H%M%S)"
+mkdir -m 700 "$RUN_DIR" || fail "cannot create $RUN_DIR"
+echo "run dir: $RUN_DIR ($((free_kb / 1024)) MB free)"
 
 # ---------------------------------------------------------------------------------------------
-step 2 "mysql schema -> v2.19"
+step 2 "postgres schema v2.19"
+dc up -d --pull never --wait --wait-timeout 180 db
 # "pnpm update-db" is "prisma migrate deploy", the step "pnpm check-db" would run; check-db itself
 # cannot start in the v2.19 images (chalk and semver are not installed). Prisma 6.7 downloads its
-# engines from binaries.prisma.sh on each run (about 16 MB).
-DATABASE_URL="mysql://root:$(urlenc "$MYSQL_PASSWORD")@${MYSQL_HOST}:3306/${MYSQL_DB}" \
-  docker run --rm --pull never --network "$MYSQL_NET" -e DATABASE_URL -e DATABASE_TYPE=mysql \
-  "$UMAMI_MYSQL_V219" pnpm update-db
-expect "mysql _prisma_migrations" 13 "$(echo 'select count(*) from _prisma_migrations' | mysql_q)"
-expect "mysql 13_add_revenue finished" 1 "$(echo "select count(*) from _prisma_migrations where migration_name='13_add_revenue' and finished_at is not null" | mysql_q)"
-
-# ---------------------------------------------------------------------------------------------
-step 3 "postgres schema v2.19"
-dc up -d --pull never --wait --wait-timeout 180 db
+# engines from binaries.prisma.sh on each run (about 16 MB) and exits before migrating if it cannot.
 DATABASE_URL="postgresql://umami:$(urlenc "$POSTGRES_PASSWORD")@db:5432/umami" \
   docker run --rm --pull never --network "$PG_NET" -e DATABASE_URL -e DATABASE_TYPE=postgresql \
   "$UMAMI_PG_V219" pnpm update-db
 expect "pg _prisma_migrations" 13 "$(echo 'select count(*) from _prisma_migrations' | pg_q)"
 
 # ---------------------------------------------------------------------------------------------
-step 4 "truncate seeded user"
-# The import target must be empty apart from the seeded admin: a rerun against an already imported
-# database stops here, before anything is truncated.
+step 3 "truncate seeded user"
+# The import target must be empty apart from the seeded admin; checked before anything is truncated.
 for t in $TABLES; do
   [ "$t" = user ] && continue
   expect "pg $t rows before import" 0 "$(echo "select count(*) from \"$t\"" | pg_q)"
 done
 echo 'TRUNCATE TABLE "user";' | pg_q
 expect "pg user rows before import" 0 "$(echo 'select count(*) from "user"' | pg_q)"
+
+# ---------------------------------------------------------------------------------------------
+step 4 "mysql schema -> v2.19"
+# Point of no return: afterwards Umami v2.13 cannot start against this MySQL (rollback = restore a
+# dump). Nothing after this step needs the internet; if this step's engine download fails, Prisma
+# exits before applying anything. A database already at 13 migrations is left as it is.
+DATABASE_URL="mysql://root:$(urlenc "$MYSQL_PASSWORD")@${MYSQL_HOST}:3306/${MYSQL_DB}" \
+  docker run --rm --pull never --network "$MYSQL_NET" -e DATABASE_URL -e DATABASE_TYPE=mysql \
+  "$UMAMI_MYSQL_V219" pnpm update-db
+expect "mysql _prisma_migrations" 13 "$(echo 'select count(*) from _prisma_migrations' | mysql_q)"
+expect "mysql 13_add_revenue finished" 1 "$(echo "select count(*) from _prisma_migrations where migration_name='13_add_revenue' and finished_at is not null" | mysql_q)"
 
 # ---------------------------------------------------------------------------------------------
 step 5 "dump + import"
@@ -124,21 +157,17 @@ mysql_run mysqldump -h "$MYSQL_HOST" -uroot \
   --compatible=ansi --no-create-info --no-create-db --skip-triggers --skip-add-locks --skip-comments \
   --complete-insert --skip-extended-insert --quick --default-character-set=utf8mb4 \
   --skip-tz-utc --no-tablespaces --set-gtid-purged=OFF \
-  --ignore-table="${MYSQL_DB}._prisma_migrations" "$MYSQL_DB" < /dev/null > "$DUMP_DIR/data.sql"
-inserts=$(grep -c '^INSERT INTO "' "$DUMP_DIR/data.sql" || true)
+  --ignore-table="${MYSQL_DB}._prisma_migrations" "$MYSQL_DB" < /dev/null > "$RUN_DIR/data.sql"
+inserts=$(grep -c '^INSERT INTO "' "$RUN_DIR/data.sql" || true)
 [ "${inserts:-0}" -gt 0 ] || fail "no ANSI-quoted INSERT statements in data.sql"
-if grep -q '^INSERT INTO `' "$DUMP_DIR/data.sql"; then fail "backtick-quoted INSERT in data.sql (ANSI mode not applied)"; fi
-if grep -q "^/\*!40103 SET TIME_ZONE" "$DUMP_DIR/data.sql"; then fail "data.sql converts time zones (--skip-tz-utc not applied)"; fi
-echo "data.sql: $inserts INSERT statements, $(wc -c < "$DUMP_DIR/data.sql" | tr -d ' ') bytes"
-{
-  echo "SET client_encoding = 'UTF8';"
-  echo "SET standard_conforming_strings = off;"
-  echo "SET escape_string_warning = off;"
-  echo "SET TIME ZONE 'UTC';"
-  cat "$DUMP_DIR/data.sql"
-} > "$DUMP_DIR/import.sql"
-dc exec -T db psql -X -q -v ON_ERROR_STOP=1 --single-transaction -U umami -d umami < "$DUMP_DIR/import.sql"
+if grep -q '^INSERT INTO `' "$RUN_DIR/data.sql"; then fail "backtick-quoted INSERT in data.sql (ANSI mode not applied)"; fi
+if grep -q "^/\*!40103 SET TIME_ZONE" "$RUN_DIR/data.sql"; then fail "data.sql converts time zones (--skip-tz-utc not applied)"; fi
+echo "data.sql: $inserts INSERT statements, $(wc -c < "$RUN_DIR/data.sql" | tr -d ' ') bytes"
+{ echo "$PREAMBLE"; cat "$RUN_DIR/data.sql"; } \
+  | dc exec -T db psql -X -q -v ON_ERROR_STOP=1 --single-transaction -U umami -d umami
 echo "import committed"
+gzip "$RUN_DIR/data.sql"
+echo "dump kept as $RUN_DIR/data.sql.gz"
 
 # ---------------------------------------------------------------------------------------------
 step 6 "verify"
@@ -167,6 +196,12 @@ my_range=$(echo "select concat(date_format(min(created_at),'%Y-%m-%d %H:%i:%s'),
 pg_range=$(echo "select to_char(min(created_at) at time zone 'UTC','YYYY-MM-DD HH24:MI:SS') || ' .. ' || to_char(max(created_at) at time zone 'UTC','YYYY-MM-DD HH24:MI:SS') from website_event;" | pg_q)
 echo "website_event created_at mysql=[$my_range] pg-utc=[$pg_range]"
 [ -n "$my_range" ] && [ "$my_range" = "$pg_range" ] || fail "website_event min/max created_at differ"
+# Absolute check: a positive zone error would put the newest event in the future.
+newest=$(echo "select (max(created_at) <= now())::text || ' ' || justify_interval(date_trunc('second', now() - max(created_at)))::text from website_event;" | pg_q)
+case $newest in
+  "true "*) echo "newest event is ${newest#true } old (not in the future)" ;;
+  *) fail "newest website_event is in the future or missing: [$newest]" ;;
+esac
 
 # The oldest page_title containing a single quote (char 39), compared as UTF-8 bytes.
 my_spot=$(echo "select concat(event_id, ' ', hex(page_title)) from website_event where page_title like concat('%', char(39 using utf8mb4), '%') order by created_at, event_id limit 1;" | mysql_q)
@@ -207,13 +242,18 @@ step 7 "start v3"
 # Upper bound for the API check: on the server nginx sends live traffic to v3 as soon as it
 # listens, and those new events must not count against the MySQL total.
 v3_started_ms=$(( $(date +%s) * 1000 ))
+echo "v3 start time (endAt for step 8): $v3_started_ms"
 dc up -d --pull never umami
-deadline=$((SECONDS + 180))
+waited=0
 until curl -fs -o /dev/null --max-time 5 "http://127.0.0.1:${UMAMI_PORT}/api/heartbeat"; do
-  [ "$SECONDS" -lt "$deadline" ] || { dc logs --tail 50 umami >&2 || true; fail "no heartbeat within 180 s"; }
+  if [ "$waited" -ge "$HEARTBEAT_TIMEOUT" ]; then
+    dc logs --tail 50 umami >&2 || true
+    fail "no heartbeat within $HEARTBEAT_TIMEOUT s (v3 may still be migrating; see README to finish steps 7-8 by hand)"
+  fi
   sleep 3
+  waited=$((waited + 3))
 done
-echo "heartbeat ok after $((SECONDS - deadline + 180)) s"
+echo "heartbeat ok after ${waited} s"
 expect "pg _prisma_migrations" 26 "$(echo 'select count(*) from _prisma_migrations where finished_at is not null and rolled_back_at is null' | pg_q)"
 
 # ---------------------------------------------------------------------------------------------
@@ -225,12 +265,12 @@ token=$(curl -fsS --max-time 30 "$base/api/share/$SHARE_SLUG" \
 api_pageviews=$(curl -fsS --max-time 60 -H "x-umami-share-token: $token" -H "x-umami-share-context: 1" \
   "$base/api/websites/$WEBSITE_ID/stats?startAt=0&endAt=$v3_started_ms" \
   | python3 -I -c 'import json, sys; v = json.load(sys.stdin)["pageviews"]; print(int(v["value"] if isinstance(v, dict) else v))')
-mysql_pageviews=$(echo 'select count(*) from website_event where event_type=1' | mysql_q)
+mysql_pageviews=$(echo "select count(*) from website_event where event_type=1 and website_id='$WEBSITE_ID'" | mysql_q)
 echo "all-time pageviews api=$api_pageviews mysql=$mysql_pageviews"
 [ "$api_pageviews" = "$mysql_pageviews" ] || fail "v3 stats API disagrees with MySQL"
 
 # ---------------------------------------------------------------------------------------------
 step 9 "done"
-echo "elapsed ${SECONDS} s; dump and import files kept in $DUMP_DIR (data.sql, import.sql)"
+echo "elapsed ${SECONDS} s; delete $RUN_DIR after acceptance (it holds visitor data and the admin hash)"
 DONE=1
 echo "MIGRATION OK"
