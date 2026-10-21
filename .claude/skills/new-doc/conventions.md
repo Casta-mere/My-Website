@@ -17,8 +17,10 @@ Docs appear in one of two sidebars declared in `sidebars.js`:
 
 | Sidebar | Purpose | Topics |
 |---|---|---|
-| `tutorialSidebar` | 系列文章 (tutorials, longform) | React, Server, Docker, Python, Golang, SQL, Latex, Plans |
+| `tutorialSidebar` | 系列文章 (tutorials, longform) | React, Server, Docker, Python, Golang, SQL, Latex, Emacs, Plans, Rules, Resume |
 | `snippetsSidebar` | 代码片段 (snippets, components) | Snippets/*, Snippets/Components, Snippets/Python |
+
+`tutorialSidebar` groups topic categories under heading categories (`type: "category"`, `collapsible: false`, no `link`): 前端 → React; 编程语言 → Python, Golang, SQL; 工具 → Docker, Emacs (a future Git series goes first here); 杂项 → Latex. 服务器搭建 (Server), 总结与计划 (Plans), Rules and Resume are top-level. Inside Server, the `Docusaurus-*` pages sit in a nested link-less category labelled `Docusaurus`. The insertion target for a new page is still the topic's own category block, found by `link.id === "<Topic>/README"`, wherever it is nested. A new topic directory gets its own category block under the matching heading (top-level only if none fits); heading labels are translated in `i18n/en/docusaurus-plugin-content-docs/current.json`.
 
 Every new page must be added to the right sidebar's `items:` array, using the doc ID (`<Topic>/<PageName>` without extension).
 

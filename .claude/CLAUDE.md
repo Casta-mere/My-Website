@@ -23,7 +23,7 @@ This is a **Docusaurus 3** personal website (`castamerego.com`) with two locales
 
 ### Content layout
 - `blog/YYYY/MM/DD-slug/index.md` — blog posts, organized by date. Images go in an `image/` subdirectory next to `index.md`. Typical frontmatter: `slug`, `title`, `authors`, `tags`; optional `recommended: true` (surfaces on homepage) and `references: [{author, title, time, url}]` (rendered by the `Reference` component).
-- `docs/` — documentation, organized by topic (Docker, Golang, React, Snippets, etc.). Two sidebars are assembled in `sidebars.js`: `tutorialSidebar` (系列文章) and `snippetsSidebar` (代码片段).
+- `docs/` — documentation, organized by topic (Docker, Golang, React, Snippets, etc.). Two sidebars are assembled in `sidebars.js`: `tutorialSidebar` (系列文章) and `snippetsSidebar` (代码片段). In `tutorialSidebar`, topic categories sit under non-collapsible heading categories (前端 / 编程语言 / 工具 / 杂项; `collapsible: false`, no `link`), while 服务器搭建, 总结与计划, Rules and Resume stay top-level; the `Server/Docusaurus-*` pages live in a nested link-less `Docusaurus` category. A new topic's category block goes under the matching heading and still links to `<Topic>/README`.
 - `i18n/en/` — English translations mirror the same file structure (`docusaurus-plugin-content-blog/`, `docusaurus-plugin-content-docs/`, `docusaurus-theme-classic/`, etc.)
 
 ### Custom plugins (`src/plugins/`)

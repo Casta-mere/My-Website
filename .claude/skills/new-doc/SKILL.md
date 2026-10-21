@@ -37,10 +37,10 @@ Scaffold a new docs page. The user provides a topic/category and a description (
    - Same as the `new-blog` skill. Fetch/infer `author`, `title`, `time` from the user's message; use a placeholder title if the user only gave a URL, and flag it.
 
 6. **Determine sidebar insertion point.**
-   - Read `sidebars.js` and find the category whose `id` matches `<Topic>/README` (or nested path).
+   - Read `sidebars.js` and find the category whose `link.id` matches `<Topic>/README` (or nested path). In `tutorialSidebar` topic blocks are nested inside heading categories (前端 / 编程语言 / 工具 / 杂项), so search by `link.id`, not by top-level position. `Server/Docusaurus-*` pages go in the nested `Docusaurus` category under Server.
    - The new doc ID is `<Topic>/<PageName>`.
    - Append to the end of that category's `items:` array. If the topic uses a `sidebar_position`-style ordering, respect it.
-   - Note whether the target is in `tutorialSidebar` or `snippetsSidebar`. `Snippets/*` goes in `snippetsSidebar`; everything else in `tutorialSidebar`.
+   - Note whether the target is in `tutorialSidebar` or `snippetsSidebar`. `Snippets/*` goes in `snippetsSidebar`; everything else in `tutorialSidebar`. New topics in `tutorialSidebar` go under the matching heading (see `conventions.md` → Sidebars).
 
 7. **Confirm with the user** unless the user's input is fully explicit (path + title + tags). Show:
    - Target file path
