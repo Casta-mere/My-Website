@@ -11,15 +11,19 @@ import { RoughNotation } from "react-rough-notation";
 ### <RoughNotation type="underline" show={true} color="#FFA500" strokeWidth={3} animationDelay={0} >前端</RoughNotation>
 
 - React 教程
-- Next.js 教程
+  - Next.js 教程
+  - Issue Tracker 教程
 
 ### <RoughNotation type="underline" show={true} color="#FF6347" strokeWidth={3} animationDelay={1000} >编程语言</RoughNotation>
 
 - Python 教程
+- Golang 教程
+- SQL 教程
 
-### <RoughNotation type="underline" show={true} color="#FFD700" strokeWidth={3} animationDelay={2000} >容器化技术</RoughNotation>
+### <RoughNotation type="underline" show={true} color="#FFD700" strokeWidth={3} animationDelay={2000} >工具</RoughNotation>
 
 - Docker 教程
+- Emacs 教程
 
 ### <RoughNotation type="underline" show={true} color="#4169E1" strokeWidth={3} animationDelay={3000} >服务器</RoughNotation>
 
