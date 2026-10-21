@@ -42,5 +42,37 @@
   "sidebar.tutorialSidebar.category.Python": {
     "message": "Python",
     "description": "The label for category Python in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.前端": {
+    "message": "Front End",
+    "description": "The label for category 前端 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.编程语言": {
+    "message": "Programming Languages",
+    "description": "The label for category 编程语言 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Golang": {
+    "message": "Golang",
+    "description": "The label for category Golang in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.SQL": {
+    "message": "SQL",
+    "description": "The label for category SQL in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.工具": {
+    "message": "Tools",
+    "description": "The label for category 工具 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Emacs": {
+    "message": "Emacs",
+    "description": "The label for category Emacs in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Docusaurus": {
+    "message": "Docusaurus",
+    "description": "The label for category Docusaurus in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.杂项": {
+    "message": "Misc",
+    "description": "The label for category 杂项 in sidebar tutorialSidebar"
   }
 }
