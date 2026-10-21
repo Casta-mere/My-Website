@@ -1,0 +1,59 @@
+{
+  // VS Code debug configurations for this Docusaurus site.
+  // Press F5 (or Run > Start Debugging) and pick one of the entries below.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Starts the dev server (npm run start → localhost:3113) under the Node debugger.
+      // Breakpoints work in docusaurus.config.js, src/plugins/*.js and scripts/*.cjs.
+      "name": "Docusaurus: Start (dev server)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
+      // Production build. `prebuild` runs scripts/generate-github-repos.cjs first,
+      // which uses GITHUB_TOKEN (optional, avoids API rate limits).
+      "name": "Docusaurus: Build",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+      },
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
+      // Serve the output of `npm run build` from ./build.
+      "name": "Docusaurus: Serve (production build)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
+      // Debug the GitHub repo snapshot generator on its own
+      // (regenerates src/data/github/repos.generated.*).
+      "name": "Script: generate-github-repos",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/generate-github-repos.cjs",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
