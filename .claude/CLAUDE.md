@@ -6,6 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run start         # Dev server at localhost:3113 (no browser auto-open)
+npm run start:en      # English-locale dev server at localhost:3114/en/ (a dev server serves one locale at a time)
 npm run build         # Production build (runs github:repos script first)
 npm run serve         # Serve production build locally
 npm run clear         # Clear Docusaurus cache

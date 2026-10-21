@@ -7,6 +7,7 @@
     "github:repos": "node scripts/generate-github-repos.cjs",
     "prebuild": "npm run github:repos",
     "start": "docusaurus start --no-open -p 3113",
+    "start:en": "docusaurus start --no-open -p 3114 --locale en",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",

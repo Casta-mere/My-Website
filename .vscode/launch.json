@@ -16,6 +16,19 @@
       "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
     },
     {
+      // English locale dev server (npm run start:en → localhost:3114/en/).
+      // A Docusaurus dev server serves one locale at a time, so run this
+      // alongside the zh-Hans entry above to preview both.
+      "name": "Docusaurus: Start (dev server, en)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:en"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+    },
+    {
       // Production build. `prebuild` runs scripts/generate-github-repos.cjs first,
       // which uses GITHUB_TOKEN (optional, avoids API rate limits).
       "name": "Docusaurus: Build",
