@@ -52,6 +52,8 @@ swapon /swapfile
 echo '/swapfile none swap sw 0 0' >> /etc/fstab
 ```
 
+有些云厂商的镜像默认带 `vm.swappiness=0`，这时系统会先把程序的代码页挤出内存，轮不到 swap 出场，加了也白加。笔者的服务器就是这样，把它改成 10（比如写进 `/etc/sysctl.conf`，已经有 `vm.swappiness = 0` 的话直接改那一行，再 `sysctl -p`），swap 才真正派上用场，可以用 `cat /proc/sys/vm/swappiness` 确认。另外建议装上 `sysstat`（`apt install sysstat`，并把 `/etc/default/sysstat` 里的 `ENABLED` 改成 `"true"`），它会定期记录内存和负载，机器万一卡死，事后还有历史数据可以查
+
 接下来是拉镜像，要用到两个：`postgres:16-alpine` 和 `ghcr.io/umami-software/umami:3.4.0`。服务器在哪里，拉法不一样：
 
 <Tabs groupId="server-region">
@@ -137,12 +139,14 @@ services:
       start_period: 90s
     restart: unless-stopped
     # highlight-next-line
-    mem_limit: 512m
+    mem_limit: 640m
 volumes:
   umami-db-data:
 ```
 
-`mem_limit` 和 `NODE_OPTIONS` 是给容器加的内存上限：`umami` 最多 512 MB，Node 堆限制在 384 MB，`db` 最多 256 MB。小服务器上，容器失控时应该让 Docker 把它杀掉重启，而不是拖着整台机器一起卡死，笔者的服务器在 2026-10-22 就卡死过一次，当时还没有这几行限制
+`mem_limit` 和 `NODE_OPTIONS` 是给容器加的内存上限：`umami` 最多 640 MB，Node 堆限制在 384 MB，`db` 最多 256 MB。进程超过上限，会被内核或者 V8 杀掉，Docker 再按 `restart: unless-stopped` 把容器重新拉起来
+
+笔者的服务器在 2026-10-22 卡死过一次，原因其实不明：当时没有采集任何监控数据，没法回头查。所以这几行限制只是兜底，不能说有了它们就不会再卡。同一天笔者还停掉了 MySQL，腾出了大约 350 MB 内存，这个因素同样排除不了
 
 几个地方简单说明一下：
 

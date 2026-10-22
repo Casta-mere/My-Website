@@ -23,7 +23,7 @@ import GitHubRepo from "@site/src/components/GitHubRepo";
 
 # Umami v3 下的文章阅读次数
 
-接[上篇](/blog/PageViewCounter)，Umami 升级到 v3 之后，文章阅读次数的组件就跑不通了。这次换了个思路：借 Umami 公开的 share 链接拿数据，前端代码里不再放任何密钥，同一套代码兼容 v2 和 v3
+接[上篇](/blog/PageViewCounter)，Umami 升级到 v3 之后，文章阅读次数的组件就跑不通了。这次换了个思路：借 Umami 公开的 share 链接拿数据，前端代码里不再放任何密钥，同一套代码兼容 v2 和 v3（浏览器里需要 v3）
 
 <GitHubRepo owner="Casta-mere" repo="Docusaurus-Plugin-Umami" />
 

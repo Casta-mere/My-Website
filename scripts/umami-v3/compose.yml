@@ -36,6 +36,6 @@ services:
       retries: 5
       start_period: 90s
     restart: unless-stopped
-    mem_limit: 512m
+    mem_limit: 640m
 volumes:
   umami-db-data:

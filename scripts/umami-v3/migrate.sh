@@ -94,7 +94,7 @@ for img in $MYSQL_IMAGE $UMAMI_MYSQL_V219 $UMAMI_PG_V219 $compose_images; do
   echo "image ok: $img"
 done
 if docker volume inspect "${PG_PROJECT}_umami-db-data" >/dev/null 2>&1; then
-  fail "volume ${PG_PROJECT}_umami-db-data already exists; remove it (docker compose down -v) for a fresh import"
+  fail "volume ${PG_PROJECT}_umami-db-data already exists; remove it (docker compose down -v, only for a failed run before acceptance: after the cutover it deletes the live analytics database) for a fresh import"
 fi
 echo "no ${PG_PROJECT}_umami-db-data volume yet"
 if port_taken "$UMAMI_PORT"; then

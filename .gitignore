@@ -25,3 +25,6 @@ yarn-error.log*
 src/data/github
 # Git worktrees (local only)
 .worktrees
+
+# Umami v3 server secrets
+scripts/umami-v3/.env
