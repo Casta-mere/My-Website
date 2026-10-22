@@ -147,7 +147,7 @@ export function readPageviews(data: unknown): number {
 - `compare` 干脆不发
 - `readPageviews` 两种返回结构都认，解析不出来就当 0
 
-请求头固定带上两个 share header：
+请求头固定带上两个 share header。每个路径发一个请求，加总的时候只算成功的那些：
 
 ```ts title="src/components/PageViewCounter/umamiStatsClient.ts"
 export const SHARE_TOKEN_HEADER = 'x-umami-share-token'
@@ -155,7 +155,7 @@ export const SHARE_CONTEXT_HEADER = 'x-umami-share-context'
 
 // ...
 
-export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number> {
+export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number | null> {
   const { host, websiteId, token, startAt, endAt, paths, fetchImpl } = args
   const doFetch = resolveFetch(fetchImpl)
   // highlight-start
@@ -165,10 +165,15 @@ export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number> 
   }
   // highlight-end
   // ...
+  // highlight-start
+  const succeeded = counts.filter((count): count is number => count !== null)
+  if (succeeded.length === 0) return null
+  return succeeded.reduce((sum, count) => sum + count, 0)
+  // highlight-end
 }
 ```
 
-某一个路径的请求失败、返回非 2xx 或者解析不出来，都只算这个路径为 0，不会连累其它路径
+某一个路径的请求失败、返回非 2xx 或者解析不出来，只是不计入加总，不会连累其它路径。但如果所有请求都失败了，返回的是 `null` 而不是 0：Umami 连不上和一篇真的没人看的文章，是两回事
 
 ### 缓存与重试
 
@@ -178,7 +183,7 @@ export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number> 
 - 阅读量存在 localStorage，key 还是上篇的 `umami_views_<key>` 和 `umami_views_<key>_time`。5 分钟内先显示缓存的数，同时照常请求新的
 - localStorage 和 sessionStorage 不可用时 (SSR、Safari 无痕模式) 全部静默跳过，缓存只是锦上添花
 
-比较有意思的是重试。share token 本身也是用 `hash(APP_SECRET || DATABASE_URL)` 签名的，服务器一迁移，sessionStorage 里的旧 token 就失效了，每个 stats 请求都是 401，加起来正好是 0。所以拿缓存的 token 得到 0 时，hook 会扔掉它，换一个新 token 再试一次：
+比较有意思的是重试。share token 本身也是用 `hash(APP_SECRET || DATABASE_URL)` 签名的，服务器一迁移，sessionStorage 里的旧 token 就失效了，每个 stats 请求都是 401，全部失败，`fetchPageviews` 返回 `null`。所以拿缓存的 token 得到 `null` 时，hook 会扔掉它，换一个新 token 再试一次：
 
 ```ts title="src/components/PageViewCounter/useUmamiStats.ts"
 void (async () => {
@@ -189,16 +194,26 @@ void (async () => {
     let result = await loadTotal(token)
     if (cancelled) return
 
-    // A token cached in sessionStorage can be stale (for example the server's
-    // signing secret changed), and the failed stats calls then add up to 0.
-    // Fetch a fresh token and retry once before trusting (and caching) the 0.
+    // `null` means every stats request failed. A token cached in
+    // sessionStorage can be stale (for example the server's signing secret
+    // changed), so fetch a fresh one and retry once. A genuine 0 is a number
+    // and never triggers this.
     // highlight-start
-    if (result.total === 0 && cachedToken) {
+    if (result.total === null && cachedToken) {
       safeStorage.remove('session', tokenKey)
       const fresh = await requestToken()
       if (!fresh) return
       result = await loadTotal(fresh)
       if (cancelled) return
+    }
+    // highlight-end
+
+    // Still failing: report an error and cache nothing, so a fake 0 never
+    // overwrites a real value.
+    // highlight-start
+    if (result.total === null) {
+      publish(served, new Error('umami stats unavailable'))
+      return
     }
     // highlight-end
 
@@ -211,7 +226,7 @@ void (async () => {
 })()
 ```
 
-真正 0 阅读的页面会多换一次 token，这点代价可以忽略。过程中抛出的错误都会进 `error`，组件拿到 `error` 就什么都不渲染——宁可少一个数字，也不显示一个错的
+真正 0 阅读的页面拿到的是数字 0，直接缓存、直接显示，不会多换一次 token。换了新 token 还是全部失败，说明问题不在 token 上 (Umami 连不上、返回 5xx、share 没勾 Overview)，hook 会设置 `error`，也不写缓存，上一次的真实数字不会被一个假的 0 覆盖。过程中抛出的错误同样都会进 `error`，组件拿到 `error` 就什么都不渲染——宁可少一个数字，也不显示一个错的
 
 ## 集成
 

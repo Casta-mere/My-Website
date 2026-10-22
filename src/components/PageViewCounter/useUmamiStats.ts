@@ -112,15 +112,23 @@ export function useUmamiStats(options: UseUmamiStatsOptions = {}): UmamiStatsRes
         let result = await loadTotal(token)
         if (cancelled) return
 
-        // A token cached in sessionStorage can be stale (for example the server's
-        // signing secret changed), and the failed stats calls then add up to 0.
-        // Fetch a fresh token and retry once before trusting (and caching) the 0.
-        if (result.total === 0 && cachedToken) {
+        // `null` means every stats request failed. A token cached in
+        // sessionStorage can be stale (for example the server's signing secret
+        // changed), so fetch a fresh one and retry once. A genuine 0 is a number
+        // and never triggers this.
+        if (result.total === null && cachedToken) {
           safeStorage.remove('session', tokenKey)
           const fresh = await requestToken()
           if (!fresh) return
           result = await loadTotal(fresh)
           if (cancelled) return
+        }
+
+        // Still failing: report an error and cache nothing, so a fake 0 never
+        // overwrites a real value.
+        if (result.total === null) {
+          publish(served, new Error('umami stats unavailable'))
+          return
         }
 
         safeStorage.set('local', viewsKey, String(result.total))

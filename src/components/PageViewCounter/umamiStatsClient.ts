@@ -65,9 +65,11 @@ type FetchPageviewsArgs = {
 }
 
 // One request per path (a single site-wide request when `paths` is empty).
-// A rejected fetch, a non-2xx status or an unparsable body counts as 0 for
-// that path, so one bad request never hides the others.
-export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number> {
+// A rejected fetch, a non-2xx status or an unparsable body is a failed request.
+// The result is the sum of the successful requests, so one bad request never
+// hides the others, and `null` when every request failed: an unreachable stats
+// API must not be mistaken for a page that has 0 views.
+export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number | null> {
   const { host, websiteId, token, startAt, endAt, paths, fetchImpl } = args
   const doFetch = resolveFetch(fetchImpl)
   const headers = {
@@ -77,19 +79,21 @@ export async function fetchPageviews(args: FetchPageviewsArgs): Promise<number> 
   const targets: (string | undefined)[] = paths && paths.length > 0 ? paths : [undefined]
 
   const counts = await Promise.all(
-    targets.map(async (path) => {
+    targets.map(async (path): Promise<number | null> => {
       try {
         const response = await doFetch(buildStatsUrl(host, websiteId, { startAt, endAt, path }), {
           headers,
         })
-        if (!response.ok) return 0
+        if (!response.ok) return null
         return readPageviews(await response.json())
       } catch {
-        return 0
+        return null
       }
     }),
   )
-  return counts.reduce((sum, count) => sum + count, 0)
+  const succeeded = counts.filter((count): count is number => count !== null)
+  if (succeeded.length === 0) return null
+  return succeeded.reduce((sum, count) => sum + count, 0)
 }
 
 type StoreName = 'local' | 'session'
